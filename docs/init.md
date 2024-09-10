@@ -100,9 +100,9 @@ Post Structure:
 - Post can be categorized based topics.
 - Post can be tagged for more granular searchability.
 - Tags can be used for search and recommendation.
-- Topics can have nested structure.
+- Topics can have nested structure. (tipic-sub topic)
 - Each post can have multiple tags.
-- Each post can have multiple topics.
+- Each post should have one topic.
 
 #### Analytics and Insights
 

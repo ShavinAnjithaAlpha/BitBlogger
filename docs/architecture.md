@@ -24,35 +24,35 @@ The backend follows a microservice architecture, consisting of multiple independ
   - role based access control
   - token validation
 
-### 2. User Management Service
+### 2. User Service
 
 - **purpose**: manages user accounts and profiles.
 - **features**:
   - profile update
   - profile deletion
-  - user search
   - follow/unfollow user
   - intergration with the auth server for authorization
-  - \*user activity tracking
+  - user profile reporting
+  - maintain a reading list fo reach users
 
-### 3. Content Management Service
+### 3. Content Service
 
-- **purpose**: manages user generated content.
-- **features**:
--
+### 4. Topic Service
 
-### 4. Community Interaction Service
+### 5. Tags Service
 
-### 5. Report Management Service
+### 6. Likes Service
 
-### 6. Community Engagement Service
+### 7. Comment Service
 
-### 7. Classification Service
+### 8. Poll Service
 
-### 8. Search and Recommendation Service
+### 9. Survey Service
 
-### 9. Notification Service
+### 10. Notification Service
 
-### 8. API Gateway
+### 11. Search Service
+
+### 12. API Gateway
 
 ## Data Flow
