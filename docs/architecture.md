@@ -35,6 +35,10 @@ The backend follows a microservice architecture, consisting of multiple independ
   - user profile reporting
   - maintain a reading list fo reach users
 
+Primary Database: **MySQL**
+
+- **Consideration** : need of a strong consistency of the relationship between the entities in the service domain model and need to prioritize ACID compliance.
+
 ### 3. Content Service
 
 ### 4. Topic Service
