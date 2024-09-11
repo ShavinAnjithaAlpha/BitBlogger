@@ -3,8 +3,12 @@ package org.bitmonsters.userservice.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -15,6 +19,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "USERS",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"email", "username"})},
         indexes = {@Index(name = "idx_email", columnList = "email", unique = true),
@@ -36,12 +41,16 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @Column(columnDefinition = "boolean default FALSE")
-    private Boolean display_email;
+    @Column(name = "profile_image")
+    private String profileImage;
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
+    @ColumnDefault("FALSE")
+    private Boolean displayEmail;
 
     @Pattern(regexp = "^[A-Za-z0-9+_.-]+.[A-Za-z]+$", message = "Invalid URL format")
     @Column(nullable = true)
-    private String website_url;
+    private String websiteUrl;
 
     @Column(nullable = true)
     @Embedded
@@ -55,10 +64,12 @@ public class User {
     private List<UserLink> links;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(nullable = true, insertable = false)
+    @UpdateTimestamp
+    @Column(name = "modified_at", nullable = true, insertable = false)
     private LocalDateTime modifiedAt;
 }
