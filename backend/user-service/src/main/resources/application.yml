@@ -25,3 +25,12 @@ spring:
 
 server:
   port: 9000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, prometheus
+  endpoint:
+    prometheus:
+      enabled: true
