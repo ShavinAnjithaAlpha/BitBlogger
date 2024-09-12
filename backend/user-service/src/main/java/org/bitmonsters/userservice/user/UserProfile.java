@@ -21,7 +21,7 @@ public class UserProfile {
     private String skills;
 
     @Column(length = 255)
-    private String available_for;
+    private String availableFor;
 
     @Column(length = 255)
     private String learnings;

@@ -2,6 +2,8 @@ package org.bitmonsters.userservice.user;
 
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
+
 @Service
 public class UserMapper {
 
@@ -24,7 +26,16 @@ public class UserMapper {
                 .profileImage(user.getProfileImage())
                 .location(user.getLocation())
                 .profile(user.getUserProfile())
+                .links(user.getLinks().stream().map(this::toUserLinkResponse).collect(Collectors.toList()))
                 .createdAt(user.getCreatedAt())
+                .build();
+    }
+
+    private UserLinkResponse toUserLinkResponse(UserLink userLink) {
+        return UserLinkResponse.builder()
+                .platform(userLink.getPlatform().getName())
+                .url(userLink.getUrl())
+                .custom(userLink.getCustom())
                 .build();
     }
 }

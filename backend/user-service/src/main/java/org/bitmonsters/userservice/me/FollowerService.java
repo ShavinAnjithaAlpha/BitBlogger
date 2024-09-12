@@ -2,8 +2,11 @@ package org.bitmonsters.userservice.me;
 
 import lombok.RequiredArgsConstructor;
 import org.bitmonsters.userservice.exception.UserNotFoundException;
+import org.bitmonsters.userservice.user.Follower;
 import org.bitmonsters.userservice.user.User;
 import org.bitmonsters.userservice.user.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -35,4 +38,21 @@ public class FollowerService {
     }
 
 
+    public Page<?> getFollowedUsers(Long userId, Pageable page, Boolean detailed) {
+        var followers = repository.findAllByFollower(
+                User.builder().id(userId).build(), page
+        );
+
+        if (detailed) return followers.map(mapper::toDetailedFollowerResponse);
+        return followers.map(mapper::toFollowerResponse);
+    }
+
+    public Page<?> getFollowingUsers(Long userId, Pageable page, Boolean detailed) {
+        var followings =  repository.findAllByFollowing(
+                User.builder().id(userId).build(), page
+        );
+
+        if (detailed) return followings.map(mapper::toDetailedFollowingResponse);
+        return followings.map(mapper::toFollowingResponse);
+    }
 }

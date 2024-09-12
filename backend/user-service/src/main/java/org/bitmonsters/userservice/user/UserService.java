@@ -3,6 +3,7 @@ package org.bitmonsters.userservice.user;
 import lombok.RequiredArgsConstructor;
 import org.bitmonsters.userservice.exception.UserAlreadyRegisteredException;
 import org.bitmonsters.userservice.exception.UserNotFoundException;
+import org.bitmonsters.userservice.me.UserUpdateDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -58,5 +59,24 @@ public class UserService {
             throw new UserNotFoundException(String.format("user with user id  %d is not found", userId));
         }
         repository.deleteById(userId);
+    }
+
+    public void updateUser(UserUpdateDto userUpdateDto) {
+        var user = repository.findById(userUpdateDto.id()).orElse(null);
+
+        if (user == null) {
+            throw new UserNotFoundException(String.format("user with user id %d is not found", userUpdateDto.id()));
+        }
+
+        // update the user object with relevant fields
+        user.setUsername(userUpdateDto.username());
+        user.setEmail(userUpdateDto.email());
+        user.setName(userUpdateDto.name());
+        user.setProfileImage(userUpdateDto.profileImage());
+        user.setWebsiteUrl(userUpdateDto.websiteUrl());
+        user.setUserProfile(userUpdateDto.profile());
+        user.setLocation(userUpdateDto.location());
+
+        repository.save(user);
     }
 }
