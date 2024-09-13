@@ -35,11 +35,11 @@ The **User Service API** handles the user accounts and profile management functi
 - **DELETE** `/users/me/follow` - unfollow the exists user
 - **GET** `/users/me/follow` - get the followed user profiles
 - **GET** `/users/me/following` - get the followers user profiles
+- **POST** `/users/me/links/` - add a new links to the user profile
+- **PUT** `/users/me/links/{link_id}` - update the existing link in the user profile
 - **GET** `/users/me/readings` - get the reading list of the authenticated user
 - **POST** `/users/me/readings` - add a new reading to the reading list
 - **DELETE** `/users/me/readings/{id}` - remove a reading with the specified id from the reading list
-- **POST** `/users/me/links/` - add a new links to the user profile
-- **PUT** `/users/me/links/{link_id}` - update the existing link in the user profile
 - **POST** `/users/me/interests/` - add interests to the user profile
 - **DELETE** `/users/me/intrests/{id}` - remove a interests from the user profile
 - **PUT** `/users/me/email/display` - set the profile email as public or private
