@@ -17,7 +17,7 @@ public class UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
 
-    public Long createUser(UserRegisterDto userRegisterDto) {
+    public IdResponse createUser(UserRegisterDto userRegisterDto) {
 
         // check whether username or email is already registered
         if (isUserExists(userRegisterDto.username(), userRegisterDto.email())) {
@@ -28,7 +28,10 @@ public class UserService {
         User user = repository.save(
                 mapper.toUser(userRegisterDto)
         );
-        return user.getId();
+        return new IdResponse(
+                user.getId(),
+                "user registered successfully"
+        );
     }
 
     public boolean isUserExists(String username, String email) {
@@ -61,11 +64,19 @@ public class UserService {
         repository.deleteById(userId);
     }
 
-    public void updateUser(UserUpdateDto userUpdateDto) {
-        var user = repository.findById(userUpdateDto.id()).orElse(null);
+    public void updateUser(Long userId, UserUpdateDto userUpdateDto) {
+        var user = repository.findById(userId).orElse(null);
 
         if (user == null) {
-            throw new UserNotFoundException(String.format("user with user id %d is not found", userUpdateDto.id()));
+            throw new UserNotFoundException(String.format("user with id %d is not found", userId));
+        }
+
+        // check whether if there are any user with new username or email
+        if (isUserExists(userUpdateDto.username(), userUpdateDto.email())
+                && !repository.findByUsernameOrEmail(userUpdateDto.username(), userUpdateDto.email())
+                            .orElse(User.builder().build()).equals(user)) {
+            throw new UserAlreadyRegisteredException(String.format("user with username %s or email %s is already exists",
+                    userUpdateDto.username(), userUpdateDto.email()));
         }
 
         // update the user object with relevant fields

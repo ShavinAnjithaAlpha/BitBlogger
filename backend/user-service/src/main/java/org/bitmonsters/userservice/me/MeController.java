@@ -6,6 +6,7 @@ import org.bitmonsters.userservice.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,30 +23,30 @@ public class MeController {
     }
 
     @PutMapping
-    public ResponseEntity<String> updateAuthenticatedUser(@RequestHeader(name = "userId") Long userId,
-                                                          @RequestBody UserUpdateDto userUpdateDto) {
-        userService.updateUser(userUpdateDto);
-        return ResponseEntity.ok("profile updated successfully");
+    public ResponseEntity<MessageResponse> updateAuthenticatedUser(@RequestHeader(name = "userId") Long userId,
+                                                         @Validated @RequestBody UserUpdateDto userUpdateDto) {
+        userService.updateUser(userId, userUpdateDto);
+        return ResponseEntity.ok(new MessageResponse("profile updated successfully"));
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteAuthenticatedUSer(@RequestHeader(name = "userId") Long userId) {
+    public ResponseEntity<MessageResponse> deleteAuthenticatedUSer(@RequestHeader(name = "userId") Long userId) {
         userService.deleteUser(userId);
-        return ResponseEntity.ok("user deleted successfully");
+        return ResponseEntity.ok(new MessageResponse("user deleted successfully"));
     }
 
     @PostMapping("/follow")
-    public ResponseEntity<String> followUser(@RequestHeader(name = "userId") Long userId,
+    public ResponseEntity<MessageResponse> followUser(@RequestHeader(name = "userId") Long userId,
                                              @RequestBody UserFollowDto userFollowDto) {
         followerService.createFollower(userId, userFollowDto.followerId());
-        return ResponseEntity.ok("follower added successfully");
+        return ResponseEntity.ok(new MessageResponse("follower added successfully"));
     }
 
     @DeleteMapping("/follow")
-    public ResponseEntity<String> unfollowUser(@RequestHeader(name = "userId") Long userId,
+    public ResponseEntity<MessageResponse> unfollowUser(@RequestHeader(name = "userId") Long userId,
                                                @RequestBody UserFollowDto userFollowDto) {
         followerService.unfollowUser(userId, userFollowDto.followerId());
-        return ResponseEntity.ok("unfollow the user successfully");
+        return ResponseEntity.ok(new MessageResponse("unfollow the user successfully"));
     }
 
     @GetMapping("/follow")

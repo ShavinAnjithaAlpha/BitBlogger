@@ -1,5 +1,6 @@
 package org.bitmonsters.userservice.handler;
 
+import org.bitmonsters.userservice.exception.FollowException;
 import org.bitmonsters.userservice.exception.UserAlreadyRegisteredException;
 import org.bitmonsters.userservice.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserAlreadyRegisteredException.class)
     public ResponseEntity<ExceptionResponse> handleUSerAlreadyRegisteredException(UserAlreadyRegisteredException exception) {
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.CONFLICT)
                 .body(new ExceptionResponse(exception.getMessage()));
     }
 
@@ -40,6 +41,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleUserNotFoundException(UserNotFoundException exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(FollowException.class)
+    public ResponseEntity<ExceptionResponse> handleFollowException(FollowException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ExceptionResponse(exception.getMessage()));
     }
 

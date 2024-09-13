@@ -17,11 +17,11 @@ public class UserController {
     private final UserService service;
 
     @PostMapping
-    public ResponseEntity<Long> registerUser(
+    public ResponseEntity<IdResponse> registerUser(
             @Validated @RequestBody UserRegisterDto userRegisterDto
     ) {
-        Long userId = service.createUser(userRegisterDto);
-        return ResponseEntity.ok(userId);
+        IdResponse response = service.createUser(userRegisterDto);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping
