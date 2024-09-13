@@ -1,0 +1,1 @@
+ALTER TABLE user_links MODIFY modified_at DATETIME NULL;

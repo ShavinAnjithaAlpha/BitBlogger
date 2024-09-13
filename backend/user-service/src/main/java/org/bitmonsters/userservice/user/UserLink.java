@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -31,16 +33,18 @@ public class UserLink {
     @JoinColumn(name = "platform", nullable = false)
     private Platform platform;
 
-    @Pattern(regexp = "^[A-Za-z0-9+_.-]+.[A-Za-z]+$", message = "Invalid URL format")
+    @Pattern(regexp = "^[A-Za-z0-9+_.-:/]+.[A-Za-z]+$", message = "Invalid URL format")
     private String url;
 
     private Boolean custom;
 
     @CreatedDate
+    @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @UpdateTimestamp
     @Column(nullable = true, insertable = false)
     private LocalDateTime modifiedAt;
 }

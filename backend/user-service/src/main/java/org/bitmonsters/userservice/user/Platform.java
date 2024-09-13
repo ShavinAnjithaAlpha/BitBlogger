@@ -21,7 +21,7 @@ public class Platform {
 
     private String name;
 
-    @Pattern(regexp = "^[A-Za-z0-9+_.-]+.[A-Za-z]+$", message = "Invalid URL format")
+    @Pattern(regexp = "^[A-Za-z0-9+_.-:/]+.[A-Za-z]+$", message = "Invalid URL format")
     private String baseUrl;
 
     @Column(length = 250)

@@ -1,8 +1,6 @@
 package org.bitmonsters.userservice.handler;
 
-import org.bitmonsters.userservice.exception.FollowException;
-import org.bitmonsters.userservice.exception.UserAlreadyRegisteredException;
-import org.bitmonsters.userservice.exception.UserNotFoundException;
+import org.bitmonsters.userservice.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -46,7 +44,22 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(FollowException.class)
     public ResponseEntity<ExceptionResponse> handleFollowException(FollowException exception) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(UserLinkException.class)
+    public ResponseEntity<ExceptionResponse> handleUserLinkExceptions(UserLinkException exception) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(ReadingException.class)
+    public ResponseEntity<ExceptionResponse> handleReadingException(ReadingException exception) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
                 .body(new ExceptionResponse(exception.getMessage()));
     }
 
