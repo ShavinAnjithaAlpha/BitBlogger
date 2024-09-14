@@ -41,7 +41,8 @@ The **User Service API** handles the user accounts and profile management functi
 - **POST** `/users/me/readings` - add a new reading to the reading list
 - **DELETE** `/users/me/readings/{id}` - remove a reading with the specified id from the reading list
 - **POST** `/users/me/interests/` - add interests to the user profile
-- **DELETE** `/users/me/intrests/{id}` - remove a interests from the user profile
+- **GET** `/users/me/interests` - get the interests of the user profile
+- **DELETE** `/users/me/intrests/{tagId}` - remove a interests from the user profile
 - **PUT** `/users/me/email/display` - set the profile email as public or private
 - **POST** `/users/me/reports` - report a user profile
 - **GET** `/users/links/platforms` - get the list of all the platform listed in the system

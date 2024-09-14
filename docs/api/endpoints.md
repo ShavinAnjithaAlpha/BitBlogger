@@ -21,6 +21,20 @@ This documents provides the detailed information about the availabale REST API e
     - [8. **DELETE** `api/v1/users/me/follow`](#8-delete-apiv1usersmefollow)
     - [9. **GET** `api/v1/users/me/follow`](#9-get-apiv1usersmefollow)
     - [10. **GET** `api/v1/users/me/following`](#10-get-apiv1usersmefollowing)
+    - [11. **POST** `api/v1/users/me/links/`](#11-post-apiv1usersmelinks)
+    - [12. **PUT** `api/v1/users/me/links/{link_id}`](#12-put-apiv1usersmelinkslink_id)
+    - [13. **GET** `api/v1/users/me/readings`](#13-get-apiv1usersmereadings)
+    - [14. **POST** `api/v1/users/me/readings`](#14-post-apiv1usersmereadings)
+    - [15. `DELETE` `api/v1/users/me/readings/{id}`](#15-delete-apiv1usersmereadingsid)
+    - [16. **POST** `api/v1/users/me/interests/`](#16-post-apiv1usersmeinterests)
+    - [17. **GET** `api/v1/users/me/interests`](#17-get-apiv1usersmeinterests)
+    - [18. **DELETE** `api/v1/users/me/intrests/{tagId}`](#18-delete-apiv1usersmeintreststagid)
+    - [19. **PUT** `api/v1/users/me/email/display`](#19-put-apiv1usersmeemaildisplay)
+    - [20. **POST** `api/v1/users/me/reports`](#20-post-apiv1usersmereports)
+    - [21. **GET** `api/v1/users/links/platforms`](#21-get-apiv1userslinksplatforms)
+    - [22. **POST** `api/v1/users/links/platforms`](#22-post-apiv1userslinksplatforms)
+    - [23. **GET** `api/v1/users/reports`](#23-get-apiv1usersreports)
+    - [24. **GET** `api/v1/users/reports/{profile_id}`](#24-get-apiv1usersreportsprofile_id)
 
 ## Authentication Service
 
@@ -464,6 +478,7 @@ This documents provides the detailed information about the availabale REST API e
   - `detailed`: include detailed information
 - **Response**:
   (detailed=0)
+
   ```json
   {
     "content": [
@@ -504,7 +519,9 @@ This documents provides the detailed information about the availabale REST API e
     "empty": false
   }
   ```
+
   (detailed=1)
+
   ```json
   {
       "content": [
@@ -548,3 +565,384 @@ This documents provides the detailed information about the availabale REST API e
       "empty": false
   }
   ```
+
+  ### 11. **POST** `api/v1/users/me/links/`
+
+**Description**: Add a new links to the user profile (MAXIMUM LINK COUNT = 10)
+
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Request**:
+
+  ```json
+  {
+    "platformId": 1,
+    "url": "url",
+    "custom": 0
+  }
+  ```
+
+- **Response**:
+
+  ```json
+  {
+    "id": 1,
+    "message": "user link created successfully"
+  }
+  ```
+
+- **Error Codes**:
+
+  - `400 Bad Request`: Invalid Parameters
+
+    ```json
+    {
+      "error": "link with platform id {platformId} is already associated with user with id {userId}"
+    }
+    ```
+
+    Invalid platform id
+
+    ```json
+    {
+      "error": "invalid platform id {platformId}"
+    }
+    ```
+
+    Maximum links count reached
+
+    ```json
+    {
+      "error": "user has exceeded the maximum link count"
+    }
+    ```
+
+  - `500 Internal Server Error`: Server Error
+
+### 12. **PUT** `api/v1/users/me/links/{link_id}`
+
+**Description**: Update the existing link in the user profile
+
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Request**:
+
+  ```json
+  {
+    "url": "url",
+    "custom": 0
+  }
+  ```
+
+- **Response**:
+
+  ```json
+  {
+    "message": "user link updated successfully"
+  }
+  ```
+
+- **Error Codes**:
+
+  - `400 Bad Request`: link not exists
+
+    ```json
+    {
+      "error": "user's link with id {linkId} of the user with id {userId} is not exists"
+    }
+    ```
+
+    Invalid link Id with user Id
+
+    ```json
+    {
+      "error": "link with id {linkId} is not belongs to user with id {userId}"
+    }
+    ```
+
+  - `500 Internal Server Error`: Server Error
+
+### 13. **GET** `api/v1/users/me/readings`
+
+**Description**: Get the reading list of the authenticated user
+
+- **Request Headers**:
+  - `Authorization`: Bearer token
+- **Request Parameters**:
+  - `page`: page number
+  - `size`: number of items per page
+  - `sort`: sort by field
+  - `direction`: sort direction
+- **Response**:
+  ```json
+  {
+    "content": [
+      {
+        "id": 1,
+        "postId": 1,
+        "note": "note"
+      }, ...
+    ],
+    "pageable": {
+      "pageNumber": 0,
+      "pageSize": 20,
+      "sort": {
+        "empty": true,
+        "sorted": false,
+        "unsorted": true
+      },
+      "offset": 0,
+      "paged": true,
+      "unpaged": false
+    },
+    "last": true,
+    "totalElements": 2,
+    "totalPages": 1,
+    "size": 20,
+    "number": 0,
+    "sort": {
+      "empty": true,
+      "sorted": false,
+      "unsorted": true
+    },
+    "numberOfElements": 2,
+    "first": true,
+    "empty": false
+  }
+  ```
+
+### 14. **POST** `api/v1/users/me/readings`
+
+**Description**: Add a new reading to the reading list
+
+- **Request Headers**:
+  - `Authorization`: Bearer token
+- **Request**:
+
+  ```json
+  {
+    "postId": 1,
+    "note": "note"
+  }
+  ```
+
+- **Response**:
+
+  ```json
+  {
+    "id": 1,
+    "message": "reading added successfully"
+  }
+  ```
+
+- **Error Codes**:
+
+  - `400 Bad Request`: Invalid Parameters
+
+    ```json
+    {
+      "errors": {
+        "note": "description cannot exceed 512 characters"
+      }
+    }
+    ```
+
+    Reading already exists
+
+    ```json
+    {
+      "error": "reading with post id {postId} of the user with id {userId} is already exists"
+    }
+    ```
+
+  - `500 Internal Server Error`: Server Error
+
+### 15. `DELETE` `api/v1/users/me/readings/{id}`
+
+**Description**: Remove a reading with the specified id from the reading list
+
+- **Request Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+
+  ```json
+  {
+    "message": "reading removed successfully"
+  }
+  ```
+
+- **Error Codes**:
+  - `400 Bad Request`: Reading is not belong to authenticated user
+    ```json
+    {
+      "error": "reading with id {readingId} is not correspond to user with id {userId}"
+    }
+    ```
+  - `500 Internal Server Error`: Server Error
+
+### 16. **POST** `api/v1/users/me/interests/`
+
+**Description**: Add interests to the user profile
+
+- **Request Headers**:
+  - `Authorization`: Bearer token
+- **Request**:
+
+  ```json
+  {
+    "tagId": 1
+  }
+  ```
+
+- **Response**:
+
+  ```json
+  {
+    "id": 1,
+    "message": "interest added successfully"
+  }
+  ```
+
+- **Error Codes**:
+
+  - `409 Conflict`: Invalid Parameters
+
+    ```json
+    {
+      "errors": {
+        "tagId": "tag id is required"
+      }
+    }
+    ```
+
+    Interest already exists
+
+    ```json
+    {
+      "error": "interest with tag id {tagId} already exists in the user {userId}"
+    }
+    ```
+
+  - `500 Internal Server Error`: Server Error
+
+### 17. **GET** `api/v1/users/me/interests`
+
+**Description**: Get the interests of the user profile
+
+- **Request Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  [1, 2, 3, 4]
+  ```
+
+### 18. **DELETE** `api/v1/users/me/intrests/{tagId}`
+
+**Description**: Remove a interests from the user profile
+
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Response**:
+
+  ```json
+  {
+    "message": "interest removed successfully"
+  }
+  ```
+
+### 19. **PUT** `api/v1/users/me/email/display`
+
+**Description**: Set the profile email as public or private
+
+### 20. **POST** `api/v1/users/me/reports`
+
+**Description**: Report a user profile
+
+### 21. **GET** `api/v1/users/links/platforms`
+
+**Description**: Get the list of all the platform listed in the system
+
+- **Response**:
+  ```json
+  [
+    {
+      "id": 1,
+      "name": "GitHub",
+      "baseUrl": "https://github.com",
+      "description": "platform of developers to share their codes with others"
+    },
+    {
+      "id": 2,
+      "name": "Dev",
+      "baseUrl": "https://dev.to",
+      "description": "technical blogging platform"
+    }
+  ]
+  ```
+
+### 22. **POST** `api/v1/users/links/platforms`
+
+**Description**: Add a new platform link to the system (ADMIN ONLY)
+
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Request**:
+
+  ```json
+  {
+    "name": "GitHub",
+    "baseUrl": "https://github.com",
+    "description": "platform of developers to share their codes with others"
+  }
+  ```
+
+- **Response**:
+
+  ```json
+  {
+    "id": 1,
+    "message": "platform added to the system successfully"
+  }
+  ```
+
+- **Error Codes**:
+
+  - `409 Conflict`: Platform already exists
+
+    ```json
+    {
+      "error": "platform with name {name} or base url {baseUrl} is already exists"
+    }
+    ```
+
+  - `400 Bad Request`: Invalid Parameters
+
+  ```json
+  {
+    "errors": {
+      "baseUrl": "Invalid URL format"
+    }
+  }
+  ```
+
+  - `500 Internal Server Error`: Server Error
+
+### 23. **GET** `api/v1/users/reports`
+
+**Description**: Get the reports on user profiles (ADMIN ONLY)
+
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+### 24. **GET** `api/v1/users/reports/{profile_id}`
+
+**Description**: Get the reports on a specific user (ADMIN ONLY)
