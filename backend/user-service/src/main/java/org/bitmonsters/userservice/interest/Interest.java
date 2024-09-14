@@ -17,12 +17,12 @@ public class Interest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(nullable = false)
     private User user;
 
     @Column(nullable = false)
-    private Long tagId;
+    private Integer tagId;
 }

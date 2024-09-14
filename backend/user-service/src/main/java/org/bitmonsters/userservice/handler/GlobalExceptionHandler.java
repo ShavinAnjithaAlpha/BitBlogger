@@ -63,4 +63,18 @@ public class GlobalExceptionHandler {
                 .body(new ExceptionResponse(exception.getMessage()));
     }
 
+    @ExceptionHandler(UserInterestException.class)
+    public ResponseEntity<ExceptionResponse> handleUserInterestException(UserInterestException exception) {
+        return ResponseEntity
+                .status(exception.getHttpStatus())
+                .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(UserPlatformException.class)
+    public ResponseEntity<ExceptionResponse> handleUserPlatformException(UserPlatformException exception) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new ExceptionResponse(exception.getMessage()));
+    }
+
 }

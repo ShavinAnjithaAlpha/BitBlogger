@@ -1,6 +1,7 @@
 package org.bitmonsters.userservice.platform;
 
 import lombok.RequiredArgsConstructor;
+import org.bitmonsters.userservice.exception.UserPlatformException;
 import org.bitmonsters.userservice.user.Platform;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,13 @@ public class PlatformService {
     private final PlatformMapper mapper;
 
     public Platform registerNewPlatform(NewPlatformDto newPlatformDto) {
+        // check if the platform already exists in the system
+        if (isPlatformExists(newPlatformDto.name(), newPlatformDto.baseUrl())) {
+            throw new UserPlatformException(
+                    String.format("platform with name %s or base url %s is already exists", newPlatformDto.name(), newPlatformDto.baseUrl())
+            );
+        }
+
         return repository.save(mapper.toPlatform(newPlatformDto));
     }
 
@@ -23,6 +31,11 @@ public class PlatformService {
         return repository.findAll().stream()
                 .map(mapper::toPlatformDto)
                 .collect(Collectors.toList());
+    }
+
+    private boolean isPlatformExists(String name, String baseUrl) {
+        var platform = repository.findByNameOrBaseUrl(name, baseUrl);
+        return platform.isPresent();
     }
 
     public boolean isPlatformExists(Integer platformId) {
