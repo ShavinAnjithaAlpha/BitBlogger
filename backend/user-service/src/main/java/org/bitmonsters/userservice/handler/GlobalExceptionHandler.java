@@ -77,4 +77,11 @@ public class GlobalExceptionHandler {
                 .body(new ExceptionResponse(exception.getMessage()));
     }
 
+    @ExceptionHandler(UserReportException.class)
+    public ResponseEntity<ExceptionResponse> handleUserReportException(UserReportException exception) {
+        return ResponseEntity
+                .status(HttpStatus.ALREADY_REPORTED)
+                .body(new ExceptionResponse(exception.getMessage()));
+    }
+
 }
