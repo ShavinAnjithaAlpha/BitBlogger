@@ -43,7 +43,8 @@ The **User Service API** handles the user accounts and profile management functi
 - **POST** `/users/me/interests/` - add interests to the user profile
 - **GET** `/users/me/interests` - get the interests of the user profile
 - **DELETE** `/users/me/intrests/{tagId}` - remove a interests from the user profile
-- **PUT** `/users/me/email/display` - set the profile email as public or private
+- **PUT** `/users/me/email/display` - set the profile email as public
+- **PUT** `/users/me/email/hide` - set the profile email as private
 - **POST** `/users/me/reports` - report a user profile
 - **GET** `/users/links/platforms` - get the list of all the platform listed in the system
 - **POST** `/users/links/platforms` - add a new platform link to the system (ADMIN ONLY)

@@ -25,16 +25,17 @@ This documents provides the detailed information about the availabale REST API e
     - [12. **PUT** `api/v1/users/me/links/{link_id}`](#12-put-apiv1usersmelinkslink_id)
     - [13. **GET** `api/v1/users/me/readings`](#13-get-apiv1usersmereadings)
     - [14. **POST** `api/v1/users/me/readings`](#14-post-apiv1usersmereadings)
-    - [15. `DELETE` `api/v1/users/me/readings/{id}`](#15-delete-apiv1usersmereadingsid)
+    - [15. **DELETE** `api/v1/users/me/readings/{id}`](#15-delete-apiv1usersmereadingsid)
     - [16. **POST** `api/v1/users/me/interests/`](#16-post-apiv1usersmeinterests)
     - [17. **GET** `api/v1/users/me/interests`](#17-get-apiv1usersmeinterests)
     - [18. **DELETE** `api/v1/users/me/intrests/{tagId}`](#18-delete-apiv1usersmeintreststagid)
     - [19. **PUT** `api/v1/users/me/email/display`](#19-put-apiv1usersmeemaildisplay)
-    - [20. **POST** `api/v1/users/me/reports`](#20-post-apiv1usersmereports)
-    - [21. **GET** `api/v1/users/links/platforms`](#21-get-apiv1userslinksplatforms)
-    - [22. **POST** `api/v1/users/links/platforms`](#22-post-apiv1userslinksplatforms)
-    - [23. **GET** `api/v1/users/reports`](#23-get-apiv1usersreports)
-    - [24. **GET** `api/v1/users/reports/{profile_id}`](#24-get-apiv1usersreportsprofile_id)
+    - [20. **POST** `api/v1/users/me/email/hide`](#20-post-apiv1usersmeemailhide)
+    - [21. **POST** `api/v1/users/me/reports`](#21-post-apiv1usersmereports)
+    - [22. **GET** `api/v1/users/links/platforms`](#22-get-apiv1userslinksplatforms)
+    - [23. **POST** `api/v1/users/links/platforms`](#23-post-apiv1userslinksplatforms)
+    - [24. **GET** `api/v1/users/reports`](#24-get-apiv1usersreports)
+    - [25. **GET** `api/v1/users/reports/{profile_id}`](#25-get-apiv1usersreportsprofile_id)
 
 ## Authentication Service
 
@@ -761,7 +762,7 @@ This documents provides the detailed information about the availabale REST API e
 
   - `500 Internal Server Error`: Server Error
 
-### 15. `DELETE` `api/v1/users/me/readings/{id}`
+### 15. **DELETE** `api/v1/users/me/readings/{id}`
 
 **Description**: Remove a reading with the specified id from the reading list
 
@@ -858,13 +859,86 @@ This documents provides the detailed information about the availabale REST API e
 
 ### 19. **PUT** `api/v1/users/me/email/display`
 
-**Description**: Set the profile email as public or private
+**Description**: Set the profile email as public
 
-### 20. **POST** `api/v1/users/me/reports`
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Response**:
+
+  ```json
+  {
+    "message": "email set as public"
+  }
+  ```
+
+### 20. **POST** `api/v1/users/me/email/hide`
+
+**Description**: Set the profile email as private
+
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Response**:
+
+  ```json
+  {
+    "message": "email set as private"
+  }
+  ```
+
+### 21. **POST** `api/v1/users/me/reports`
 
 **Description**: Report a user profile
 
-### 21. **GET** `api/v1/users/links/platforms`
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Request**:
+
+  ```json
+  {
+    "userId": 1,
+    "reason": "REASON",
+    "note": "note"
+  }
+  ```
+
+- **Response**:
+
+  ```json
+  {
+    "id": 1,
+    "message": "user reported successfully"
+  }
+  ```
+
+- **Error Codes**:
+
+  - `400 Bad Request`: Invalid Parameters
+
+    ```json
+    {
+      "errors": {
+        "userId": "user id is required"
+      }
+    }
+    ```
+
+    User already reported
+
+    ```json
+    {
+      "error": "user with id {userId} is already reported"
+    }
+    ```
+
+  - `500 Internal Server Error`: Server Error
+
+### 22. **GET** `api/v1/users/links/platforms`
 
 **Description**: Get the list of all the platform listed in the system
 
@@ -886,7 +960,7 @@ This documents provides the detailed information about the availabale REST API e
   ]
   ```
 
-### 22. **POST** `api/v1/users/links/platforms`
+### 23. **POST** `api/v1/users/links/platforms`
 
 **Description**: Add a new platform link to the system (ADMIN ONLY)
 
@@ -935,7 +1009,7 @@ This documents provides the detailed information about the availabale REST API e
 
   - `500 Internal Server Error`: Server Error
 
-### 23. **GET** `api/v1/users/reports`
+### 24. **GET** `api/v1/users/reports`
 
 **Description**: Get the reports on user profiles (ADMIN ONLY)
 
@@ -943,6 +1017,116 @@ This documents provides the detailed information about the availabale REST API e
 
   - `Authorization`: Bearer token
 
-### 24. **GET** `api/v1/users/reports/{profile_id}`
+- **Response**
+  ```json
+  {
+    "content": [
+        {
+            "id": 1,
+            "user": {
+                "id": 6,
+                "name": "name",
+                "username": "username",
+                "email": "email",
+                "profileImage": "profileImage"
+            },
+            "reporter": {
+                "id": 2,
+                "name": "name",
+                "username": "username",
+                "email": "email",
+                "profileImage": "profileImage"
+            },
+            "reason": "REASON",
+            "note": "note",
+            "createdAt": "2024-09-15T16:50:30"
+        }, ...
+    ],
+    "pageable": {
+        "pageNumber": 0,
+        "pageSize": 20,
+        "sort": {
+            "empty": true,
+            "sorted": false,
+            "unsorted": true
+        },
+        "offset": 0,
+        "paged": true,
+        "unpaged": false
+    },
+    "last": true,
+    "totalPages": 1,
+    "totalElements": 2,
+    "size": 20,
+    "number": 0,
+    "sort": {
+        "empty": true,
+        "sorted": false,
+        "unsorted": true
+    },
+    "numberOfElements": 2,
+    "first": true,
+    "empty": false
+  }
+  ```
+
+### 25. **GET** `api/v1/users/reports/{profile_id}`
 
 **Description**: Get the reports on a specific user (ADMIN ONLY)
+
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Response**:
+  ```json
+  {
+    "content": [
+        {
+            "id": 1,
+            "user": {
+                "id": 6,
+                "name": "name",
+                "username": "username",
+                "email": "email",
+                "profileImage": "profileImage"
+            },
+            "reporter": {
+                "id": 2,
+                "name": "name",
+                "username": "username",
+                "email": "email",
+                "profileImage": "profileImage"
+            },
+            "reason": "REASON",
+            "note": "note",
+            "createdAt": "2024-09-15T16:50:30"
+        }, ...
+    ],
+    "pageable": {
+        "pageNumber": 0,
+        "pageSize": 20,
+        "sort": {
+            "empty": true,
+            "sorted": false,
+            "unsorted": true
+        },
+        "offset": 0,
+        "paged": true,
+        "unpaged": false
+    },
+    "last": true,
+    "totalPages": 1,
+    "totalElements": 2,
+    "size": 20,
+    "number": 0,
+    "sort": {
+        "empty": true,
+        "sorted": false,
+        "unsorted": true
+    },
+    "numberOfElements": 2,
+    "first": true,
+    "empty": false
+  }
+  ```
