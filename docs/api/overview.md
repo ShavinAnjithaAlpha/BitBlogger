@@ -10,6 +10,7 @@ This odcument provides an overview of the available API of the eahc microservice
 
 - [Authentication Service API](#authentication-service)
 - [User Service API](#user-service-api)
+- [Like Service API](#like-service-api)
 
 ## Authentication Service
 
@@ -50,5 +51,22 @@ The **User Service API** handles the user accounts and profile management functi
 - **POST** `/users/links/platforms` - add a new platform link to the system (ADMIN ONLY)
 - **GET** `/users/reports` - get the reports on user profiles (ADMIN ONLY)
 - **GET** `/users/reports/{profile_id}` - get the reports on a specific user (ADMIN ONLY)
+
+## Like Service API
+
+### Overview
+
+The **Like Service API** handles the like functionalities like liking a post, unliking a post, getting the likes of a post etc.
+
+### Endpoints
+
+- **POST** `/likes/{postId}` - like a post
+- **DELETE** `/likes/{postId}` - unlike a post
+- **GET** `/likes/{postId}` - get the likes of a post
+- **GET** `/likes/me` - get the likes of the authenticated user
+- **GET** `/likes/me/{postId}` - check if the authenticated user liked the post
+- **GET** `/likes/me/count` - get the total number of likes of the authenticated user
+- **GET** `/likes/count/{postId}` - get the total number of likes of the post
+- **GET** `/likes/count` - get the total number of likes in the system (ADMIN ONLY)
 
 ## Conclusion
