@@ -1,0 +1,21 @@
+services:
+
+  cassandra:
+    container_name: cassandra_db
+    image: cassandra
+    environment:
+      - CASSANDRA_CLUSTER_NAME=BitBloggerLikesCluster
+      - CASSANDRA_NUM_TOKENS=256
+      - CASSANDRA_START_RPC=true
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+    ports:
+      - 9042:9042
+    volumes:
+      - ./data:/var/lib/cassandra
+    networks:
+      - bit-blogger-network
+
+
+networks:
+  bit-blogger-network:
+    driver: bridge
