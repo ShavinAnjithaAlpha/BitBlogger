@@ -14,4 +14,6 @@ public interface LikeByUserAndStatusRepository extends CassandraRepository<LikeB
     void deleteByKeyUserIdAndKeyLikeStatusAndKeyPostId(Long userId, Integer likeStatus, Long postId);
 
     Slice<LikeByUserAndStatus> findAllByKeyUserId(Long userId, CassandraPageRequest cassandraPageRequest);
+
+    Long countAllByKeyUserIdAndKeyLikeStatus(Long userId, Integer likeStatus);
 }

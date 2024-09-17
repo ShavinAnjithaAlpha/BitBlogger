@@ -2,6 +2,7 @@ package org.bitmonsters.likeservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.bitmonsters.likeservice.dto.CassandraPage;
+import org.bitmonsters.likeservice.dto.LikeCountDto;
 import org.bitmonsters.likeservice.dto.PostLikeDto;
 import org.bitmonsters.likeservice.dto.UserLikeDto;
 import org.bitmonsters.likeservice.model.LikeStatus;
@@ -56,8 +57,36 @@ public class LikesController {
         return service.likesOfUser(userId, likeType, page);
     }
 
+    @GetMapping("/me/{postId}")
+    public ResponseEntity<?> checkLikeOfUserOnPost(
+            @PathVariable("postId") Long postId,
+            @RequestHeader("userId") Long userId
+    ) {
+        var like = service.findLikeByPostAndUser(postId, userId);
+        if (like.isPresent()) {
+            return ResponseEntity.ok(like.get().getLikeStatus());
+        } else {
+            return ResponseEntity.ok(false);
+        }
+    }
 
+    @GetMapping("/me/count")
+    public LikeCountDto getLikeCountOfAuthenticatedUser(
+            @RequestHeader("userId") Long userId
+    ) {
+        return service.findLikeCountOfUser(userId);
+    }
 
+    @GetMapping("/count/{postId}")
+    public LikeCountDto getLikeCountOfPost(
+            @PathVariable("postId") Long postId
+    ) {
+        return service.findLikeCountOfPost(postId);
+    }
 
+    @GetMapping("/global/count")
+    public LikeCountDto countAll() {
+        return service.countAll();
+    }
 
 }
