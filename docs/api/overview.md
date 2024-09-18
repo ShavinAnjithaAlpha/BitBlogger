@@ -69,4 +69,12 @@ The **Like Service API** handles the like functionalities like liking a post, un
 - **GET** `/likes/count/{postId}` - get the total number of likes of the post
 - **GET** `/likes/count` - get the total number of likes in the system (ADMIN ONLY)
 
+### Topic Service API
+
+### Overview
+
+The **Topic Service API** handles the topic functionalities like creating a new topic, updating a topic, deleting a topic, getting the topics, sub topics and parent topics etc.
+
+### Endpoints
+
 ## Conclusion

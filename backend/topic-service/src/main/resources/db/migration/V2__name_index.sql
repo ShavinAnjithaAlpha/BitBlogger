@@ -1,0 +1,1 @@
+CREATE INDEX topic_name_index ON topics(name);
