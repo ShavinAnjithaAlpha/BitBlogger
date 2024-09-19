@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/backend/like-service/pom.xml" />
         <option value="$PROJECT_DIR$/backend/topic-service/pom.xml" />
         <option value="$PROJECT_DIR$/backend/config-server/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/discovery-server/pom.xml" />
       </list>
     </option>
   </component>

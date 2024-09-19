@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="config-server" />
         <module name="user-service" />
+        <module name="discovery-server" />
         <module name="topic-service" />
         <module name="like-service" />
       </profile>
@@ -17,6 +18,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="config-server" options="-parameters" />
+      <module name="discovery-server" options="-parameters" />
       <module name="like-service" options="-parameters" />
       <module name="topic-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
