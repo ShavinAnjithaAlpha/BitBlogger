@@ -85,5 +85,3 @@ The **Topic Service API** handles the topic functionalities like creating a new 
 - **GET** `/topics/{topicId}/subtopics` - get the sub topics of the specified topic
 - **GET** `/topics/{topicId}/parent` - get the parent topic of the specified topic
 - **GET** `/topics/history/{topicId}` - get the history of the specified topic (ADMIN ONLY)
-
-## Conclusion
