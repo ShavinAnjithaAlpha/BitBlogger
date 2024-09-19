@@ -1,0 +1,17 @@
+spring:
+  cassandra:
+    schema-action: create_if_not_exists
+    connection:
+      connect-timeout: 10s
+      init-query-timeout: 10s
+    request:
+      timeout: 10s
+    local-datacenter: dc1
+    keyspace-name: likes_space
+    contact-points: 127.0.0.1
+    port: 9042
+    username: cassandra
+    password: cassandra
+
+server:
+  port: 9001
