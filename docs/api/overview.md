@@ -77,4 +77,13 @@ The **Topic Service API** handles the topic functionalities like creating a new 
 
 ### Endpoints
 
+- **POST** `/topics` - add new topic (ADMIN ONLY)
+- **PUT** `/topics/{topicId}` - update the topic (ADMIN ONLY)
+- **DELETE** `/topics/{topicId}` - delete the topic (ADMIN ONLY)
+- **GET** `/topics` - get all the topics
+- **GET** `/topics/{topicId}` - get the topic with the specified id
+- **GET** `/topics/{topicId}/subtopics` - get the sub topics of the specified topic
+- **GET** `/topics/{topicId}/parent` - get the parent topic of the specified topic
+- **GET** `/topics/history/{topicId}` - get the history of the specified topic (ADMIN ONLY)
+
 ## Conclusion
