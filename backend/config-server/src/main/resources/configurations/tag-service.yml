@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/bitblog_tags
+    username: bitblogger
+    password: bitmonsters
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+  flyway:
+    url: jdbc:mysql://localhost:3306/bitblog_tags
+    user: bitblogger
+    password: bitmonsters
+    baseline-on-migrate: true
+    baseline-description: "init"
+    baseline-version: 1
+    enabled: true
+
+server:
+  port: 9003

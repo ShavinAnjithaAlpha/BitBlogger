@@ -10,6 +10,7 @@
         <module name="config-server" />
         <module name="user-service" />
         <module name="discovery-server" />
+        <module name="tag-service" />
         <module name="topic-service" />
         <module name="like-service" />
       </profile>
@@ -20,6 +21,7 @@
       <module name="config-server" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="like-service" options="-parameters" />
+      <module name="tag-service" options="-parameters" />
       <module name="topic-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
