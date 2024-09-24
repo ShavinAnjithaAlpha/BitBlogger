@@ -26,7 +26,7 @@ public class Tag {
     @Column(name = "description", length = 1024, nullable = false)
     private String description;
 
-    @Column(name = "icon", length = 1024)
+    @Column(name = "icon", length = 1024, nullable = true)
     private String icon;
 
     @Column(name = "post_count", nullable = false)

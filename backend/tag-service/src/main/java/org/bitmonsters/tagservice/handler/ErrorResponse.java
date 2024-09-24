@@ -1,4 +1,4 @@
-package org.bitmonsters.topicservice.handler;
+package org.bitmonsters.tagservice.handler;
 
 import java.util.Map;
 

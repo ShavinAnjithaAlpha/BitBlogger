@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS tags(
     id INT UNIQUE PRIMARY KEY AUTO_INCREMENT NOT NULL,
     name VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
-    icon VARCHAR(1024) NOT NULL,
+    icon VARCHAR(1024) NULL,
     post_count BIGINT NOT NULL DEFAULT 0
 );
 
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS tag_history(
     tag_id INT NOT NULL,
     name VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
-    icon VARCHAR(1024) NOT NULL,
+    icon VARCHAR(1024) NULL,
     action VARCHAR(100) NOT NULL,
     changed_by BIGINT NOT NULL,
     changed_at DATETIME NOT NULL,
