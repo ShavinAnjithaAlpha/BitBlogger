@@ -1,6 +1,7 @@
 package org.bitmonsters.tagservice.dto;
 
 import lombok.Builder;
+import org.bitmonsters.tagservice.client.feign.UserResponse;
 import org.bitmonsters.tagservice.model.TagAction;
 
 import java.time.LocalDateTime;
@@ -11,7 +12,7 @@ public record TagHistoryRecord(
         String name,
         String description,
         String icon,
-        Long changedBy,
+        UserResponse changedBy,
         LocalDateTime changedAt,
         TagAction action
 ) {

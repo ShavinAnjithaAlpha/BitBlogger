@@ -15,6 +15,7 @@ import org.bitmonsters.userservice.user.model.User;
 import org.bitmonsters.userservice.user.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -60,12 +61,21 @@ public class UserService {
     }
 
 
+    public ResponseEntity<?> getUser(Long userId, Boolean isShort) {
+        var user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
+                String.format("user with user id %d not found", userId)
+        ));
+        if (isShort) {
+            return ResponseEntity.ok(userMapper.toShortUserResponse(user));
+        } else {
+            return ResponseEntity.ok(userMapper.toFullUserResponse(user));
+        }
+    }
+
     public UserResponse getUser(Long userId) {
-        return userMapper.toFullUserResponse(
-                userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
-                        String.format("user with user id %d is not found", userId)
-                ))
-        );
+        return userMapper.toFullUserResponse(userRepository.findById(userId).orElseThrow(
+                () -> new UserNotFoundException(String.format("user with user id %d not found", userId))
+        ));
     }
 
     public void deleteUser(Long userId) {

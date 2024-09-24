@@ -1,5 +1,8 @@
 package org.bitmonsters.tagservice.service;
 
+import lombok.RequiredArgsConstructor;
+import org.bitmonsters.tagservice.client.feign.UserClient;
+import org.bitmonsters.tagservice.client.feign.UserResponse;
 import org.bitmonsters.tagservice.dto.NewTagDto;
 import org.bitmonsters.tagservice.dto.TagDto;
 import org.bitmonsters.tagservice.dto.TagHistoryDto;
@@ -14,7 +17,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TagMapper {
+
+    private final UserClient userClient;
 
     public Tag toTag(NewTagDto newTagDto) {
         return Tag.builder()
@@ -71,12 +77,15 @@ public class TagMapper {
     }
 
     private TagHistoryRecord toTagHistoryRecord(TagHistory tagHistory) {
+
+        UserResponse user = userClient.getUserByID(tagHistory.getChangedBy(), true);
+
         return TagHistoryRecord.builder()
                 .id(tagHistory.getId())
                 .name(tagHistory.getName())
                 .description(tagHistory.getDescription())
                 .icon(tagHistory.getIcon())
-                .changedBy(tagHistory.getChangedBy())
+                .changedBy(user)
                 .changedAt(tagHistory.getChangedAt())
                 .action(tagHistory.getAction())
                 .build();

@@ -2,6 +2,7 @@ package org.bitmonsters.tagservice.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.bitmonsters.tagservice.client.feign.UserClient;
 import org.bitmonsters.tagservice.dto.*;
 import org.bitmonsters.tagservice.exception.TagNotFoundException;
 import org.bitmonsters.tagservice.exception.TooMuchTagsException;
