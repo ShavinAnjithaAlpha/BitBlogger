@@ -101,16 +101,16 @@ Also, it handles the taggings functionalities like tagging a post, untagging a p
 
 ### Endpoints
 
-| Method     | Endpoint                 | Description                                       |
-| ---------- | ------------------------ | ------------------------------------------------- |
-| **POST**   | `/tags`                  | Add new tag (ADMIN ONLY)                          |
-| **PUT**    | `/tags/{tagId}`          | Update the tag (ADMIN ONLY)                       |
-| **DELETE** | `/tags/{tagId}`          | Delete the tag (ADMIN ONLY)                       |
-| **GET**    | `/tags`                  | Get all the tags                                  |
-| **GET**    | `/tags/{tagId}`          | Get the tag with the specified id                 |
-| **POST**   | `/tags/{postId}/{tagId}` | Tag a post                                        |
-| **DELETE** | `/tags/{postId}/{tagId}` | Untag a post                                      |
-| **GET**    | `/tags/{postId}`         | Get the tags of a post                            |
-| **POST**   | `/tags/{postId}`         | Add new tags to a post                            |
-| **GET**    | `/tags/{tagId}/posts`    | Get the posts with the specified tag              |
-| **GET**    | `/tags/history/{tagId}`  | Get the history of the specified tag (ADMIN ONLY) |
+| Method     | Endpoint                       | Description                                       |
+| ---------- | ------------------------------ | ------------------------------------------------- |
+| **POST**   | `/tags`                        | Add new tag (ADMIN ONLY)                          |
+| **PUT**    | `/tags/{tagId}`                | Update the tag (ADMIN ONLY)                       |
+| **DELETE** | `/tags/{tagId}`                | Delete the tag (ADMIN ONLY)                       |
+| **GET**    | `/tags`                        | Get all the tags                                  |
+| **GET**    | `/tags/{tagId}`                | Get the tag with the specified id                 |
+| **POST**   | `/tags/posts/{postId}/{tagId}` | Tag a post                                        |
+| **DELETE** | `/tags/posts/{postId}/{tagId}` | Untag a post                                      |
+| **GET**    | `/tags/posts/{postId}`         | Get the tags of a post                            |
+| **POST**   | `/tags/posts/{postId}`         | Add new tags to a post                            |
+| **GET**    | `/tags/{tagId}/posts`          | Get the posts with the specified tag              |
+| **GET**    | `/tags/history/{tagId}`        | Get the history of the specified tag (ADMIN ONLY) |

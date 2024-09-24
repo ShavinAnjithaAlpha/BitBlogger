@@ -36,6 +36,8 @@ This documents provides the detailed information about the availabale REST API e
     - [23. **POST** `api/v1/users/links/platforms`](#23-post-apiv1userslinksplatforms)
     - [24. **GET** `api/v1/users/reports`](#24-get-apiv1usersreports)
     - [25. **GET** `api/v1/users/reports/{profile_id}`](#25-get-apiv1usersreportsprofile_id)
+  - [Topic Service](#topic-service)
+    - [1. **POST** `/api/v1/topics`](#1-post-apiv1topics)
 
 ## Authentication Service
 
@@ -1130,3 +1132,19 @@ This documents provides the detailed information about the availabale REST API e
     "empty": false
   }
   ```
+
+## Topic Service
+
+### 1. **POST** `/api/v1/topics`
+
+**Description**: Create a new topic
+
+**Request Headers**:
+
+- `Authorization`: Bearer token
+
+**Request Body**:
+
+```json
+
+```
