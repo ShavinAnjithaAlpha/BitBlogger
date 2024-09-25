@@ -71,7 +71,7 @@ The **Like Service API** handles the like functionalities like liking a post, un
 | **GET**    | `/likes/me/{postId}`    | Check if the authenticated user liked the post           |
 | **GET**    | `/likes/me/count`       | Get the total number of likes of the authenticated user  |
 | **GET**    | `/likes/count/{postId}` | Get the total number of likes of the post                |
-| **GET**    | `/likes/count`          | Get the total number of likes in the system (ADMIN ONLY) |
+| **GET**    | `/likes/global/count`   | Get the total number of likes in the system (ADMIN ONLY) |
 
 ## Topic Service API
 

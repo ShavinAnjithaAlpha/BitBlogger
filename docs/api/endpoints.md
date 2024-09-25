@@ -36,8 +36,24 @@ This documents provides the detailed information about the availabale REST API e
     - [23. **POST** `api/v1/users/links/platforms`](#23-post-apiv1userslinksplatforms)
     - [24. **GET** `api/v1/users/reports`](#24-get-apiv1usersreports)
     - [25. **GET** `api/v1/users/reports/{profile_id}`](#25-get-apiv1usersreportsprofile_id)
-  - [Topic Service](#topic-service)
+  - [Like Service API](#like-service-api)
+    - [1. **POST** `/api/v1/likes/{postId}`](#1-post-apiv1likespostid)
+    - [2. **DELETE** `/api/v1/likes/{postId}`](#2-delete-apiv1likespostid)
+    - [3. **GET** `/api/v1/likes/{postId}`](#3-get-apiv1likespostid)
+    - [4. **GET** `/aipi/v1/likes/me`](#4-get-aipiv1likesme)
+    - [5. **GET** `/api/v1/likes/me/{postId}`](#5-get-apiv1likesmepostid)
+    - [6. **GET** `/api/v1/likes/me/count`](#6-get-apiv1likesmecount)
+    - [7. **GET** `/api/v1/likes/count/{postId}`](#7-get-apiv1likescountpostid)
+    - [8. **GET** `/api/v1/likes/global/count`](#8-get-apiv1likesglobalcount)
+  - [Topic Service API](#topic-service-api)
     - [1. **POST** `/api/v1/topics`](#1-post-apiv1topics)
+    - [2. **PUT** `/api/v1/topics/{topicId}`](#2-put-apiv1topicstopicid)
+    - [3. **GET** `/api/v1/topics`](#3-get-apiv1topics)
+    - [4. **GET** `/api/v1/topics/{topicId}`](#4-get-apiv1topicstopicid)
+    - [5. **GET** `/api/v1/topics/{topicId}/parent`](#5-get-apiv1topicstopicidparent)
+    - [6. **GET** `/api/v1/topics/{topicId}/subtopics`](#6-get-apiv1topicstopicidsubtopics)
+    - [7. **GET** `/api/v1/topics/{topicId}/history`](#7-get-apiv1topicstopicidhistory)
+    - [8. **DELETE** `/api/v1/topics/{topicId}`](#8-delete-apiv1topicstopicid)
 
 ## Authentication Service
 
@@ -1133,18 +1149,454 @@ This documents provides the detailed information about the availabale REST API e
   }
   ```
 
-## Topic Service
+## Like Service API
+
+### 1. **POST** `/api/v1/likes/{postId}`
+
+**Description**: Like a post
+
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Request Body**:
+
+  ```json
+  0 // like type
+  ```
+
+- **Response**: `201 Created`
+
+### 2. **DELETE** `/api/v1/likes/{postId}`
+
+**Description**: Unlike a post
+
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Response**: `200 OK`
+
+### 3. **GET** `/api/v1/likes/{postId}`
+
+**Description**: Get the likes of the post
+
+- **Response**:
+
+  ```json
+  {
+    "count": 1,
+    "content": [
+      {
+      "userId": 1,
+      "likeStatus": 0,
+      "likedAt": "2024-09-19T23:53:54"
+      }, ...
+    ],
+    "pagingState": "pagingState",
+    "isFirst": true,
+    "isLast": true,
+    "hasNext": false,
+    "hasPrevious": false
+  }
+  ```
+
+  - `404 Not Found`: Post not found
+
+    ```json
+    {
+      "error": "post with id {postId} is not found"
+    }
+    ```
+
+    - `500 Internal Server Error`: Server Error
+
+### 4. **GET** `/aipi/v1/likes/me`
+
+**Description**: Get the likes of the authenticated user
+
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Response**:
+
+  ```json
+  {
+    "count": 1,
+    "content": [
+      {
+      "postId": 1,
+      "likeStatus": 0,
+      "likedAt": "2024-09-19T23:53:54"
+      }, ...
+    ],
+    "pagingState": "pagingState",
+    "isFirst": true,
+    "isLast": true,
+    "hasNext": false,
+    "hasPrevious": false
+  }
+  ```
+
+### 5. **GET** `/api/v1/likes/me/{postId}`
+
+**Description**: Get the like status of the authenticated user for the specified post
+
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Response**:
+
+  if user likes
+
+  ```json
+  0 // like type
+  ```
+
+  if user not likes
+
+  ```json
+  false
+  ```
+
+  - `404 Not Found`: Post not found
+
+    ```json
+    {
+      "error": "post with id {postId} is not found"
+    }
+    ```
+
+    - `500 Internal Server Error`: Server Error
+
+### 6. **GET** `/api/v1/likes/me/count`
+
+- **Description**: Get the total number of likes of the authenticated user
+
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Response**:
+
+  ```json
+  {
+    "count": {
+      "LIKE": 1,
+      "HEART": 0,
+      ...
+    }
+  }
+  ```
+
+### 7. **GET** `/api/v1/likes/count/{postId}`
+
+- **Description**: Get the total number of likes of the specified post
+
+- **Response**:
+
+  ```json
+  {
+    "count": {
+      "LIKE": 1,
+      "HEART": 0,
+      ...
+    }
+  }
+  ```
+
+  - `404 Not Found`: Post not found
+
+    ```json
+    {
+      "error": "post with id {postId} is not found"
+    }
+    ```
+
+    - `500 Internal Server Error`: Server Error
+
+### 8. **GET** `/api/v1/likes/global/count`
+
+- **Description**: Get the total number of likes of the system (ADMIN ONLY)
+
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Response**:
+
+  ```json
+  {
+    "count": {
+      "LIKE": 1,
+      "HEART": 0,
+      ...
+    }
+  }
+  ```
+
+## Topic Service API
 
 ### 1. **POST** `/api/v1/topics`
 
 **Description**: Create a new topic
 
-**Request Headers**:
+- **Request Headers**:
 
-- `Authorization`: Bearer token
+  - `Authorization`: Bearer token
 
-**Request Body**:
+- **Request Body**:
+
+  ```json
+  {
+    "name": "name",
+    "description": "decsription",
+    "parentTopicId": 1
+  }
+  ```
+
+- **Response**:
+
+  ```json
+  {
+    "id": 1
+  }
+  ```
+
+- **Error Codes**:
+
+  - `400 Bad Request`: Invalid Parameters
+
+    ```json
+    {
+      "errors": {
+        "name": "name is required"
+      }
+    }
+    ```
+
+    Topic already exists
+
+    ```json
+    {
+      "error": "topic with name {name} already exists"
+    }
+    ```
+
+  - `500 Internal Server Error`: Server Error
+
+### 2. **PUT** `/api/v1/topics/{topicId}`
+
+**Description**: Update the existing topic
+
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Request Body**:
+
+  ```json
+  {
+    "name": "name",
+    "description": "decsription",
+    "parentTopicId": 1
+  }
+  ```
+
+- **Response**: `200 OK`
+
+- **Error Codes**:
+
+  - `400 Bad Request`: Invalid Parameters
+
+    ```json
+    {
+      "errors": {
+        "name": "name is required"
+      }
+    }
+    ```
+
+    Topic not exists
+
+    ```json
+    {
+      "error": "topic with id {topicId} is not exists"
+    }
+    ```
+
+  - `500 Internal Server Error`: Server Error
+
+### 3. **GET** `/api/v1/topics`
+
+**Description**: Get the list of all topics
+
+- **Request Parameters**:
+
+  - `page`: page number
+  - `size`: number of items per page
+  - `sort`: sort by field
+  - `direction`: sort direction
+
+- **Response**:
+
+  ```json
+  {
+    "content": [
+        {
+            "id": 1,
+            "name": "name",
+            "description": "description",
+            "isParent": true,
+            "isChild": false
+        }, ...
+    ],
+    "pageable": {
+        "pageNumber": 0,
+        "pageSize": 20,
+        "sort": [],
+        "offset": 0,
+        "paged": true,
+        "unpaged": false
+    },
+    "last": true,
+    "totalPages": 1,
+    "totalElements": 4,
+    "size": 20,
+    "number": 0,
+    "sort": [],
+    "numberOfElements": 4,
+    "first": true,
+    "empty": false
+  }
+  ```
+
+### 4. **GET** `/api/v1/topics/{topicId}`
+
+**Description**: Get the topic with the specified id
+
+- **Response**:
+
+  ```json
+  {
+    "id": 1,
+    "name": "name",
+    "description": "description",
+    "isParent": true,
+    "isChild": false
+  }
+  ```
+
+- **Error Codes**:
+
+  - `404 Not Found`: Topic not found
+
+    ```json
+    {
+      "error": "topic with id {topicId} is not found"
+    }
+    ```
+
+### 5. **GET** `/api/v1/topics/{topicId}/parent`
+
+**Description**: Get the parent topic of the specified topic
+
+- **Response**:
+
+  ```json
+  {
+    "id": 1,
+    "name": "name",
+    "description": "description",
+    "isParent": true,
+    "isChild": false
+  }
+  ```
+
+- **Error Codes**:
+
+  - `404 Not Found`: Topic not found
+
+    ```json
+    {
+      "error": "topic with id {topicId} is not found"
+    }
+    ```
+
+### 6. **GET** `/api/v1/topics/{topicId}/subtopics`
+
+**Description**: Get the subtopics of the specified topic
+
+- **Response**:
 
 ```json
-
+[
+  {
+      "id": 1,
+      "name": "name",
+      "description": "description",
+      "isParent": false,
+      "isChild": true
+  }, ...
+]
 ```
+
+- **Error Codes**:
+
+  - `404 Not Found`: Topic not found
+
+    ```json
+    {
+      "error": "topic with id {topicId} is not found"
+    }
+    ```
+
+### 7. **GET** `/api/v1/topics/{topicId}/history`
+
+**Description**: Get the history of the specified topic along with the changes
+
+- **Response**:
+
+```json
+{
+    "topic": {
+        "id": 1,
+        "name": "tagName",
+        "description": "tagDescription",
+        "isParent": false,
+        "isChild": true
+    },
+    "history": [
+        {
+            "id": 1,
+            "name": "tagName",
+            "description": "tagDescription",
+            "changedBy": 1,
+            "action": "TOPIC_CREATED",
+            "changedAt": "2024-09-19T23:53:54"
+        }, ...
+    ]
+}
+```
+
+- **Error Codes**:
+
+  - `404 Not Found`: Topic not found
+
+    ```json
+    {
+      "error": "topic with id {topicId} is not found"
+    }
+    ```
+
+### 8. **DELETE** `/api/v1/topics/{topicId}`
+
+**Description**: Delete the topic with the specified id
+
+- **Request Headers**:
+
+  - `Authorization`: Bearer token
+
+- **Response**: `200 OK`
