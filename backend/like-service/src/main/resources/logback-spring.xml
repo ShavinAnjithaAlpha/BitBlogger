@@ -3,16 +3,16 @@
     <!-- Console Appender -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[USER-SERVICE] %d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+            <pattern>[LIKE-SERVICE] %d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
     <!-- File Appender -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs/dev-user-app.log</file>
+        <file>logs/dev-like-app.log</file>
         <append>true</append>
         <encoder>
-            <pattern>[USER-SERVICE] %d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+            <pattern>[LIKE-SERVICE] %d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
