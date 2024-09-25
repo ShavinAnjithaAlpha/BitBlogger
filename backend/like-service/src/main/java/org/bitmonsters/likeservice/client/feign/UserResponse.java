@@ -1,4 +1,4 @@
-package org.bitmonsters.topicservice.client.feign;
+package org.bitmonsters.likeservice.client.feign;
 
 public record UserResponse(
         Long id,

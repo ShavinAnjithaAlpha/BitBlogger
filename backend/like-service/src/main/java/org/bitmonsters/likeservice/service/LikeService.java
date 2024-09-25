@@ -1,10 +1,9 @@
 package org.bitmonsters.likeservice.service;
 
 import lombok.RequiredArgsConstructor;
-import org.bitmonsters.likeservice.dto.CassandraPage;
-import org.bitmonsters.likeservice.dto.LikeCountDto;
-import org.bitmonsters.likeservice.dto.PostLikeDto;
-import org.bitmonsters.likeservice.dto.UserLikeDto;
+import org.bitmonsters.likeservice.client.feign.UserClient;
+import org.bitmonsters.likeservice.client.feign.UserResponse;
+import org.bitmonsters.likeservice.dto.*;
 import org.bitmonsters.likeservice.model.GlobalLikeCount;
 import org.bitmonsters.likeservice.model.LikeByPostAndUser;
 import org.bitmonsters.likeservice.model.LikeStatus;
@@ -12,13 +11,12 @@ import org.bitmonsters.likeservice.model.PostLikeCount;
 import org.bitmonsters.likeservice.repository.*;
 import org.springframework.data.cassandra.core.query.CassandraPageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +28,7 @@ public class LikeService {
     private final PostLikeCountRepository postLikeCountRepository;
     private final GlobalLikeCountRepository globalLikeCountRepository;
     private final LikeMapper mapper;
+    private final UserClient userClient;
 
     public void likePost(Long postId, Long userId, LikeStatus likeStatus) {
         var like = findLikeByPostAndUser(postId, userId);
@@ -66,17 +65,35 @@ public class LikeService {
         }
     }
 
-    public CassandraPage<PostLikeDto> getPostLikes(Long postId, Pageable page, @Nullable LikeStatus likeType) {
+    public CassandraPage<PostLikeWithUserDto> getPostLikes(Long postId, Pageable page, @Nullable LikeStatus likeType) {
         CassandraPageRequest cassandraPageRequest = CassandraPageRequest.of(page.getPageNumber(), page.getPageSize(), page.getSort());
+        Slice<PostLikeDto> likes;
+
         if (likeType != null) {
-            return new CassandraPage<>(
-                    likeByPostAndStatusRepository.findAllByKeyPostIdAndKeyLikeStatus(
+            likes = likeByPostAndStatusRepository.findAllByKeyPostIdAndKeyLikeStatus(
                             postId, likeType.getValue(), cassandraPageRequest)
-                            .map(mapper::toPostLikeDto));
+                    .map(mapper::toPostLikeDto);
         } else {
-            return new CassandraPage<>(likeByPostAndUserRepository.findAllByKeyPostId(postId, cassandraPageRequest)
-                    .map(mapper::toPostLikeDto));
+            likes = likeByPostAndUserRepository.findAllByKeyPostId(postId, cassandraPageRequest)
+                    .map(mapper::toPostLikeDto);
         }
+
+        // get the user data through user client
+        List<Long> userIds = new ArrayList<>(likes.getSize());
+        likes.forEach(like -> userIds.add(like.userId()));
+        // pass the user ids to the user client
+        List<UserResponse> users = userClient.getUsersByUserIDs(userIds);
+
+        // merge the user data with the like data
+        var likesWithUsers = likes.map((like) -> {
+            return PostLikeWithUserDto.builder()
+                    .user(users.get(likes.getContent().indexOf(like)))
+                    .likeStatus(like.likeStatus())
+                    .likedAt(like.likedAt())
+                    .build();
+        });
+
+        return new CassandraPage<>(likesWithUsers);
 
     }
 
