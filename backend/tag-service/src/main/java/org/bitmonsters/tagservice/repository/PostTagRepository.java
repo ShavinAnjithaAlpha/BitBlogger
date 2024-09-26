@@ -20,4 +20,6 @@ public interface PostTagRepository extends JpaRepository<PostTag, Long> {
     Slice<PostTag> findAllByTagId(Integer tagId);
 
     Optional<PostTag> findByTagIdAndPostId(Integer tagId, Long postId);
+
+    Long countAllByTagId(Integer tagId);
 }

@@ -75,6 +75,7 @@ public class TagService {
         ));
     }
 
+    @Transactional(value = Transactional.TxType.REQUIRED)
     public void addTagToPost(Long postId, Integer tagId, Long userId) {
         // check whether if the post exists before add the tag
 
@@ -88,6 +89,10 @@ public class TagService {
 
         // create new tag for the post
         postTagRepository.save(mapper.toPostTag(postId, tag));
+
+        // increase the post count in the tag item
+        tag.setPostCount(tag.getPostCount() + 1);
+        tagRepository.save(tag);
     }
 
     @Transactional
@@ -96,6 +101,13 @@ public class TagService {
 
         // remove the post tag from the system
         postTagRepository.deleteByPostIdAndTagId(postId, tagId);
+
+        // decrease the post count from the tag item
+        var tag = tagRepository.findById(tagId).orElse(null);
+        if (tag != null) {
+            tag.setPostCount(tag.getPostCount() - 1);
+            tagRepository.save(tag);
+        }
     }
 
     public List<TagDto> getTagsOfPost(Long postId) {
@@ -125,6 +137,10 @@ public class TagService {
 
             // add the tag to the post
             postTagRepository.save(mapper.toPostTag(postId, tag));
+
+            // increase the post count on each tag record by one
+            tag.setPostCount(tag.getPostCount() + 1);
+            tagRepository.save(tag);
         }
     }
 
