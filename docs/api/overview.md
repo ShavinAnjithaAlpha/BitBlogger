@@ -114,3 +114,26 @@ Also, it handles the taggings functionalities like tagging a post, untagging a p
 | **POST**   | `/tags/posts/{postId}`         | Add new tags to a post                            |
 | **GET**    | `/tags/{tagId}/posts`          | Get the posts with the specified tag              |
 | **GET**    | `/tags/history/{tagId}`        | Get the history of the specified tag (ADMIN ONLY) |
+
+## Poll Service API
+
+### Overview
+
+The **Poll Service API** handles the poll functionalities like creating a new poll, updating a poll, deleting a poll, getting the polls, take user attempts on a poll, get the poll results, adding answers to the poll etc.
+
+### Endpoints
+
+| Method     | Endpoint                        | Description                                                 |
+| ---------- | ------------------------------- | ----------------------------------------------------------- |
+| **POST**   | `/polls`                        | Add new poll                                                |
+| **PUT**    | `/polls/{pollId}`               | Update the poll                                             |
+| **DELETE** | `/polls/{pollId}`               | Delete the poll                                             |
+| **POST**   | `polls/{pollId}/tags/{tagId}`   | Add tag to the specified poll                               |
+| **GET**    | `/polls`                        | Get all the polls                                           |
+| **GET**    | `/polls/{pollId}`               | Get the poll with the specified id                          |
+| **GET**    | `/polls/users/{userId}`         | Get the published polls of the specified user               |
+| **GET**    | `polls/users/me`                | get the polls of the authenticated user                     |
+| **POST**   | `/polls/{pollId}/answer`        | Add answers to the poll                                     |
+| **GET**    | `/polls/{pollId}/answer/status` | Get whether the answer is correct or not if have the answer |
+| **GET**    | `/polls/{pollId}/results`       | Get the poll results                                        |
+| **GET**    | `polls/{pollId}/results/stat`   | Get the statictics about the poll votes                     |
