@@ -5,6 +5,12 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.bitmonsters.pollservice.dto.NewPollAnswerDto;
 
 public class OneFieldRequiredValidator implements ConstraintValidator<OneFieldRequired, NewPollAnswerDto.NewPollAnswerRecord> {
+
+    @Override
+    public void initialize(OneFieldRequired constraintAnnotation) {
+        ConstraintValidator.super.initialize(constraintAnnotation);
+    }
+
     @Override
     public boolean isValid(NewPollAnswerDto.NewPollAnswerRecord dto, ConstraintValidatorContext context) {
 

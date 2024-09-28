@@ -3,6 +3,7 @@ package org.bitmonsters.pollservice.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bitmonsters.pollservice.client.feign.TagClient;
+import org.bitmonsters.pollservice.client.feign.TagResponse;
 import org.bitmonsters.pollservice.dto.*;
 import org.bitmonsters.pollservice.exception.*;
 import org.bitmonsters.pollservice.model.AnswerStatus;
@@ -46,14 +47,9 @@ public class PollService {
         if (newPollDto.tags() != null) {
             // add the tag related to poll
             for (var tag: newPollDto.tags()) {
-                try {
-                    // check whether if the tag exists // external call via HTTP for tag service
-                    var _tag = tagClient.getTag(tag);
-                    if (_tag == null)
-                        throw new TagNotFoundException(String.format("tag with id %d is not found", tag));
-                } catch (Exception exp) {
+
+                if (!tagExists(tag))
                     throw new TagNotFoundException(String.format("tag with id %d is not found", tag));
-                }
 
                 pollTagRepository.save(mapper.toTag(tag, poll));
             }
@@ -123,13 +119,21 @@ public class PollService {
     public void addTagToPoll(Long pollId, Integer tagId, Long userId) {
         var poll = findPoll(pollId, true, true, userId);
 
-        // check the existence of the tag
-        var tag = tagClient.getTag(tagId);
-        if (tag == null)
+        if (!tagExists(tagId))
             throw new TagNotFoundException(String.format("tag with id %d is not found", tagId));
 
         // add the tag to the poll
         pollTagRepository.save(mapper.toTag(tagId, poll));
+    }
+
+    private boolean tagExists(Integer tagId) {
+        try {
+            // check whether if the tag exists // external call via HTTP for tag service
+            var _tag = tagClient.getTag(tagId);
+            return _tag != null;
+        } catch (TagNotFoundException exp) {
+            return false;
+        }
     }
 
     public Poll findPoll(Long pollId, boolean ownershipCheck, boolean expirationCheck, Long userId) {

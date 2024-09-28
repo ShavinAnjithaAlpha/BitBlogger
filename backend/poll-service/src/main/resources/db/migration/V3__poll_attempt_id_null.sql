@@ -1,0 +1,1 @@
+ALTER TABLE poll_attempts ALTER COLUMN ans_id DROP NOT NULL;

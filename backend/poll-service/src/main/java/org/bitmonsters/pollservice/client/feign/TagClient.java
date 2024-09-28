@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "TAG-SERVICE", fallback = TagClientFallback.class, configuration = FeignTagClientConfig.class)
 public interface TagClient {
 
-    @GetMapping("/api/v1/tag/{tagId}")
+    @GetMapping("/api/v1/tags/{tagId}")
     TagResponse getTag(@PathVariable("tagId") Integer tagId);
 
 }

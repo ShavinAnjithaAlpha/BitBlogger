@@ -30,7 +30,7 @@ public class PollAttempt {
     @JoinColumn(name = "poll_id")
     private Poll poll;
 
-    @Column(name = "ans_id", nullable = false)
+    @Column(name = "ans_id", nullable = true)
     private Integer answerId;
 
     @Column(name = "answered_at", nullable = false, updatable = false)

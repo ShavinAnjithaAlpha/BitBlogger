@@ -1,5 +1,7 @@
 package org.bitmonsters.pollservice.handler;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.bitmonsters.pollservice.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -23,6 +26,20 @@ public class GlobalExceptionHandler {
                     var errorMessage = err.getDefaultMessage();
                     errors.put(fieldName, errorMessage);
                 });
+
+        return new ErrorResponse(errors);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleConstraintViolationException(ConstraintViolationException exception) {
+        Map<Object, Object> errors = new HashMap<>();
+
+        for (ConstraintViolation<?> violation : exception.getConstraintViolations()) {
+            String fieldName = violation.getPropertyPath().toString();
+            String errorMessage = violation.getMessage();
+            errors.put(fieldName, errorMessage);
+        }
 
         return new ErrorResponse(errors);
     }
