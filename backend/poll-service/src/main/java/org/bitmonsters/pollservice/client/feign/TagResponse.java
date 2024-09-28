@@ -1,9 +1,6 @@
-package org.bitmonsters.tagservice.dto;
+package org.bitmonsters.pollservice.client.feign;
 
-import lombok.Builder;
-
-@Builder
-public record TagDto(
+public record TagResponse(
         Integer id,
         String name,
         String description,

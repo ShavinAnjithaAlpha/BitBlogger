@@ -48,6 +48,7 @@ public class TagMapper {
                 .name(tag.getName())
                 .description(tag.getDescription())
                 .icon(tag.getIcon())
+                .postCount(tag.getPostCount())
                 .build();
     }
 
@@ -57,6 +58,7 @@ public class TagMapper {
                 .name(postTag.getTag().getName())
                 .description(postTag.getTag().getDescription())
                 .icon(postTag.getTag().getIcon())
+                .postCount(postTag.getTag().getPostCount())
                 .build();
     }
 
