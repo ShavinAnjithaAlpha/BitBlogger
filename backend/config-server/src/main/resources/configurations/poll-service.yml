@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bitblog_polls
+    username: bitblogger
+    password: bitmonsters
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/bitblog_polls
+    user: bitblogger
+    password: bitmonsters
+    baseline-version: 1
+    baseline-description: "init"
+    baseline-on-migrate: true
+
+server:
+  port: 9004

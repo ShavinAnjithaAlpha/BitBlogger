@@ -10,6 +10,7 @@
         <option value="$PROJECT_DIR$/backend/config-server/pom.xml" />
         <option value="$PROJECT_DIR$/backend/discovery-server/pom.xml" />
         <option value="$PROJECT_DIR$/backend/tag-service/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/poll-service/pom.xml" />
       </list>
     </option>
   </component>
