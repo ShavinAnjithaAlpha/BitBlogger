@@ -3,6 +3,7 @@ package org.bitmonsters.pollservice.service;
 import lombok.RequiredArgsConstructor;
 import org.bitmonsters.pollservice.client.feign.TagClient;
 import org.bitmonsters.pollservice.client.feign.TagResponse;
+import org.bitmonsters.pollservice.client.feign.UserResponse;
 import org.bitmonsters.pollservice.dto.*;
 import org.bitmonsters.pollservice.model.*;
 import org.springframework.stereotype.Service;
@@ -72,7 +73,7 @@ public class PollMapper {
                 .expired(poll.getEndsAt().isBefore(LocalDateTime.now()))
                 .remaining(poll.getEndsAt().isBefore(LocalDateTime.now())
                                 ? DurationDto.fromDuration(Duration.ZERO) :
-                                DurationDto.fromDuration(Duration.between(LocalDateTime.now(),poll.getEndsAt())))
+                                DurationDto.fromDuration(Duration.between(LocalDateTime.now(), poll.getEndsAt())))
                 .tags(poll.getTags().stream()
                         .map(tag -> toTag(tagClient.getTag(tag.getTagId())))
                         .collect(Collectors.toList())
@@ -104,6 +105,15 @@ public class PollMapper {
                 .poll(poll)
                 .userId(userId)
                 .isPublic(isPublic != null ? isPublic : Boolean.TRUE)
+                .build();
+    }
+
+    public PollAttemptDto toPollAttemptDto(PollAttempt pollAttempt, UserResponse user) {
+        return PollAttemptDto.builder()
+                .user(pollAttempt.getIsPublic() ? user : null)
+                .answerId(pollAttempt.getAnswerId())
+                .answeredAt(pollAttempt.getAnsweredAt())
+                .optionalAnswer(pollAttempt.getOptionalAnswer())
                 .build();
     }
 }

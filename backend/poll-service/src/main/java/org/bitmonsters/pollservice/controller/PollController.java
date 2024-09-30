@@ -3,12 +3,18 @@ package org.bitmonsters.pollservice.controller;
 import lombok.RequiredArgsConstructor;
 import org.bitmonsters.pollservice.dto.*;
 import org.bitmonsters.pollservice.service.PollService;
+import org.bitmonsters.pollservice.service.PollStatService;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/v1/polls")
@@ -16,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class PollController {
 
     private final PollService service;
+    private final PollStatService pollStatService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -110,11 +117,18 @@ public class PollController {
     }
 
     @GetMapping("/{pollId}/results/stat")
-    public PollStatResultsDto getPollResultsStats(
+    public ResponseEntity<?> getPollResultsStats(
             @PathVariable("pollId") Long pollId,
-            @RequestHeader("userId") Long userId
-    ) {
-        return service.getPollResultStats(pollId, userId);
+            @RequestHeader("userId") Long userId,
+            @RequestParam(name = "dateWise", defaultValue = "0") Boolean dateWise,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate endDate
+            ) {
+        if (dateWise) {
+            return ResponseEntity.ok(pollStatService.getPollAttemptsStatByDate(pollId, userId, startDate, endDate));
+        } else {
+            return ResponseEntity.ok(pollStatService.getPollAttemptsStatsByAnswerId(pollId, userId));
+        }
     }
 
 }

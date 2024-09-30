@@ -3,7 +3,8 @@ package org.bitmonsters.pollservice.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bitmonsters.pollservice.client.feign.TagClient;
-import org.bitmonsters.pollservice.client.feign.TagResponse;
+import org.bitmonsters.pollservice.client.feign.UserClient;
+import org.bitmonsters.pollservice.client.feign.UserResponse;
 import org.bitmonsters.pollservice.dto.*;
 import org.bitmonsters.pollservice.exception.*;
 import org.bitmonsters.pollservice.model.AnswerStatus;
@@ -15,7 +16,6 @@ import org.bitmonsters.pollservice.repository.PollRepository;
 import org.bitmonsters.pollservice.repository.PollTagRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -38,6 +38,7 @@ public class PollService {
     private final PollMapper mapper;
 
     private final TagClient tagClient;
+    private final UserClient userClient;
 
     @Transactional(value = Transactional.TxType.REQUIRED)
     public IdResponse addPoll(NewPollDto newPollDto, Long userId) {
@@ -191,7 +192,7 @@ public class PollService {
         }
     }
 
-    private boolean isAnsweredBefore(Long pollId, Long userId) {
+    public boolean isAnsweredBefore(Long pollId, Long userId) {
         return !pollAttemptsRepository.findAllByPollIdAndUserId(pollId, userId).isEmpty();
     }
 
@@ -222,10 +223,23 @@ public class PollService {
     }
 
     public Slice<PollAttemptDto> getPollAttempts(Long pollId, Long userId, Pageable page) {
-        return null;
-    }
+        // get the poll
+        var poll = findPoll(pollId, true, false, userId);
 
-    public PollStatResultsDto getPollResultStats(Long pollId, Long userId) {
-        return null;
+        // get the poll attempts using poll attempts repository
+        var attempts = pollAttemptsRepository.findAllByPollId(pollId, page);
+
+        // extract the user indexes from the attempts list
+        List<Long> userIds = new ArrayList<>(attempts.getSize());
+        for (var attempt: attempts) {
+            userIds.add(attempt.getUserId());
+        }
+
+        // get the user responses using the user client
+        List<UserResponse> users = userClient.getUsersByUserIDs(userIds);
+        // map user IDs into users and return the result
+        return attempts.map(
+                pollAttempt -> mapper.toPollAttemptDto(pollAttempt, users.get(attempts.toList().indexOf(pollAttempt)))
+        );
     }
 }

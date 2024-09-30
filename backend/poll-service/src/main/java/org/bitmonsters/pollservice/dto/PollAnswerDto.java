@@ -6,4 +6,5 @@ public record PollAnswerDto(
         String answer,
         AnswerStatus status
 ) {
+
 }
