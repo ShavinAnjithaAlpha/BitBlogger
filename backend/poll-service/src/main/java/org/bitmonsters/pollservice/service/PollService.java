@@ -22,9 +22,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -231,7 +230,7 @@ public class PollService {
         return new PollStatusDto(answers);
     }
 
-    public Slice<PollAttemptDto> getPollAttempts(Long pollId, Long userId, Pageable page) {
+    public List<PollAttemptDto> getPollAttempts(Long pollId, Long userId, Pageable page) {
         // get the poll
         var poll = findPoll(pollId, true, false, userId);
 
@@ -244,11 +243,27 @@ public class PollService {
             userIds.add(attempt.getUserId());
         }
 
+
+
+        Map<Long, PollAttemptDto> uniqueAttempts = new HashMap<>();
+        for (var attempt: attempts) {
+            if (uniqueAttempts.getOrDefault(attempt.getUserId(), null) == null) {
+                var attemptDto = PollAttemptDto.builder()
+                        .user(userClient.getUserById(attempt.getUserId(), true))
+                        .answeredAt(attempt.getAnsweredAt())
+                        .optionalAnswer(attempt.getOptionalAnswer())
+                        .answerIds(new ArrayList<>())
+                        .build();
+                attemptDto.answerIds().add(attempt.getAnswerId());
+                uniqueAttempts.put(attempt.getUserId(), attemptDto);
+            } else {
+                uniqueAttempts.get(attempt.getUserId()).answerIds().add(attempt.getAnswerId());
+            }
+        }
+
         // get the user responses using the user client
-        List<UserResponse> users = userClient.getUsersByUserIDs(userIds);
+//        List<UserResponse> users = userClient.getUsersByUserIDs(userIds);
         // map user IDs into users and return the result
-        return attempts.map(
-                pollAttempt -> mapper.toPollAttemptDto(pollAttempt, users.get(attempts.toList().indexOf(pollAttempt)))
-        );
+        return new ArrayList<>(uniqueAttempts.values());
     }
 }

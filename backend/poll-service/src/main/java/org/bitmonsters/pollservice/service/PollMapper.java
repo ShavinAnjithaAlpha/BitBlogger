@@ -118,12 +118,5 @@ public class PollMapper {
                 .build();
     }
 
-    public PollAttemptDto toPollAttemptDto(PollAttempt pollAttempt, UserResponse user) {
-        return PollAttemptDto.builder()
-                .user(pollAttempt.getIsPublic() ? user : null)
-                .answerId(pollAttempt.getAnswerId())
-                .answeredAt(pollAttempt.getAnsweredAt())
-                .optionalAnswer(pollAttempt.getOptionalAnswer())
-                .build();
-    }
+
 }

@@ -5,11 +5,12 @@ import lombok.Builder;
 import org.bitmonsters.pollservice.client.feign.UserResponse;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 public record PollAttemptDto(
         UserResponse user,
-        Integer answerId,
+        List<Integer> answerIds,
         LocalDateTime answeredAt,
         String optionalAnswer
 ) {

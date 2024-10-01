@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/polls")
@@ -108,7 +109,7 @@ public class PollController {
     }
 
     @GetMapping("/{pollId}/results")
-    public Slice<PollAttemptDto> getPollAttempts(
+    public List<PollAttemptDto> getPollAttempts(
             @PathVariable("pollId") Long pollId,
             @RequestHeader("userId") Long userId,
             Pageable page
