@@ -22,7 +22,12 @@ public class GlobalExceptionHandler {
         var errors = new HashMap<>();
         exception.getBindingResult().getAllErrors()
                 .forEach(err -> {
-                    var fieldName = ((FieldError) err).getField();
+                    String fieldName;
+                    try {
+                        fieldName = ((FieldError) err).getField();
+                    } catch (ClassCastException exp) {
+                        fieldName = err.getObjectName();
+                    }
                     var errorMessage = err.getDefaultMessage();
                     errors.put(fieldName, errorMessage);
                 });

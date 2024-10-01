@@ -18,9 +18,9 @@ public interface PollAttemptsRepository extends JpaRepository<PollAttempt, Long>
 
     Long countDistinctByPollIdAndAnswerId(Long pollId, Integer answerId);
 
-    Long countDistinctByPollIdAndOptionalAnswer(Long pollId, String answer);
+    Long countDistinctByPollIdAndOptionalAnswerNotNull(Long pollId);
 
     Long countAllByPollIdAndAnswerIdAndAnsweredAtAfterAndAnsweredAtBefore(Long pollId, Integer answerId, LocalDateTime startTime, LocalDateTime endTime);
 
-    Long countAllByPollIdAndAnsweredAtAfterAndAnsweredAtBeforeAndOptionalAnswer(Long pollId, LocalDateTime startTime, LocalDateTime endTime, String optionalAnswer);
+    Long countAllByPollIdAndAnsweredAtAfterAndAnsweredAtBeforeAndOptionalAnswerNotNull(Long pollId, LocalDateTime startTime, LocalDateTime endTime);
 }

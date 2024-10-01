@@ -4,7 +4,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.bitmonsters.pollservice.dto.NewPollAnswerDto;
 
-public class OneFieldRequiredValidator implements ConstraintValidator<OneFieldRequired, NewPollAnswerDto.NewPollAnswerRecord> {
+public class OneFieldRequiredValidator implements ConstraintValidator<OneFieldRequired, NewPollAnswerDto> {
 
     @Override
     public void initialize(OneFieldRequired constraintAnnotation) {
@@ -12,10 +12,10 @@ public class OneFieldRequiredValidator implements ConstraintValidator<OneFieldRe
     }
 
     @Override
-    public boolean isValid(NewPollAnswerDto.NewPollAnswerRecord dto, ConstraintValidatorContext context) {
+    public boolean isValid(NewPollAnswerDto dto, ConstraintValidatorContext context) {
 
-        boolean isFistFieldProvided = dto.answerId() != null && dto.answerId() != 0;
-        boolean isSecondFieldProvided = dto.answer() != null && !dto.answer().trim().isEmpty();
+        boolean isFistFieldProvided = dto.answers() != null && !dto.answers().isEmpty();
+        boolean isSecondFieldProvided = dto.optionalAnswer() != null && !dto.optionalAnswer().trim().isEmpty();
 
         return isFistFieldProvided != isSecondFieldProvided;
     }

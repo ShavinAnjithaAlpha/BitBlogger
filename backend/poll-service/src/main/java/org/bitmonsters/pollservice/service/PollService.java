@@ -182,13 +182,22 @@ public class PollService {
             throw new PollAnswerException(String.format("required only one answer for single answer poll: provided %d",
                     newPollAnswerDto.answers().size()));
 
-        // save the answers in the system
-        for (var answer: newPollAnswerDto.answers()) {
-            if (!poll.getMetaData().getOptionalAnswerAllowed() && answer.answer() != null) {
-                throw new PollAnswerException("optional answers are not accepted");
-            }
+        if (!poll.getMetaData().getOptionalAnswerAllowed() && newPollAnswerDto.answers().isEmpty()) {
+            throw new PollAnswerException("answer ids are required");
+        }
 
-            pollAttemptsRepository.save(mapper.toPollAttempt(answer, poll, userId, newPollAnswerDto.isPublic()));
+        // save the answers in the system
+        if (newPollAnswerDto.answers() != null) {
+            for (var answer: newPollAnswerDto.answers()) {
+                pollAttemptsRepository.save(mapper.toPollAttempt(answer, poll, userId, newPollAnswerDto.isPublic()));
+            }
+        }
+
+        // if optional answers are allowed store the optional answer also
+        if (poll.getMetaData().getOptionalAnswerAllowed() &&
+                newPollAnswerDto.optionalAnswer() != null &&
+                !newPollAnswerDto.optionalAnswer().isEmpty()) {
+            pollAttemptsRepository.save(mapper.toPollAttempt(newPollAnswerDto.optionalAnswer(), poll, userId, newPollAnswerDto.isPublic()));
         }
     }
 

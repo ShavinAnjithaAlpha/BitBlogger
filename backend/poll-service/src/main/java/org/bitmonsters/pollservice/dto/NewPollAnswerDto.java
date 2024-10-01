@@ -4,17 +4,11 @@ import org.bitmonsters.pollservice.dto.constraint.OneFieldRequired;
 
 import java.util.List;
 
+@OneFieldRequired(message = "only answer or optional answer is accepted: not both")
 public record NewPollAnswerDto(
-        List<NewPollAnswerRecord> answers,
+        List<Integer> answers,
+        String optionalAnswer,
         Boolean isPublic
 ) {
-
-    @OneFieldRequired(message = "only answer id or answer is required")
-    public record NewPollAnswerRecord(
-            Integer answerId,
-            String answer
-    ) {
-
-    }
 
 }

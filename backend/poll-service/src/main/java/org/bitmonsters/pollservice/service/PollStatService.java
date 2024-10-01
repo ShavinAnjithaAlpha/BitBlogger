@@ -58,14 +58,14 @@ public class PollStatService {
         }
 
         // get the number of optional answers on the poll
-        Long optionalAnswerCount = pollAttemptsRepository.countDistinctByPollIdAndOptionalAnswer(pollId, null);
+        Long optionalAnswerCount = pollAttemptsRepository.countDistinctByPollIdAndOptionalAnswerNotNull(pollId);
 
         return PollStatResultsDto.builder()
                 .answerCounts(answerStats)
                 .totalCount(totalCount)
                 .totalRightAnswers(totalRightCount)
                 .totalWrongAnswers(totalWrongCount)
-                .optionalAnswerCount(totalCount - optionalAnswerCount)
+                .optionalAnswerCount(optionalAnswerCount)
                 .build();
     }
 
@@ -111,11 +111,10 @@ public class PollStatService {
             );
 
             // find the optional answer count
-            Long optionalAnswerCount = pollAttemptsRepository.countAllByPollIdAndAnsweredAtAfterAndAnsweredAtBeforeAndOptionalAnswer(
+            Long optionalAnswerCount = pollAttemptsRepository.countAllByPollIdAndAnsweredAtAfterAndAnsweredAtBeforeAndOptionalAnswerNotNull(
                     pollId,
                     pollStat.getCurrentDate().atStartOfDay(),
-                    pollStat.getCurrentDate().plusDays(1).atStartOfDay(),
-                    null
+                    pollStat.getCurrentDate().plusDays(1).atStartOfDay()
             );
 
             // add the date record to the poll stat instance

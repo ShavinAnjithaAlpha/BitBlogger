@@ -98,10 +98,20 @@ public class PollMapper {
                 .build();
     }
 
-    public PollAttempt toPollAttempt(NewPollAnswerDto.NewPollAnswerRecord answer, Poll poll, Long userId, Boolean isPublic) {
+    public PollAttempt toPollAttempt(Integer answerId, Poll poll, Long userId, Boolean isPublic) {
         return PollAttempt.builder()
-                .answerId(answer.answerId())
-                .optionalAnswer(answer.answer())
+                .answerId(answerId)
+                .optionalAnswer(null)
+                .poll(poll)
+                .userId(userId)
+                .isPublic(isPublic != null ? isPublic : Boolean.TRUE)
+                .build();
+    }
+
+    public PollAttempt toPollAttempt(String optionalAnswer, Poll poll, Long userId, Boolean isPublic) {
+        return PollAttempt.builder()
+                .answerId(null)
+                .optionalAnswer(optionalAnswer)
                 .poll(poll)
                 .userId(userId)
                 .isPublic(isPublic != null ? isPublic : Boolean.TRUE)

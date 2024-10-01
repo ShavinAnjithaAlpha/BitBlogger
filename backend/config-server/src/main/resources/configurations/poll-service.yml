@@ -20,5 +20,8 @@ spring:
     baseline-description: "init"
     baseline-on-migrate: true
 
+  jackson:
+    default-property-inclusion: non_null
+
 server:
   port: 9004
