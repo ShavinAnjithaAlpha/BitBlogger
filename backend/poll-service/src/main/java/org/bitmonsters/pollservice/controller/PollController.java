@@ -109,7 +109,7 @@ public class PollController {
     }
 
     @GetMapping("/{pollId}/results")
-    public List<PollAttemptDto> getPollAttempts(
+    public PollAttemptsPage<PollAttemptDto> getPollAttempts(
             @PathVariable("pollId") Long pollId,
             @RequestHeader("userId") Long userId,
             Pageable page

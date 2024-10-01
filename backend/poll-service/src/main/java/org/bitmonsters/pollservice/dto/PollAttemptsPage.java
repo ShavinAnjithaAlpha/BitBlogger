@@ -1,6 +1,7 @@
 package org.bitmonsters.pollservice.dto;
 
 import lombok.Data;
+import org.bitmonsters.pollservice.model.PollAttempt;
 import org.springframework.data.domain.Slice;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class PollAttemptsPage<T> {
     private final Boolean hasPrevious;
     private final Boolean hasNext;
 
-    public PollAttemptsPage(final Slice<T> slice, List<T> content) {
+    public PollAttemptsPage(final Slice<Long> slice, List<T> content) {
         this.count = slice.getNumberOfElements();
         this.content = content;
         this.hasNext = slice.hasNext();

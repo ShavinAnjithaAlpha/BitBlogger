@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -230,26 +229,28 @@ public class PollService {
         return new PollStatusDto(answers);
     }
 
-    public List<PollAttemptDto> getPollAttempts(Long pollId, Long userId, Pageable page) {
+    public PollAttemptsPage<PollAttemptDto> getPollAttempts(Long pollId, Long userId, Pageable page) {
         // get the poll
         var poll = findPoll(pollId, true, false, userId);
 
-        // get the poll attempts using poll attempts repository
-        var attempts = pollAttemptsRepository.findAllByPollId(pollId, page);
+        var userIds = pollAttemptsRepository.getDistinctByPollId(poll, page);
+        var attempts = pollAttemptsRepository.findAllByPollIdAndUserIdIn(pollId, userIds.getContent());
 
-        // extract the user indexes from the attempts list
-        List<Long> userIds = new ArrayList<>(attempts.getSize());
-        for (var attempt: attempts) {
-            userIds.add(attempt.getUserId());
-        }
-
+        // fetch the users details as a batch from the user client
+        List<UserResponse> users = userClient.getUsersByUserIDs(userIds.getContent());
 
 
         Map<Long, PollAttemptDto> uniqueAttempts = new HashMap<>();
         for (var attempt: attempts) {
             if (uniqueAttempts.getOrDefault(attempt.getUserId(), null) == null) {
+                // find the user from the user details
+                var user = users.stream()
+                        .filter(userResponse -> userResponse.id().equals(attempt.getUserId()))
+                        .findFirst()
+                        .orElse(null);
+
                 var attemptDto = PollAttemptDto.builder()
-                        .user(userClient.getUserById(attempt.getUserId(), true))
+                        .user(user)
                         .answeredAt(attempt.getAnsweredAt())
                         .optionalAnswer(attempt.getOptionalAnswer())
                         .answerIds(new ArrayList<>())
@@ -262,8 +263,7 @@ public class PollService {
         }
 
         // get the user responses using the user client
-//        List<UserResponse> users = userClient.getUsersByUserIDs(userIds);
         // map user IDs into users and return the result
-        return new ArrayList<>(uniqueAttempts.values());
+        return new PollAttemptsPage<PollAttemptDto>(userIds, new ArrayList<>(uniqueAttempts.values()));
     }
 }

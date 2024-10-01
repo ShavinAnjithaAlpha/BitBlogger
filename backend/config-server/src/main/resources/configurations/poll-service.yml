@@ -23,5 +23,26 @@ spring:
   jackson:
     default-property-inclusion: non_null
 
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connect-timeout: 5000
+            read-timeout: 5000
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      TAG-SERVICE:
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10000
+        sliding-window-size: 10
+
+feign:
+  circuitbreaker:
+    enabled: true
+
+
 server:
   port: 9004

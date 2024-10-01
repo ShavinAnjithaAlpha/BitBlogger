@@ -3,7 +3,6 @@ package org.bitmonsters.pollservice.service;
 import lombok.RequiredArgsConstructor;
 import org.bitmonsters.pollservice.client.feign.TagClient;
 import org.bitmonsters.pollservice.client.feign.TagResponse;
-import org.bitmonsters.pollservice.client.feign.UserResponse;
 import org.bitmonsters.pollservice.dto.*;
 import org.bitmonsters.pollservice.model.*;
 import org.springframework.stereotype.Service;
