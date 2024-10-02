@@ -1,5 +1,8 @@
 package org.bitmonsters.topicservice.client.feign;
 
+import lombok.Builder;
+
+@Builder
 public record UserResponse(
         Long id,
         String name,
