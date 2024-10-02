@@ -34,9 +34,10 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserResponse getUser(
-            @PathVariable("id") Long userId
+    public ResponseEntity<?> getUser(
+            @PathVariable("id") Long userId,
+            @RequestParam("short") Boolean isShort
     ) {
-        return service.getUser(userId);
+        return service.getUser(userId, isShort);
     }
 }

@@ -1,10 +1,7 @@
 package org.bitmonsters.likeservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.bitmonsters.likeservice.dto.CassandraPage;
-import org.bitmonsters.likeservice.dto.LikeCountDto;
-import org.bitmonsters.likeservice.dto.PostLikeDto;
-import org.bitmonsters.likeservice.dto.UserLikeDto;
+import org.bitmonsters.likeservice.dto.*;
 import org.bitmonsters.likeservice.model.LikeStatus;
 import org.bitmonsters.likeservice.service.LikeService;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +37,7 @@ public class LikesController {
     }
 
     @GetMapping("/{postId}")
-    public CassandraPage<PostLikeDto> getLikeOfPost(
+    public CassandraPage<PostLikeWithUserDto> getLikeOfPost(
             @PathVariable("postId") Long postId,
             @Nullable @RequestParam("status") LikeStatus likeType,
             Pageable page

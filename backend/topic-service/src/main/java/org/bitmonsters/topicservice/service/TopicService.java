@@ -1,6 +1,8 @@
 package org.bitmonsters.topicservice.service;
 
 import lombok.RequiredArgsConstructor;
+import org.bitmonsters.topicservice.client.feign.UserClient;
+import org.bitmonsters.topicservice.client.feign.UserResponse;
 import org.bitmonsters.topicservice.dto.*;
 import org.bitmonsters.topicservice.exception.TopicAlreadyExistsException;
 import org.bitmonsters.topicservice.exception.TopicNotExistsException;
@@ -24,6 +26,7 @@ public class TopicService {
     private final TopicRepository topicRepository;
     private final TopicHistoryRepository topicHistoryRepository;
     private final TopicMapper mapper;
+    private final UserClient userClient;
 
     public IDResponse addNewTopic(Long userId, NewTopicDto newTopicDto) {
         // check whether there is topic with same name
@@ -122,9 +125,22 @@ public class TopicService {
 
         // get the topic history items from the topic id
         List<TopicHistory> history = topicHistoryRepository.findAllByTopicId(topicId);
+        // get the user ids from the history
+        List<Long> userIds = history.stream().map(TopicHistory::getChangedBy).toList();
+        // fetch the batch of users from the batch endpoint of the user client
+        List<UserResponse> users = userClient.getUsersByUserIds(userIds);
+
         return TopicHistoryDto.builder()
                 .topic(mapper.toTopicDto(topic))
-                .history(history.stream().map(mapper::toTopicHistoryRecordDto).collect(Collectors.toList()))
+                .history(history.stream()
+                        .map(
+                                topicHistory -> mapper.toTopicHistoryRecordDto(topicHistory,
+                                        users.stream()
+                                                .filter(user -> user.id().equals(topicHistory.getChangedBy()))
+                                                .findFirst()
+                                                .orElse(UserResponse.builder().build()))
+                        )
+                        .collect(Collectors.toList()))
                 .build();
     }
 }

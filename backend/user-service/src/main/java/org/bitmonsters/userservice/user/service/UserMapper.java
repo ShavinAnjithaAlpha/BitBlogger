@@ -1,6 +1,7 @@
 package org.bitmonsters.userservice.user.service;
 
 import org.bitmonsters.userservice.link.model.UserLink;
+import org.bitmonsters.userservice.user.dto.ShortUserResponse;
 import org.bitmonsters.userservice.user.dto.UserLinkResponse;
 import org.bitmonsters.userservice.user.dto.UserRegisterDto;
 import org.bitmonsters.userservice.user.dto.UserResponse;
@@ -55,6 +56,16 @@ public class UserMapper {
                 .platform(userLink.getPlatform().getName())
                 .url(userLink.getUrl())
                 .custom(userLink.getCustom())
+                .build();
+    }
+
+    public ShortUserResponse toShortUserResponse(User user) {
+        return ShortUserResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .username(user.getUsername())
+                .email(!user.getDisplayEmail() ? user.getEmail() : null)
+                .profileImage(user.getProfileImage())
                 .build();
     }
 }

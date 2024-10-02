@@ -1,5 +1,8 @@
 package org.bitmonsters.topicservice.service;
 
+import lombok.RequiredArgsConstructor;
+import org.bitmonsters.topicservice.client.feign.UserClient;
+import org.bitmonsters.topicservice.client.feign.UserResponse;
 import org.bitmonsters.topicservice.dto.NewTopicDto;
 import org.bitmonsters.topicservice.dto.TopicDto;
 import org.bitmonsters.topicservice.dto.TopicHistoryRecordDto;
@@ -9,7 +12,10 @@ import org.bitmonsters.topicservice.model.TopicHistory;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class TopicMapper {
+
+    private final UserClient userClient;
 
     public Topic toTopic(NewTopicDto newTopicDto) {
         return Topic.builder()
@@ -40,12 +46,12 @@ public class TopicMapper {
                 .build();
     }
 
-    public TopicHistoryRecordDto toTopicHistoryRecordDto(TopicHistory topicHistory) {
+    public TopicHistoryRecordDto toTopicHistoryRecordDto(TopicHistory topicHistory, UserResponse user) {
         return TopicHistoryRecordDto.builder()
                 .id(topicHistory.getId())
                 .name(topicHistory.getName())
                 .description(topicHistory.getDescription())
-                .changedBy(topicHistory.getChangedBy())
+                .changedBy(user)
                 .action(topicHistory.getAction())
                 .changedAt(topicHistory.getChangedAt())
                 .build();

@@ -1,6 +1,7 @@
 package org.bitmonsters.topicservice.dto;
 
 import lombok.Builder;
+import org.bitmonsters.topicservice.client.feign.UserResponse;
 import org.bitmonsters.topicservice.model.TopicAction;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ public record TopicHistoryRecordDto(
         Integer id,
         String name,
         String description,
-        Long changedBy,
+        UserResponse changedBy,
         TopicAction action,
         LocalDateTime changedAt
 ) {
