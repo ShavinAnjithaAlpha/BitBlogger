@@ -2,6 +2,7 @@ package org.bitmonsters.pollservice.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import org.bitmonsters.pollservice.client.feign.UserResponse;
 import org.bitmonsters.pollservice.model.PollType;
 
 import java.util.List;
@@ -16,8 +17,9 @@ public record PollDto(
         DurationDto remaining,
         Boolean optionalAnswerAllowed,
         Boolean hasAnswer,
-        List<Tag> tags,
-        List<PollAnswer> answers
+        List<String> tags,
+        List<PollAnswer> answers,
+        UserResponse createdBy
 ) {
 
     @Data

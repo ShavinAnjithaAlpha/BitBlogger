@@ -3,12 +3,14 @@ package org.bitmonsters.pollservice.service;
 import lombok.RequiredArgsConstructor;
 import org.bitmonsters.pollservice.client.feign.TagClient;
 import org.bitmonsters.pollservice.client.feign.TagResponse;
+import org.bitmonsters.pollservice.client.feign.UserClient;
 import org.bitmonsters.pollservice.dto.*;
 import org.bitmonsters.pollservice.model.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class PollMapper {
 
     private final TagClient tagClient;
+    private final UserClient userClient;
 
     public Poll toPoll(NewPollDto newPollDto, Long userId) {
         return Poll.builder()
@@ -73,13 +76,17 @@ public class PollMapper {
                 .remaining(poll.getEndsAt().isBefore(LocalDateTime.now())
                                 ? DurationDto.fromDuration(Duration.ZERO) :
                                 DurationDto.fromDuration(Duration.between(LocalDateTime.now(), poll.getEndsAt())))
-                .tags(poll.getTags().stream()
-                        .map(tag -> toTag(tagClient.getTag(tag.getTagId())))
-                        .collect(Collectors.toList())
+                .tags(tagClient.getTagsAsBatch(
+                        poll.getTags().stream()
+                                .map(PollTag::getTagId)
+                                .collect(Collectors.toList()), Boolean.FALSE).stream()
+                        .filter(Objects::nonNull)
+                        .toList()
                 )
                 .answers(poll.getAnswers().stream()
                         .map(this::toPollDtoAnswer)
                         .collect(Collectors.toList()))
+                .createdBy(userClient.getUserById(poll.getUserId(), Boolean.TRUE))
                 .build();
     }
 
