@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bitmonsters.tagservice.client.feign.UserClient;
 import org.bitmonsters.tagservice.dto.*;
+import org.bitmonsters.tagservice.exception.TagAlreadyExistsException;
 import org.bitmonsters.tagservice.exception.TagNotFoundException;
 import org.bitmonsters.tagservice.exception.TooMuchTagsException;
 import org.bitmonsters.tagservice.model.PostTag;
@@ -32,12 +33,20 @@ public class TagService {
 
     @Transactional
     public IdResponse createTag(NewTagDto newTagDto, Long userId) {
+        if (tagExists(newTagDto.name())) {
+            throw new TagAlreadyExistsException(String.format("tag with name %s is already exists", newTagDto.name()))
+;        }
+
         // create a tag with the specified fields
         var tag = tagRepository.save(mapper.toTag(newTagDto));
         // create a history record on the creation of the tag
         tagHistoryRepository.save(mapper.toTagHistory(tag, TagAction.TAG_CREATED, userId));
 
         return new IdResponse(tag.getId());
+    }
+
+    private boolean tagExists(String name) {
+        return tagRepository.findByName(name).isPresent();
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 package org.bitmonsters.tagservice.handler;
 
+import org.bitmonsters.tagservice.exception.TagAlreadyExistsException;
 import org.bitmonsters.tagservice.exception.TagNotFoundException;
 import org.bitmonsters.tagservice.exception.TooMuchTagsException;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,12 @@ public class GlobalExceptionHandler {
                 });
 
         return new ErrorResponse(errors);
+    }
+
+    @ExceptionHandler(TagAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse handleTagAlreadyExistsException(TagAlreadyExistsException exception) {
+        return new ExceptionResponse(exception.getMessage());
     }
 
     @ExceptionHandler(TagNotFoundException.class)

@@ -114,6 +114,7 @@ Also, it handles the taggings functionalities like tagging a post, untagging a p
 | **POST**   | `/tags/posts/{postId}`         | Add new tags to a post                            |
 | **GET**    | `/tags/{tagId}/posts`          | Get the posts with the specified tag              |
 | **GET**    | `/tags/history/{tagId}`        | Get the history of the specified tag (ADMIN ONLY) |
+| **POST**   | `/tags/batch`                  | Get multiple tags by ids                          |
 
 ## Poll Service API
 
