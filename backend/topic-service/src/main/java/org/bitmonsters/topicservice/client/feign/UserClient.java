@@ -14,7 +14,7 @@ public interface UserClient {
     @GetMapping("/api/v1/users/{userId}")
     UserResponse getUserById(@PathVariable("userId") Long userId, @RequestParam("short") Boolean isShort);
 
-    @CircuitBreaker(name = "USER-SERVICE", fallbackMethod = "fallbackGetUsersBtUserIds")
+    @CircuitBreaker(name = "USER-SERVICE", fallbackMethod = "fallbackGetUsersByUserIds")
     @PostMapping("/api/v1/users/batch")
     List<UserResponse> getUsersByUserIds(@RequestBody List<Long> userIds);
 
