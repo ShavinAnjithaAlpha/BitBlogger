@@ -20,6 +20,16 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     database: mysql
 
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600000
+      cache-null-values: false
+
+  redis:
+    host: localhost
+    port: 6379
+
 server:
   port: 9000
 

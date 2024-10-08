@@ -1,0 +1,25 @@
+spring:
+  config:
+    import: optional:configserver:http://localhost:8888
+  application:
+    name: media-service
+
+  data:
+    mongodb:
+      uri: mongodb://localhost
+      port: 27017
+      database: bitbogger
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 15MB
+
+azure:
+  storage:
+    connection-string: ${AZURE_STORAGE_CONNECTION_STRING}
+    container: ${AZURE_STORAGE_CONTAINER_NAME}
+
+
+server:
+  port: 9005

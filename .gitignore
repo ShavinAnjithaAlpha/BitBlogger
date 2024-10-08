@@ -46,5 +46,6 @@ sketch
 
 # env files
 .env
+./backend/media-service/.env
 
 # End of https://www.toptal.com/developers/gitignore/api/java,react

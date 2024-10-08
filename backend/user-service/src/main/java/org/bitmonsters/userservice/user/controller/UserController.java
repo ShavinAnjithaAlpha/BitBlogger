@@ -36,8 +36,8 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getUser(
             @PathVariable("id") Long userId,
-            @RequestParam("short") Boolean isShort
+            @RequestParam(value = "short", defaultValue = "0") Boolean isShort
     ) {
-        return service.getUser(userId, isShort);
+        return ResponseEntity.ok(service.getUser(userId, isShort));
     }
 }

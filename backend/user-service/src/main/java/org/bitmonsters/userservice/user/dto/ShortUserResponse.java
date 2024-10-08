@@ -2,6 +2,8 @@ package org.bitmonsters.userservice.user.dto;
 
 import lombok.Builder;
 
+import java.io.Serializable;
+
 @Builder
 public record ShortUserResponse(
         Long id,
@@ -9,5 +11,5 @@ public record ShortUserResponse(
         String username,
         String email,
         String profileImage
-) {
+) implements Serializable {
 }

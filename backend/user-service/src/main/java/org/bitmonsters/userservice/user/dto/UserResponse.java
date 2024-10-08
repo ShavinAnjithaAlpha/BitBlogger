@@ -4,6 +4,7 @@ import lombok.Builder;
 import org.bitmonsters.userservice.user.model.Location;
 import org.bitmonsters.userservice.user.model.UserProfile;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,5 +20,5 @@ public record UserResponse(
         UserProfile profile,
         List<UserLinkResponse> links,
         LocalDateTime createdAt
-) {
+) implements Serializable {
 }

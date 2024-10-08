@@ -13,6 +13,8 @@ import org.bitmonsters.userservice.user.dto.UserRegisterDto;
 import org.bitmonsters.userservice.user.dto.UserResponse;
 import org.bitmonsters.userservice.user.model.User;
 import org.bitmonsters.userservice.user.repository.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -60,24 +62,26 @@ public class UserService {
         return userRepository.findAll(page).map(userMapper::toUserResponse);
     }
 
-
-    public ResponseEntity<?> getUser(Long userId, Boolean isShort) {
+    @Cacheable(value = "userCache", key = "#userId + '-' + #isShort", unless = "#result == null")
+    public Object getUser(Long userId, Boolean isShort) {
         var user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
                 String.format("user with user id %d not found", userId)
         ));
         if (isShort) {
-            return ResponseEntity.ok(userMapper.toShortUserResponse(user));
+            return userMapper.toShortUserResponse(user);
         } else {
-            return ResponseEntity.ok(userMapper.toFullUserResponse(user));
+            return userMapper.toFullUserResponse(user);
         }
     }
 
+    @Cacheable(value = "userCache", key = "#userId", unless = "#result == null")
     public UserResponse getUser(Long userId) {
         return userMapper.toFullUserResponse(userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException(String.format("user with user id %d not found", userId))
         ));
     }
 
+    @CacheEvict(value = "userCache", key = "#userId")
     public void deleteUser(Long userId) {
         if (!isUserExists(userId)) {
             throw new UserNotFoundException(String.format("user with user id  %d is not found", userId));
@@ -85,6 +89,7 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
+    @CacheEvict(value = "userCache", key = "#userId")
     public void updateUser(Long userId, UserUpdateDto userUpdateDto) {
         var user = userRepository.findById(userId).orElse(null);
 
