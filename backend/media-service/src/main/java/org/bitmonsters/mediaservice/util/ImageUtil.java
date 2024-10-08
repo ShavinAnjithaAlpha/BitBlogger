@@ -33,7 +33,7 @@ public class ImageUtil {
         graphics2D.dispose();
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ImageIO.write(resizedImage, Objects.requireNonNull(file.getContentType()), byteArrayOutputStream);
+        ImageIO.write(resizedImage, Objects.requireNonNull(file.getContentType()).split("/")[1], byteArrayOutputStream);
 
         return byteArrayOutputStream;
     }

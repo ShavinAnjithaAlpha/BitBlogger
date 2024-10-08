@@ -61,7 +61,7 @@ public class MediaService {
                             .fileName(imageUtil.getThumbnailFileName(fileRequest.fileName()))
                             .fileUrl(thumbnailUrl)
                             .fileType(multipartFile.getContentType())
-                            .fileSize(((long) byteArrayInputStream.available()))
+                            .fileSize(((long) (byteArrayOutputStream.size())))
                             .checksum(fileUtil.getChecksum(byteArrayInputStream.readAllBytes()))
                             .isThumbnail(true)
                             .build()
