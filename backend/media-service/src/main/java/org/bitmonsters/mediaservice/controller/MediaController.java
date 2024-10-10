@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.MalformedURLException;
+
 @RestController
 @RequestMapping("/api/v1/media")
 @RequiredArgsConstructor
@@ -35,12 +37,13 @@ public class MediaController {
         return mediaService.uploadImageFile(multipartFile, imageRequest);
     }
 
-    @PostMapping("/video")
-    @ResponseStatus(HttpStatus.CREATED)
-    public MediaObject uploadVideo(
-            @RequestParam("file")MultipartFile multipartFile
-    ) {
-        return mediaService.uploadVideoFile(multipartFile);
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteMedia(
+            @ModelAttribute String url
+    ) throws MalformedURLException {
+        mediaService.deleteMedia(url);
     }
+
 
 }

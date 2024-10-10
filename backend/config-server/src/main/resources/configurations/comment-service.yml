@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bitblog_comments
+    username: bitblogger
+    password: bitmonsters
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+
+  flyway:
+    url: jdbc:postgresql://localhost:5432/bitblog_comments
+    user: bitblogger
+    password: bitmonsters
+    driver-class-name: org.postgresql.Driver
+    baseline-version: 1
+    baseline-on-migrate: true
+    baseline-description: "init"
+    enabled: true
+
+    cloud:
+      openfeign:
+        client:
+          config:
+            default:
+              connect-timeout: 5000
+              read-timeout: 5000
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      COMMENT-SERVICE:
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10000
+        sliding-window-size: 10
+
+
+server:
+  port: 9006

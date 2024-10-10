@@ -1,24 +1,20 @@
 package org.bitmonsters.mediaservice.service;
 
-import org.bitmonsters.mediaservice.dto.ExceptionResponse;
+import com.azure.storage.blob.BlobServiceClient;
 import org.bitmonsters.mediaservice.dto.FileRequest;
 import org.bitmonsters.mediaservice.dto.MediaID;
 import org.bitmonsters.mediaservice.dto.MediaObject;
 import org.bitmonsters.mediaservice.exception.StorageException;
-import org.bitmonsters.mediaservice.exception.StorageFileNotFoundException;
 import org.bitmonsters.mediaservice.model.Media;
 import org.bitmonsters.mediaservice.repository.MediaRepository;
 import org.bitmonsters.mediaservice.util.FileUtil;
 import org.bitmonsters.mediaservice.util.ImageUtil;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
 
 @Component
 public class MediaService {
@@ -34,9 +30,9 @@ public class MediaService {
         this.repository = repository;
         this.imageUtil = imageUtil;
         this.mapper = mapper;
+        this.fileUtil = fileUtil;
         // initialize the storage service
         storageService.init();
-        this.fileUtil = fileUtil;
     }
 
     public MediaID uploadImageFile(MultipartFile multipartFile, FileRequest fileRequest) {
@@ -79,10 +75,6 @@ public class MediaService {
         }
     }
 
-    public MediaObject uploadVideoFile(MultipartFile multipartFile) {
-        return null;
-    }
-
     public MediaObject uploadFile(MultipartFile multipartFile, FileRequest fileRequest) {
         try {
             // store the file in the storage service
@@ -102,23 +94,18 @@ public class MediaService {
         }
     }
 
-    @ExceptionHandler(StorageException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ExceptionResponse handleStorageException(StorageException exception) {
-        return ExceptionResponse.builder()
-                .error(exception.getMessage())
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
 
-    @ExceptionHandler(StorageFileNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ExceptionResponse handleStorageFileNotFoundException(StorageFileNotFoundException exception) {
-        return ExceptionResponse.builder()
-                .error(exception.getMessage())
-                .status(HttpStatus.NOT_ACCEPTABLE.getReasonPhrase())
-                .timestamp(LocalDateTime.now())
-                .build();
+    public void deleteMedia(String url) throws MalformedURLException {
+        // get the file name from the url
+        System.out.println(url);
+        String[] urlParts = url.split("/");
+        String fileName = urlParts[urlParts.length - 1];
+        System.out.println(fileName);
+
+        // delete the blob file from the storage service
+        storageService.delete(fileName);
+
+        // remove the file's metadata from the database also
+        repository.deleteByFileUrl(url);
     }
 }
