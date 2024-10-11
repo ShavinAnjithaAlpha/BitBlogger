@@ -129,12 +129,57 @@ The **Poll Service API** handles the poll functionalities like creating a new po
 | **POST**   | `/polls`                        | Add new poll                                                |
 | **PUT**    | `/polls/{pollId}`               | Update the poll                                             |
 | **DELETE** | `/polls/{pollId}`               | Delete the poll                                             |
-| **POST**   | `polls/{pollId}/tags/{tagId}`   | Add tag to the specified poll                               |
+| **POST**   | `/polls/{pollId}/tags/{tagId}`  | Add tag to the specified poll                               |
 | **GET**    | `/polls`                        | Get all the polls                                           |
 | **GET**    | `/polls/{pollId}`               | Get the poll with the specified id                          |
 | **GET**    | `/polls/users/{userId}`         | Get the published polls of the specified user               |
-| **GET**    | `polls/users/me`                | get the polls of the authenticated user                     |
+| **GET**    | `/polls/users/me`               | get the polls of the authenticated user                     |
 | **POST**   | `/polls/{pollId}/answer`        | Add answers to the poll                                     |
 | **GET**    | `/polls/{pollId}/answer/status` | Get whether the answer is correct or not if have the answer |
 | **GET**    | `/polls/{pollId}/results`       | Get the poll results                                        |
-| **GET**    | `polls/{pollId}/results/stat`   | Get the statictics about the poll votes                     |
+| **GET**    | `/polls/{pollId}/results/stat`  | Get the statictics about the poll votes                     |
+
+## Comment Service API
+
+### Overview
+
+The **Comment Service API** handles the comment functionalities like creating a new comment, updating a comment, deleting a comment, getting the comments, getting the comments of a post, reacting to a comment, reply to a comment, reporting a abuse comment etc.
+
+### Endpoints
+
+| Method     | Endpoint                                | Description                                                            |
+| ---------- | --------------------------------------- | ---------------------------------------------------------------------- |
+| **POST**   | `post/{postId}/comments`                | Add new comment                                                        |
+| **GET**    | `/posts/{postId}/comments`              | Get the comments of the specified post                                 |
+| **GET**    | `/posts/{postId}/comments/count`        | Get the total number of comments of the specified post                 |
+| **PUT**    | `/comments/{commentId}`                 | Update the comment                                                     |
+| **DELETE** | `/comments/{commentId}`                 | Delete the comment                                                     |
+| **GET**    | `/comments/{commentId}`                 | Get the comment with the specified id                                  |
+| **POST**   | `/comments/{commentId}/replies`         | Reply to the comment                                                   |
+| **GET**    | `/comments/{commentId}/replies`         | Get the replies of the specified comment                               |
+| **POST**   | `/comments/{commentId}/reactions`       | React to the comment                                                   |
+| **DELETE** | `/comments/{commentId}/reactions`       | Unreact to the comment                                                 |
+| **GET**    | `/comments/{commentId}/reactions`       | Get the reactions of the specified comment                             |
+| **GET**    | `/comments/{commentId}/reactions/me`    | Get the reaction of the authenticated user on the specified comment    |
+| **PUT**    | `/comments/{commentId}/reactions`       | Update the reaction of the authenticated user on the specified comment |
+| **GET**    | `/comments/{commentId}/reactions/count` | Get the total number of reactions of the specified comment             |
+| **GET**    | `/comments/{commentId}/reactions/stats` | Get the reaction count on each reaction type of the specified comment  |
+| **POST**   | `/comments/{commentId}/reports`         | Report the comment                                                     |
+| **GET**    | `/comments/reports`                     | Get the reports on comments (ADMIN ONLY)                               |
+| **GET**    | `/comments/{commentId}/reports`         | Get the reports of the specified comment (ADMIN ONLY)                  |
+
+## Media Service API
+
+### Overveiw
+
+The **Media Service API** handles the media functionalities like uploading a media, getting the media, updating the media, deleting the media etc.
+
+### Endpoints
+
+| Method     | Endpoint       | Description                            |
+| ---------- | -------------- | -------------------------------------- |
+| **POST**   | `/media`       | Upload new media                       |
+| **POST**   | `/media/image` | Upload new image with a thumbnail      |
+| **GET**    | `/media/{id}`  | Get the media with the specified id    |
+| **PUT**    | `/media/{id}`  | Update the media with the specified id |
+| **DELETE** | `/media/{id}`  | Delete the media with the specified id |

@@ -1,4 +1,4 @@
-package org.bitmonsters.commentservice.model.model;
+package org.bitmonsters.commentservice.model;
 
 public enum CommentReportStatus {
     VIOLENT_CONTENT,

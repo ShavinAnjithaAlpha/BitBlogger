@@ -1,11 +1,10 @@
-package org.bitmonsters.commentservice.model.model;
+package org.bitmonsters.commentservice.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bitmonsters.commentservice.model.Comment;
 
 import java.time.LocalDateTime;
 
