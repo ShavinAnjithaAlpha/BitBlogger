@@ -176,10 +176,8 @@ The **Media Service API** handles the media functionalities like uploading a med
 
 ### Endpoints
 
-| Method     | Endpoint       | Description                            |
-| ---------- | -------------- | -------------------------------------- |
-| **POST**   | `/media`       | Upload new media                       |
-| **POST**   | `/media/image` | Upload new image with a thumbnail      |
-| **GET**    | `/media/{id}`  | Get the media with the specified id    |
-| **PUT**    | `/media/{id}`  | Update the media with the specified id |
-| **DELETE** | `/media/{id}`  | Delete the media with the specified id |
+| Method     | Endpoint       | Description                             |
+| ---------- | -------------- | --------------------------------------- |
+| **POST**   | `/media`       | Upload a new file                       |
+| **POST**   | `/media/image` | Upload a new image with a thumbnail     |
+| **DELETE** | `/media`       | Delete the media with the specified url |

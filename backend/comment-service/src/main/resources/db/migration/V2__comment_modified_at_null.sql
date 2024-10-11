@@ -1,0 +1,1 @@
+ALTER TABLE comments ALTER COLUMN modified_at DROP NOT NULL;

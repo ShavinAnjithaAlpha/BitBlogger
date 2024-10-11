@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
@@ -29,6 +31,8 @@ public class CommentReport {
     private Long userId;
 
     @Column(name = "reported_at", nullable = false, updatable = false)
+    @CreatedDate
+    @CreationTimestamp
     private LocalDateTime reportedAt;
 
     @Enumerated(EnumType.STRING)

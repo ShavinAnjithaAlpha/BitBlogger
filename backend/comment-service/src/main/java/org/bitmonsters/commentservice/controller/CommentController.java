@@ -6,6 +6,7 @@ import org.bitmonsters.commentservice.dto.*;
 import org.bitmonsters.commentservice.service.CommentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class CommentController {
 
     @GetMapping("/posts/{postId}/comments")
     public Page<CommentDto> getCommentsOfPost(
-            @RequestParam("postId") String postId,
+            @PathVariable("postId") String postId,
             Pageable page
     ) {
         return commentService.getCommentOfPost(postId, page);
@@ -52,9 +53,10 @@ public class CommentController {
     @PutMapping("/comments/{commentId}")
     public void updateComment(
             @PathVariable("commentId") Long commentId,
-            @RequestHeader("userId") Long userId
+            @RequestHeader("userId") Long userId,
+            @Valid @RequestBody NewCommentDto newCommentDto
     ) {
-        commentService.updateComment(commentId, userId);
+        commentService.updateComment(commentId, userId, newCommentDto);
     }
 
     @DeleteMapping("/comments/{commentId}")
@@ -78,9 +80,10 @@ public class CommentController {
 
     @GetMapping("/comments/{commentId}/replies")
     public Page<CommentDto> getRepliesOfComment(
-            @PathVariable("commentId") Long commentId
+            @PathVariable("commentId") Long commentId,
+            Pageable page
     ) {
-        return commentService.getRepliesOfComment(commentId);
+        return commentService.getRepliesOfComment(commentId, page);
     }
 
     @PostMapping("/comments/{commentId}/reports")
@@ -94,15 +97,16 @@ public class CommentController {
     }
 
     @GetMapping("/comments/reports")
-    public CommentReportDto getReportsOnComment(Pageable page) {
+    public CommentWithReportsDto getReportsOnComment(Pageable page) {
         return commentService.getReportsOnComment(page);
     }
 
     @GetMapping("/comments/{commentId}/reports")
-    public CommentReportDto getReportsByComment(
+    public Slice<CommentReportDto> getReportsByComment(
             @PathVariable("commentId") Long commentId,
-            @RequestHeader("userId") Long userId
+            @RequestHeader("userId") Long userId,
+            Pageable page
     ) {
-        return commentService.getReportsByComment(commentId);
+        return commentService.getReportsByComment(commentId, page);
     }
 }
