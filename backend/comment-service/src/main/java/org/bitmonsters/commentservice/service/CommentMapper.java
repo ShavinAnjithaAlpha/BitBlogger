@@ -26,8 +26,8 @@ public class CommentMapper {
                 .content(comment.getContent())
                 .commentedAt(comment.getCommentedAt())
                 .modifiedAt(comment.getModifiedAt())
-                .replyCount(comment.getReplies().size())
-                .reactionCount(comment.getLikes().size())
+                .replyCount(comment.getReplyCount())
+                .reactionCount(comment.getReactionCount())
                 .build();
     }
 
