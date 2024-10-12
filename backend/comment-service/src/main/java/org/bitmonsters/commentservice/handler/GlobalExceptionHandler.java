@@ -1,6 +1,7 @@
 package org.bitmonsters.commentservice.handler;
 
 import org.bitmonsters.commentservice.exception.CommentException;
+import org.bitmonsters.commentservice.exception.CommentLikeException;
 import org.bitmonsters.commentservice.exception.CommentNotFoundException;
 import org.bitmonsters.commentservice.exception.PostNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -58,6 +59,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CommentException.class)
     public ResponseEntity<ExceptionResponse> handleCommentException(CommentException exception) {
+        return ResponseEntity
+                .status(exception.getStatus())
+                .body(ExceptionResponse.builder()
+                        .error(exception.getMessage())
+                        .status(exception.getStatus())
+                        .timestamp(LocalDateTime.now())
+                        .build());
+    }
+
+    @ExceptionHandler(CommentLikeException.class)
+    public ResponseEntity<ExceptionResponse> handleCommentLikeException(CommentLikeException exception) {
         return ResponseEntity
                 .status(exception.getStatus())
                 .body(ExceptionResponse.builder()

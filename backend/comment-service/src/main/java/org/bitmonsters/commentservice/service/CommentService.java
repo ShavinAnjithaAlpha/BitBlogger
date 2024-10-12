@@ -1,5 +1,6 @@
 package org.bitmonsters.commentservice.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bitmonsters.commentservice.dto.*;
 import org.bitmonsters.commentservice.exception.CommentException;
@@ -79,6 +80,7 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
+    @Transactional
     public void deleteComment(Long commentId, Long userId) {
         var comment = findCommentById(commentId);
         if (!comment.getUserId().equals(userId)) {
@@ -95,6 +97,7 @@ public class CommentService {
         commentRepository.deleteById(commentId);
     }
 
+    @Transactional(Transactional.TxType.REQUIRED)
     public IDResponse addReply(Long commentId, Long userId, NewCommentDto newCommentDto) {
         var comment = findCommentById(commentId);
 

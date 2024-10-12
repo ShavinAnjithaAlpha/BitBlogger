@@ -16,6 +16,8 @@ public class CommentMapper {
                 .postId(postId)
                 .userId(userId)
                 .content(content)
+                .replyCount(0)
+                .reactionCount(0)
                 .build();
     }
 
@@ -37,6 +39,8 @@ public class CommentMapper {
                 .userId(userId)
                 .content(sanitizedContent)
                 .parentComment(comment)
+                .replyCount(0)
+                .reactionCount(0)
                 .build();
     }
 

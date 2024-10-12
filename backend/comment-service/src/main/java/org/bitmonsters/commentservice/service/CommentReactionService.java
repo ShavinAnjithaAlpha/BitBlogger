@@ -1,5 +1,6 @@
 package org.bitmonsters.commentservice.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bitmonsters.commentservice.dto.CommentReactDto;
 import org.bitmonsters.commentservice.dto.CommentReactionStatDto;
@@ -37,10 +38,11 @@ public class CommentReactionService {
     }
 
     public void updateLikeCountInComment(Comment comment, Integer amount) {
-        comment.setReplyCount(comment.getReplyCount() + amount);
+        comment.setReactionCount(comment.getReplyCount() + amount);
         commentRepository.save(comment);
     }
 
+    @Transactional(Transactional.TxType.REQUIRED)
     public void reactToComment(Long commentId, Long userId, NewCommentReactDto newCommentReactDto) {
         // find the comment associated with the like
         var comment = getComment(commentId);
@@ -55,6 +57,7 @@ public class CommentReactionService {
         updateLikeCountInComment(comment, 1);
     }
 
+    @Transactional(Transactional.TxType.REQUIRED)
     public void removeReact(Long commentId, Long userId) {
         var comment = getComment(commentId);
         // find the reaction associated with the user
