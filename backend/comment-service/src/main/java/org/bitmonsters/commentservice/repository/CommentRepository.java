@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
 
-    Page<Comment> findAllByPostId(String postId, Pageable page);
+    Page<Comment> findAllByPostIdAndParentComment(String postId, Comment parentComment, Pageable page);
 
     Long countAllByPostId(String postId);
 

@@ -13,6 +13,7 @@
         <option value="$PROJECT_DIR$/backend/poll-service/pom.xml" />
         <option value="$PROJECT_DIR$/backend/media-service/pom.xml" />
         <option value="$PROJECT_DIR$/backend/comment-service/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/api-gateway/pom.xml" />
       </list>
     </option>
   </component>
