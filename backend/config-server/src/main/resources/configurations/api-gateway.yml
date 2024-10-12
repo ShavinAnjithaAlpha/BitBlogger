@@ -1,0 +1,40 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: user-service
+          uri: lb:http://USER-SERVICE
+          predicates:
+            - Path=/api/v1/users/**
+        - id: tag-service
+          uri: lb:http://TAG-SERVICE
+          predicates:
+            - Path=/api/v1/tags/**
+        - id: topic-service
+          uri: lb:http://TOPIC-SERVICE
+          predicates:
+            - Path=/api/v1/topics/**
+        - id: poll-service
+          uri: lb:http://POLL-SERVICE
+          predicates:
+            - Path=/api/v1/polls/**
+        - id: like-service
+          uri: lb:http://LIKE-SERVICE
+          predicates:
+            - Path=/api/v1/likes/**
+        - id: media-service
+          uri: lb:http://MEDIA-SERVICE
+          predicates:
+            - Path=/api/v1/media/**
+        - id: comment-service
+          uri: lb:http://COMMENT-SERVICE
+          predicates:
+            - Path=/api/v1/comments/**
+            - Path=/api/v1/posts/{postId}/comments/**
+
+
+server:
+  port: 9999

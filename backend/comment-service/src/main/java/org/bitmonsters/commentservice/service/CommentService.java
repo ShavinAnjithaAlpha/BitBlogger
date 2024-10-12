@@ -48,7 +48,7 @@ public class CommentService {
     }
 
     public Page<CommentDto> getCommentOfPost(String postId, Pageable page) {
-        return commentRepository.findAllByPostId(postId, page)
+        return commentRepository.findAllByPostIdAndParentComment(postId, null, page)
                 .map(mapper::toCommentDto);
     }
 
