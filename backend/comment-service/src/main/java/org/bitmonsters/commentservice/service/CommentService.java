@@ -80,16 +80,35 @@ public class CommentService {
     }
 
     public void deleteComment(Long commentId, Long userId) {
+        var comment = findCommentById(commentId);
+        if (!comment.getUserId().equals(userId)) {
+            throw new CommentException(String.format("user with %d is not authorized to delete comment with id %d", userId, commentId), HttpStatus.FORBIDDEN);
+        }
+
+        // if it is a reply then decrease the reply count of the parent comment
+        if (comment.getParentComment() != null) {
+            var parentComment = comment.getParentComment();
+            parentComment.setReplyCount(parentComment.getReplyCount() - 1);
+            commentRepository.save(parentComment);
+        }
+        // delete the comment
         commentRepository.deleteById(commentId);
     }
 
     public IDResponse addReply(Long commentId, Long userId, NewCommentDto newCommentDto) {
         var comment = findCommentById(commentId);
+
         // check whether if the given comment has a parent and if had, change the parent comment to it
         var parentComment = comment.getParentComment() != null ? comment.getParentComment() : comment;
+
         // sanitize the comment content
         String sanitizedContent = sanitizationService.sanitizeInput(newCommentDto.content());
         var reply = commentRepository.save(mapper.toReply(parentComment, userId, sanitizedContent));
+
+        // increase the reply count of the parent comment
+        comment.setReplyCount(comment.getReplyCount() + 1);
+        commentRepository.save(comment);
+
         // return the ID of the reply
         return new IDResponse(reply.getId());
     }

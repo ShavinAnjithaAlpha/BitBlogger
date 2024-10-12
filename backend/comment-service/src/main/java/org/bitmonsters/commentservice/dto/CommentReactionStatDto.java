@@ -7,6 +7,7 @@ import java.util.Map;
 
 @Builder
 public record CommentReactionStatDto(
-        Map<LikeStatus, Long> count
+        Map<LikeStatus, Long> count,
+        Long totalCount
 ) {
 }

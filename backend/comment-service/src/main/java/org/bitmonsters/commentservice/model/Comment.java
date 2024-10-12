@@ -45,6 +45,12 @@ public class Comment {
     @JoinColumn(name = "parent_id", nullable = true)
     private Comment parentComment;
 
+    @Column(name = "reply_count")
+    private Integer replyCount;
+
+    @Column(name = "reaction_count")
+    private Integer reactionCount;
+
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
     private List<Comment> replies;
 
