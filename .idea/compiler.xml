@@ -15,6 +15,7 @@
         <module name="topic-service" />
         <module name="like-service" />
         <module name="media-service" />
+        <module name="auth-server" />
         <module name="api-gateway" />
         <module name="user-service" />
       </profile>
@@ -23,6 +24,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
+      <module name="auth-server" options="-parameters" />
       <module name="comment-service" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
