@@ -1,4 +1,4 @@
-package org.bitmonsters.authserver;
+package org.bitmonsters.authserver.service;
 
 import org.springframework.stereotype.Service;
 

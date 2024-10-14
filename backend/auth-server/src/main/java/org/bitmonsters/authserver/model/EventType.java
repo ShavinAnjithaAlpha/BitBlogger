@@ -5,5 +5,6 @@ public enum EventType {
     LOGOUT,
     LOGIN_FAILURE,
     PASSWORD_RESET,
-    USER_CREATED
+    USER_CREATED,
+    EMAIL_VERIFIED
 }

@@ -1,0 +1,2 @@
+INSERT INTO roles(name, description) VALUES ('GENARAL', 'general user with default permissions');
+INSERT INTO roles(name, description) VALUES ('ADMIN', 'admin user with elevated privileges and permissions');

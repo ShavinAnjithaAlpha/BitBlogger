@@ -22,5 +22,9 @@ spring:
     baseline-description: "init"
     baseline-on-migrate: true
 
+  mail:
+    email: ${MAILTRAP_DEV_EMAIL_ID}
+    password: ${MAILTRAP_DEV_EMAIL_PASSWORD}
+
 server:
   port: 9998

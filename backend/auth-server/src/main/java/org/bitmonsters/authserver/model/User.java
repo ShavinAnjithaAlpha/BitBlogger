@@ -32,9 +32,6 @@ public class User {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @Column(name = "salt", nullable = false)
-    private String salt;
-
     @Column(name = "hashing_algorithm", nullable = false)
     @Enumerated(EnumType.STRING)
     private HashingAlgorithm hashingAlgorithm;
@@ -58,6 +55,9 @@ public class User {
 
     @Column(name = "locked")
     private Boolean locked;
+
+    @Column(name = "locked_at")
+    private LocalDateTime lockedAt;
 
     @Column(name = "failure_login_attempts")
     private Integer failureLoginAttempts;
