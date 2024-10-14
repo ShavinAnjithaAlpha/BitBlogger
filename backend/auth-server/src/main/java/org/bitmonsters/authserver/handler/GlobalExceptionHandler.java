@@ -2,7 +2,8 @@ package org.bitmonsters.authserver.handler;
 
 import lombok.RequiredArgsConstructor;
 import org.bitmonsters.authserver.exception.AuthException;
-import org.bitmonsters.authserver.model.AuditLog;
+import org.bitmonsters.authserver.exception.UserAlreadyExistsException;
+import org.bitmonsters.authserver.exception.UserNotFoundException;
 import org.bitmonsters.authserver.repository.AuditLogRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.security.auth.login.AccountLockedException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
@@ -40,6 +42,26 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(errors);
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ExceptionResponse handleUserNotFoundException(UserNotFoundException exception) {
+        return ExceptionResponse.builder()
+                .error(exception.getMessage())
+                .status(HttpStatus.NOT_FOUND)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse handleUserAlreadyExistsException(UserAlreadyExistsException exception) {
+        return ExceptionResponse.builder()
+                .error(exception.getMessage())
+                .status(HttpStatus.BAD_REQUEST)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
     @ExceptionHandler(AuthException.class)
     public ResponseEntity<ExceptionResponse> handleAuthException(AuthException exception) {
         // create an audit log of what happened
@@ -52,6 +74,16 @@ public class GlobalExceptionHandler {
                         .timestamp(LocalDateTime.now())
                         .description(exception.getDescription())
                         .build());
+    }
+
+    @ExceptionHandler(AccountLockedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ExceptionResponse handleAccountLockedException(AccountLockedException exception) {
+        return ExceptionResponse.builder()
+                .error(exception.getMessage())
+                .status(HttpStatus.FORBIDDEN)
+                .timestamp(LocalDateTime.now())
+                .build();
     }
 
 

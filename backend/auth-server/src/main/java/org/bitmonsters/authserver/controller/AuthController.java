@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.auth.login.AccountLockedException;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -45,18 +47,20 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     public void sendResetPasswordLink(
             @Valid @RequestBody PasswordResetRequest passwordResetRequest
-    ) {
+    ) throws AccountLockedException {
         // send the password reset link to the email
+        authService.resetPassword(passwordResetRequest);
 
     }
 
-    @GetMapping("/password/reset")
+    @PostMapping("/password/reset/confirmed")
     @ResponseStatus(HttpStatus.OK)
     public void resetPassword(
             @RequestParam("email") String email,
-            @RequestParam("code") String code
+            @RequestParam("code") String code,
+            @Valid @RequestBody PasswordResetConfirmedRequest passwordResetConfirmedRequest
     ) {
-        // reset the password
+        authService.changePassword(email, code, passwordResetConfirmedRequest.password());
     }
 
 }

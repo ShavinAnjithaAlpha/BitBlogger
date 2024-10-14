@@ -3,17 +3,19 @@ package org.bitmonsters.authserver.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bitmonsters.authserver.dto.IDResponse;
+import org.bitmonsters.authserver.dto.PasswordResetRequest;
 import org.bitmonsters.authserver.dto.UserRegistrationRequest;
 import org.bitmonsters.authserver.exception.AuthException;
 import org.bitmonsters.authserver.exception.UserAlreadyExistsException;
+import org.bitmonsters.authserver.exception.UserNotFoundException;
 import org.bitmonsters.authserver.model.AccountStatus;
 import org.bitmonsters.authserver.model.EventType;
-import org.bitmonsters.authserver.repository.AuditLogRepository;
-import org.bitmonsters.authserver.repository.EmailVerificationTokenRepository;
-import org.bitmonsters.authserver.repository.RoleRepository;
-import org.bitmonsters.authserver.repository.UserRepository;
+import org.bitmonsters.authserver.model.PasswordResetToken;
+import org.bitmonsters.authserver.repository.*;
+import org.bitmonsters.authserver.util.PasswordUtil;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.AccountLockedException;
 import java.time.LocalDateTime;
 
 @Service
@@ -24,8 +26,10 @@ public class AuthService {
     private final EmailVerificationTokenRepository emailVerificationTokenRepository;
     private final RoleRepository roleRepository;
     private final UserMapper mapper;
+    private final PasswordUtil passwordUtil;
     private final AuditLogRepository auditLogRepository;
     private final MailTrapEmailServiceImpl emailService;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     public boolean isUserExists(String username, String email) {
         boolean userExistsByEmail = userRepository.findByEmail(email).isPresent();
@@ -99,5 +103,63 @@ public class AuthService {
         } else {
             throw new AuthException(String.format(String.format("Bad verification code: %s", email)));
         }
+    }
+
+    @Transactional(Transactional.TxType.REQUIRED)
+    public void resetPassword(PasswordResetRequest passwordResetRequest) throws AccountLockedException {
+        // first check whether if the email associated with a user account in the system
+        var user = userRepository.findByEmail(passwordResetRequest.email());
+        if (user.isEmpty())
+            throw new UserNotFoundException(String.format("user with email %s is not found", passwordResetRequest.email()));
+
+        // check whether if the account is locked
+        if (user.get().getLocked())
+            throw new AccountLockedException(String.format("account locked: %s", user.get().getEmail()));
+
+        // generate a password reset token
+        PasswordResetToken passwordToken = passwordResetTokenRepository.save(mapper.toPasswordResetToken(user.get()));
+
+        // if the user exists send the reset email
+        emailService.sendPasswordResetEmail(passwordResetRequest.email(), passwordToken);
+
+        // create an audit log of resetting the password
+        auditLogRepository.save(mapper.toAuditLog(user.get(), EventType.PASSWORD_RESET_REQUEST, String.format("user with email %s is request a password reset", passwordResetRequest.email())));
+    }
+
+    @Transactional(Transactional.TxType.REQUIRED)
+    public void changePassword(String email, String code, String newPassword) {
+        // first check whether if the user exists in the system
+        var user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException(String.format("user with email %s is not found", email));
+        }
+
+        // otherwise check the password reset code and validate it
+        var passwordResetRecord = passwordResetTokenRepository.findByUser(user.get());
+        if (passwordResetRecord.isEmpty())
+            throw new AuthException(String.format("password reset token is not found: %s", email));
+
+        // match the password reset token
+        if (!code.equals(passwordResetRecord.get().getToken()))
+            throw new AuthException(String.format("password reset token is invalid: %s", email));
+
+        // check whether password reset token is expired or not
+        if (passwordResetRecord.get().getExpiresAt().isBefore(LocalDateTime.now())) {
+            // delete the password reset token record from the database
+            passwordResetTokenRepository.delete(passwordResetRecord.get());
+            throw new AuthException(String.format("password reset token is expired: %s", email));
+        }
+
+        // reset the password
+        user.get().setPasswordHash(passwordUtil.hashPassword(newPassword));
+        user.get().setModifiedAt(LocalDateTime.now());
+        userRepository.save(user.get());
+
+        // delete the password reset token
+        passwordResetTokenRepository.delete(passwordResetRecord.get());
+
+        // create an audit log of resetting the password
+        auditLogRepository.save(mapper.toAuditLog(user.get(), EventType.PASSWORD_RESET, String.format("user with email %s is reset the password", email)));
+
     }
 }

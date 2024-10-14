@@ -92,7 +92,7 @@ public class MailTrapEmailServiceImpl implements EmailService {
         // create the template model for the email we are sending
         Map<String, Object> templateModel = new HashMap<>();
         templateModel.put(
-                "verificationUrl",
+                "resetUrl",
                 String.format("http://localhost:9998/api/v1/auth/password/reset?email=%s&code=%s",
                         passwordResetToken.getUser().getEmail(),
                         passwordResetToken.getToken()));

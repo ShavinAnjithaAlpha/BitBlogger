@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +42,14 @@ public class UserMapper {
 
     public EmailVerificationToken toEmailVerificationToken(User user) {
         return EmailVerificationToken.builder()
+                .user(user)
+                .token(tokenGenerator.generateRandomToken())
+                .expiresAt(LocalDateTime.now().plusHours(1))
+                .build();
+    }
+
+    public PasswordResetToken toPasswordResetToken(User user) {
+        return PasswordResetToken.builder()
                 .user(user)
                 .token(tokenGenerator.generateRandomToken())
                 .expiresAt(LocalDateTime.now().plusHours(1))
