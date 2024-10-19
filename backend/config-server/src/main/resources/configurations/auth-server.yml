@@ -29,7 +29,7 @@ spring:
 security:
   jwt:
     secret-key: 43b61073dc82e442ef7d7ddfc7cfed2a5e8ba7f5181ae57d962e93f71656bc33
-    expiration-time: 5000
+    expiration-time: 5000000
 
 server:
   port: 9998
