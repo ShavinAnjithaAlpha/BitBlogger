@@ -2,9 +2,7 @@ package org.bitmonsters.authserver.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.bitmonsters.authserver.dto.IDResponse;
-import org.bitmonsters.authserver.dto.PasswordResetRequest;
-import org.bitmonsters.authserver.dto.UserRegistrationRequest;
+import org.bitmonsters.authserver.dto.*;
 import org.bitmonsters.authserver.exception.AuthException;
 import org.bitmonsters.authserver.exception.UserAlreadyExistsException;
 import org.bitmonsters.authserver.exception.UserNotFoundException;
@@ -12,7 +10,10 @@ import org.bitmonsters.authserver.model.AccountStatus;
 import org.bitmonsters.authserver.model.EventType;
 import org.bitmonsters.authserver.model.PasswordResetToken;
 import org.bitmonsters.authserver.repository.*;
-import org.bitmonsters.authserver.util.PasswordUtil;
+import org.bitmonsters.authserver.util.JwtUtil;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.AccountLockedException;
@@ -26,10 +27,12 @@ public class AuthService {
     private final EmailVerificationTokenRepository emailVerificationTokenRepository;
     private final RoleRepository roleRepository;
     private final UserMapper mapper;
-    private final PasswordUtil passwordUtil;
+    private final PasswordEncoder passwordEncoder;
     private final AuditLogRepository auditLogRepository;
     private final MailTrapEmailServiceImpl emailService;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
     public boolean isUserExists(String username, String email) {
         boolean userExistsByEmail = userRepository.findByEmail(email).isPresent();
@@ -40,15 +43,16 @@ public class AuthService {
 
     @Transactional(Transactional.TxType.REQUIRED)
     public void registerUser(UserRegistrationRequest userRegistrationRequest) {
-        // create a user record in the database with email verification pending status
-        // default user role is GENERAL USER
-        var user = userRepository.save(mapper.toPendingUser(userRegistrationRequest));
-
+        // check the validity of the email and username
         if (isUserExists(userRegistrationRequest.username(), userRegistrationRequest.email())) {
             throw new UserAlreadyExistsException(
                     String.format("user with username %s or email %s is already registered",
                     userRegistrationRequest.name(), userRegistrationRequest.email()));
         }
+
+        // create a user record in the database with email verification pending status
+        // default user role is GENERAL USER
+        var user = userRepository.save(mapper.toPendingUser(userRegistrationRequest));
 
         // generate an email verification code for the verification process
         var emailVerificationToken = emailVerificationTokenRepository.save(
@@ -151,7 +155,7 @@ public class AuthService {
         }
 
         // reset the password
-        user.get().setPasswordHash(passwordUtil.hashPassword(newPassword));
+        user.get().setPasswordHash(passwordEncoder.encode(newPassword));
         user.get().setModifiedAt(LocalDateTime.now());
         userRepository.save(user.get());
 
@@ -161,5 +165,26 @@ public class AuthService {
         // create an audit log of resetting the password
         auditLogRepository.save(mapper.toAuditLog(user.get(), EventType.PASSWORD_RESET, String.format("user with email %s is reset the password", email)));
 
+    }
+
+    @Transactional(Transactional.TxType.REQUIRED)
+    public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
+        // authenticate the credentials using the authentication manager
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        authenticationRequest.email(),
+                        authenticationRequest.password()
+                )
+        );
+
+        // find the user by email
+        var user = userRepository.findByEmail(authenticationRequest.email()).orElseThrow();
+
+        // generate a jwt token
+        String jwtToken = jwtUtil.generateToken(user.getId());
+        // return the response with the generated jwt token
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
     }
 }

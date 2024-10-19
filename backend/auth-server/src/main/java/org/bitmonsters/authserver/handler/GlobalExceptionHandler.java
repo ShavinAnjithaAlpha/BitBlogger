@@ -1,12 +1,15 @@
 package org.bitmonsters.authserver.handler;
 
+import jakarta.ws.rs.ForbiddenException;
 import lombok.RequiredArgsConstructor;
+import org.bitmonsters.authserver.exception.AccountDisabledException;
 import org.bitmonsters.authserver.exception.AuthException;
 import org.bitmonsters.authserver.exception.UserAlreadyExistsException;
 import org.bitmonsters.authserver.exception.UserNotFoundException;
 import org.bitmonsters.authserver.repository.AuditLogRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -79,6 +82,36 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccountLockedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ExceptionResponse handleAccountLockedException(AccountLockedException exception) {
+        return ExceptionResponse.builder()
+                .error(exception.getMessage())
+                .status(HttpStatus.FORBIDDEN)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ExceptionResponse handleForbiddenException(ForbiddenException exception) {
+        return ExceptionResponse.builder()
+                .error(exception.getMessage())
+                .status(HttpStatus.FORBIDDEN)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler(AccountDisabledException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ExceptionResponse handleAccountDisabledException(AccountDisabledException exception) {
+        return ExceptionResponse.builder()
+                .error(exception.getMessage())
+                .status(HttpStatus.FORBIDDEN)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ExceptionResponse handleBadCredentialsException(BadCredentialsException exception) {
         return ExceptionResponse.builder()
                 .error(exception.getMessage())
                 .status(HttpStatus.FORBIDDEN)

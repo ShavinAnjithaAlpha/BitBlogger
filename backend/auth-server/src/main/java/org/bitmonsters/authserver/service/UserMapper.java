@@ -5,20 +5,18 @@ import org.bitmonsters.authserver.dto.UserRegistrationRequest;
 import org.bitmonsters.authserver.model.*;
 import org.bitmonsters.authserver.util.PasswordUtil;
 import org.bitmonsters.authserver.util.TokenGenerator;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserMapper {
 
-    private final PasswordUtil passwordUtil;
     private final TokenGenerator tokenGenerator;
+    private final PasswordUtil passwordUtil;
 
 
     public User toPendingUser(UserRegistrationRequest userRegistrationRequest) {

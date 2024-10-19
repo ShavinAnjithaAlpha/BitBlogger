@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.bitmonsters.authserver.dto.*;
 import org.bitmonsters.authserver.service.AuthService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.AccountLockedException;
@@ -31,7 +30,7 @@ public class AuthController {
             @Valid @RequestBody AuthenticationRequest authenticationRequest
             ) {
         // handle the user authentication login
-        return null;
+        return authService.login(authenticationRequest);
     }
 
     @GetMapping("/register/email/confirm")
