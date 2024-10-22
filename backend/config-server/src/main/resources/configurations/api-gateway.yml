@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     gateway:
       discovery:
@@ -35,6 +37,10 @@ spring:
             - Path=/api/v1/comments/**
             - Path=/api/v1/posts/{postId}/comments/**
 
+security:
+  jwt:
+    secret-key: 43b61073dc82e442ef7d7ddfc7cfed2a5e8ba7f5181ae57d962e93f71656bc33
+    expiration-time: 5000
 
 server:
   port: 9999

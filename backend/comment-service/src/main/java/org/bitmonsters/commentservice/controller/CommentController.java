@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,9 +24,9 @@ public class CommentController {
     public IDResponse addComment(
             @PathVariable("postId") String postId,
             @Valid @RequestBody NewCommentDto newCommentDto,
-            @RequestHeader("userId") Long userId
+            Authentication authentication
     ) {
-        return commentService.addComment(postId, userId, newCommentDto);
+        return commentService.addComment(postId, (Long) authentication.getPrincipal(), newCommentDto);
     }
 
     @GetMapping("/posts/{postId}/comments")
@@ -53,29 +54,29 @@ public class CommentController {
     @PutMapping("/comments/{commentId}")
     public void updateComment(
             @PathVariable("commentId") Long commentId,
-            @RequestHeader("userId") Long userId,
+            Authentication authentication,
             @Valid @RequestBody NewCommentDto newCommentDto
     ) {
-        commentService.updateComment(commentId, userId, newCommentDto);
+        commentService.updateComment(commentId, (Long) authentication.getPrincipal(), newCommentDto);
     }
 
     @DeleteMapping("/comments/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteComment(
             @PathVariable("commentId") Long commentId,
-            @RequestHeader("userId") Long userId
+            Authentication authentication
     ) {
-        commentService.deleteComment(commentId, userId);
+        commentService.deleteComment(commentId, (Long) authentication.getPrincipal());
     }
 
     @PostMapping("/comments/{commentId}/replies")
     @ResponseStatus(HttpStatus.CREATED)
     public IDResponse addReply(
             @PathVariable("commentId") Long commentId,
-            @RequestHeader("userId") Long userId,
+            Authentication authentication,
             @Valid @RequestBody NewCommentDto newCommentDto
     ) {
-        return commentService.addReply(commentId, userId, newCommentDto);
+        return commentService.addReply(commentId, (Long) authentication.getPrincipal(), newCommentDto);
     }
 
     @GetMapping("/comments/{commentId}/replies")
@@ -90,10 +91,10 @@ public class CommentController {
     @ResponseStatus(HttpStatus.CREATED)
     public void reportComment(
             @PathVariable("commentId") Long commentId,
-            @RequestHeader("userId") Long userId,
+            Authentication authentication,
             @Valid @RequestBody NewCommentReportDto newCommentReportDto
     ) {
-        commentService.reportComment(commentId, userId, newCommentReportDto);
+        commentService.reportComment(commentId, (Long) authentication.getPrincipal(), newCommentReportDto);
     }
 
     @GetMapping("/comments/reports")
@@ -104,7 +105,6 @@ public class CommentController {
     @GetMapping("/comments/{commentId}/reports")
     public Slice<CommentReportDto> getReportsByComment(
             @PathVariable("commentId") Long commentId,
-            @RequestHeader("userId") Long userId,
             Pageable page
     ) {
         return commentService.getReportsByComment(commentId, page);

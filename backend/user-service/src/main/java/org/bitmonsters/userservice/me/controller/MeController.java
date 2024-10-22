@@ -11,6 +11,7 @@ import org.bitmonsters.userservice.user.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,75 +24,75 @@ public class MeController {
     private final FollowerService followerService;
 
     @GetMapping
-    public UserResponse getAuthenticatedUser(@RequestHeader(name = "userId") Long userId) {
-        return userService.getUser(userId);
+    public UserResponse getAuthenticatedUser(Authentication authentication) {
+        return userService.getUser((Long) authentication.getPrincipal());
     }
 
     @PutMapping
-    public ResponseEntity<MessageResponse> updateAuthenticatedUser(@RequestHeader(name = "userId") Long userId,
+    public ResponseEntity<MessageResponse> updateAuthenticatedUser(Authentication authentication,
                                                                    @Validated @RequestBody UserUpdateDto userUpdateDto) {
-        userService.updateUser(userId, userUpdateDto);
+        userService.updateUser((Long) authentication.getPrincipal(), userUpdateDto);
         return ResponseEntity.ok(new MessageResponse("profile updated successfully"));
     }
 
     @DeleteMapping
-    public ResponseEntity<MessageResponse> deleteAuthenticatedUSer(@RequestHeader(name = "userId") Long userId) {
-        userService.deleteUser(userId);
+    public ResponseEntity<MessageResponse> deleteAuthenticatedUSer(Authentication authentication) {
+        userService.deleteUser((Long) authentication.getPrincipal());
         return ResponseEntity.ok(new MessageResponse("user deleted successfully"));
     }
 
     @PostMapping("/follow")
-    public ResponseEntity<MessageResponse> followUser(@RequestHeader(name = "userId") Long userId,
+    public ResponseEntity<MessageResponse> followUser(Authentication authentication,
                                              @RequestBody UserFollowDto userFollowDto) {
-        followerService.createFollower(userId, userFollowDto.followerId());
+        followerService.createFollower((Long) authentication.getPrincipal(), userFollowDto.followerId());
         return ResponseEntity.ok(new MessageResponse("follower added successfully"));
     }
 
     @DeleteMapping("/follow")
-    public ResponseEntity<MessageResponse> unfollowUser(@RequestHeader(name = "userId") Long userId,
+    public ResponseEntity<MessageResponse> unfollowUser(Authentication authentication,
                                                @RequestBody UserFollowDto userFollowDto) {
-        followerService.unfollowUser(userId, userFollowDto.followerId());
+        followerService.unfollowUser((Long) authentication.getPrincipal(), userFollowDto.followerId());
         return ResponseEntity.ok(new MessageResponse("unfollow the user successfully"));
     }
 
     @GetMapping("/follow")
     public Page<?> getFollowedUsers(
-            @RequestHeader(name = "userId") Long userId,
+            Authentication authentication,
             @RequestParam(name = "detailed", defaultValue = "0") boolean detailed,
             Pageable page) {
-        return followerService.getFollowedUsers(userId, page, detailed);
+        return followerService.getFollowedUsers((Long) authentication.getPrincipal(), page, detailed);
     }
 
     @GetMapping("/followings")
     public Page<?> getFollowingUsers(
-            @RequestHeader(name = "userId") Long userId,
+            Authentication authentication,
             @RequestParam(name = "detailed", defaultValue = "0") Boolean detailed,
             Pageable page) {
-        return followerService.getFollowingUsers(userId, page, detailed);
+        return followerService.getFollowingUsers((Long) authentication.getPrincipal(), page, detailed);
     }
 
     @PutMapping("/email/display")
     public MessageResponse setEmailAsPublic(
-            @RequestHeader("userId") Long userId
+            Authentication authentication
     ) {
-        userService.makeEmailPublic(userId);
+        userService.makeEmailPublic((Long) authentication.getPrincipal());
         return new MessageResponse("email set as public");
     }
 
     @PutMapping("/email/hide")
     public MessageResponse setEmailAsPrivate(
-            @RequestHeader("userId") Long userId
+            Authentication authentication
     ) {
-        userService.makeEmailPrivate(userId);
+        userService.makeEmailPrivate((Long) authentication.getPrincipal());
         return new MessageResponse("email set as private");
     }
 
     @PostMapping("/reports")
     public MessageResponse reportUser(
-            @RequestHeader("userId") Long userId,
+            Authentication authentication,
             @Validated @RequestBody UserReportDto reportDto
     ) {
-        userService.reportUser(userId, reportDto);
+        userService.reportUser((Long) authentication.getPrincipal(), reportDto);
         return new MessageResponse(String.format("user with id %d reported successfully", reportDto.userId()));
     }
 

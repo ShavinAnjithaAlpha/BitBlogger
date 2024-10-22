@@ -6,6 +6,7 @@ import org.bitmonsters.userservice.link.service.UserLinkService;
 import org.bitmonsters.userservice.dto.MessageResponse;
 import org.bitmonsters.userservice.dto.IdResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,20 +19,20 @@ public class LinksController {
 
     @PostMapping
     public ResponseEntity<IdResponse> addUserLink(
-            @RequestHeader(name = "userId") Long userId,
+            Authentication authentication,
             @Validated @RequestBody UserLinkDto userLinkDto
     ) {
-        var link = linkService.addUserLink(userId, userLinkDto);
+        var link = linkService.addUserLink((Long) authentication.getPrincipal(), userLinkDto);
         return ResponseEntity.ok(link);
     }
 
     @PutMapping("/{linkId}")
     public ResponseEntity<MessageResponse> updateUserLink(
-            @RequestHeader("userId") Long userId,
+            Authentication authentication,
             @PathVariable("linkId") Long linkId,
             @RequestBody UserLinkDto userLinkDto
     ) {
-        linkService.updateUserLink(linkId, userId, userLinkDto);
+        linkService.updateUserLink(linkId, (Long) authentication.getPrincipal(), userLinkDto);
         return ResponseEntity.ok(new MessageResponse("user link updated successfully"));
     }
 

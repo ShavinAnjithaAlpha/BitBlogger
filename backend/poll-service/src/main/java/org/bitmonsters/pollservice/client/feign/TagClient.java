@@ -26,7 +26,7 @@ public interface TagClient {
                         .build();
     }
 
-    default List<String> fallbackGetTagAsBatch(List<Integer> tagIds) {
+    default List<String> fallbackGetTagAsBatch(Throwable throwable) {
         return new ArrayList<>(0);
     }
 

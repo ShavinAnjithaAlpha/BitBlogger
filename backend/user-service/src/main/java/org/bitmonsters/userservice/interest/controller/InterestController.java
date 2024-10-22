@@ -5,6 +5,7 @@ import org.bitmonsters.userservice.dto.IdResponse;
 import org.bitmonsters.userservice.dto.MessageResponse;
 import org.bitmonsters.userservice.interest.dto.NewInterestDto;
 import org.bitmonsters.userservice.interest.service.InterestService;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +20,9 @@ public class InterestController {
 
     @PostMapping
     public IdResponse addInterest(
-            @RequestHeader("userId") Long userId,
+            Authentication authentication,
             @Validated @RequestBody NewInterestDto newInterestDto) {
-        var interest = service.addInterest(userId, newInterestDto);
+        var interest = service.addInterest((Long) authentication.getPrincipal(), newInterestDto);
         return new IdResponse(
                 interest.getId(),
                 "interest added successfully"
@@ -30,17 +31,17 @@ public class InterestController {
 
     @GetMapping
     public List<Integer> getAllInterestOfAuthenticatedUser(
-            @RequestHeader("userId") Long userId
+            Authentication authentication
     ) {
-        return service.getInterestOfUser(userId);
+        return service.getInterestOfUser((Long) authentication.getPrincipal());
     }
 
     @DeleteMapping("/{tagId}")
     public MessageResponse removeInterest(
-            @RequestHeader("userId") Long userId,
+            Authentication authentication,
             @PathVariable("tagId") Integer tagId
     ) {
-        service.removeInterest(userId, tagId);
+        service.removeInterest((Long) authentication.getPrincipal(), tagId);
         return new MessageResponse("interest removed successfully");
     }
 

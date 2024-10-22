@@ -9,6 +9,7 @@ import org.bitmonsters.commentservice.service.CommentReactionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,19 +23,19 @@ public class ReactionController {
     @ResponseStatus(HttpStatus.CREATED)
     public void reactToComment(
             @PathVariable("commentId") Long commentId,
-            @RequestHeader("userId") Long userId,
+            Authentication authentication,
             @Valid  @RequestBody NewCommentReactDto newCommentReactDto
     ) {
-        reactionService.reactToComment(commentId, userId, newCommentReactDto);
+        reactionService.reactToComment(commentId, (Long) authentication.getPrincipal(), newCommentReactDto);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeReact(
             @PathVariable("commentId") Long commentId,
-            @RequestHeader("userId") Long userId
+            Authentication authentication
     ) {
-        reactionService.removeReact(commentId, userId);
+        reactionService.removeReact(commentId, (Long) authentication.getPrincipal());
     }
 
     @GetMapping
@@ -48,18 +49,18 @@ public class ReactionController {
     @GetMapping("/me")
     public Boolean isReactToComment(
             @PathVariable("commentId") Long commentId,
-            @RequestHeader("userId") Long userId
+            Authentication authentication
     ) {
-        return reactionService.isReactToComment(commentId, userId);
+        return reactionService.isReactToComment(commentId, (Long) authentication.getPrincipal());
     }
 
     @PutMapping
     public void updateCommentReact(
             @PathVariable("commentId") Long commentId,
-            @RequestHeader("userId") Long userId,
+            Authentication authentication,
             @Valid @RequestBody NewCommentReactDto newCommentReactDto
     ) {
-        reactionService.updateCommentReact(commentId, userId, newCommentReactDto);
+        reactionService.updateCommentReact(commentId, (Long) authentication.getPrincipal(), newCommentReactDto);
     }
 
     @GetMapping("/count")

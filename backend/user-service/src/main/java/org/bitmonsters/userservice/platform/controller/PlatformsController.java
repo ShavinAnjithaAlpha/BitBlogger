@@ -5,13 +5,14 @@ import org.bitmonsters.userservice.platform.dto.NewPlatformDto;
 import org.bitmonsters.userservice.platform.dto.PlatformDto;
 import org.bitmonsters.userservice.platform.service.PlatformService;
 import org.bitmonsters.userservice.dto.IdResponse;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users/platforms")
+@RequestMapping("/api/v1/users/links/platforms")
 @RequiredArgsConstructor
 public class PlatformsController {
 
