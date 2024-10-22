@@ -62,16 +62,16 @@ The **Like Service API** handles the like functionalities like liking a post, un
 
 ### Endpoints
 
-| Method     | Endpoint                | Description                                              |
-| ---------- | ----------------------- | -------------------------------------------------------- |
-| **POST**   | `/likes/{postId}`       | Like a post                                              |
-| **DELETE** | `/likes/{postId}`       | Unlike a post                                            |
-| **GET**    | `/likes/{postId}`       | Get the likes of a post                                  |
-| **GET**    | `/likes/me`             | Get the likes of the authenticated user                  |
-| **GET**    | `/likes/me/{postId}`    | Check if the authenticated user liked the post           |
-| **GET**    | `/likes/me/count`       | Get the total number of likes of the authenticated user  |
-| **GET**    | `/likes/count/{postId}` | Get the total number of likes of the post                |
-| **GET**    | `/likes/global/count`   | Get the total number of likes in the system (ADMIN ONLY) |
+| Method     | Endpoint                      | Description                                              |
+| ---------- | ----------------------------- | -------------------------------------------------------- |
+| **POST**   | `/posts/{postId}/likes`       | Like a post                                              |
+| **DELETE** | `/posts/{postId}/likes`       | Unlike a post                                            |
+| **GET**    | `/posts/{postId}/likes`       | Get the likes of a post                                  |
+| **GET**    | `/likes/me`                   | Get the likes of the authenticated user                  |
+| **GET**    | `/posts/{postId}/likes/me`    | Check if the authenticated user liked the post           |
+| **GET**    | `/likes/me/count`             | Get the total number of likes of the authenticated user  |
+| **GET**    | `/posts/{postId}/likes/count` | Get the total number of likes of the post                |
+| **GET**    | `/likes/global/count`         | Get the total number of likes in the system (ADMIN ONLY) |
 
 ## Topic Service API
 
@@ -90,7 +90,7 @@ The **Topic Service API** handles the topic functionalities like creating a new 
 | **GET**    | `/topics/{topicId}`           | Get the topic with the specified id                 |
 | **GET**    | `/topics/{topicId}/subtopics` | Get the sub topics of the specified topic           |
 | **GET**    | `/topics/{topicId}/parent`    | Get the parent topic of the specified topic         |
-| **GET**    | `/topics/history/{topicId}`   | Get the history of the specified topic (ADMIN ONLY) |
+| **GET**    | `/topics/{topicId}/history`   | Get the history of the specified topic (ADMIN ONLY) |
 
 ## Tag Service API
 
