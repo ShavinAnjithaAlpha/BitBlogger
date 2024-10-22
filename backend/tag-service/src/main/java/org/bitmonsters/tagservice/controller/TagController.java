@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,28 +23,28 @@ public class TagController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public IdResponse createTag(
-            @RequestHeader("userId") Long userId,
+            Authentication authentication,
             @Validated @RequestBody NewTagDto newTagDto
     ) {
-        return service.createTag(newTagDto, userId);
+        return service.createTag(newTagDto, (Long) authentication.getPrincipal());
     }
 
     @PutMapping("/{tagId}")
     public ResponseEntity<?> updateTag(
             @PathVariable Integer tagId,
-            @RequestHeader("userID") Long userId,
+            Authentication authentication,
             @Validated @RequestBody NewTagDto newTagDto
     ) {
-        service.updateTag(tagId, newTagDto, userId);
+        service.updateTag(tagId, newTagDto, (Long) authentication.getPrincipal());
         return ResponseEntity.ok(null);
     }
 
     @DeleteMapping("/{tagId}")
     public ResponseEntity<?> deleteTag(
             @PathVariable("tagId") Integer tagId,
-            @RequestHeader("userId") Long userId
+            Authentication authentication
     ) {
-        service.deleteTag(tagId, userId);
+        service.deleteTag(tagId, (Long) authentication.getPrincipal());
         return ResponseEntity.ok(null);
     }
 
@@ -66,18 +67,18 @@ public class TagController {
     public void addTagToPost(
             @PathVariable("postId") Long postId,
             @PathVariable("tagId") Integer tagId,
-            @RequestHeader("userId") Long userId
+            Authentication authentication
     ) {
-        service.addTagToPost(postId, tagId, userId);
+        service.addTagToPost(postId, tagId, (Long) authentication.getPrincipal());
     }
 
     @DeleteMapping("posts/{postId}/{tagId}")
     public void removeTagFromPost(
             @PathVariable("postId") Long postId,
             @PathVariable("tagId") Integer tagId,
-            @RequestHeader("userId") Long userId
+            Authentication authentication
     ) {
-        service.removeTagFromPost(postId, tagId, userId);
+        service.removeTagFromPost(postId, tagId, (Long) authentication.getPrincipal());
     }
 
     @GetMapping("posts/{postId}")
@@ -92,9 +93,9 @@ public class TagController {
     public void addTagsToPost(
             @PathVariable("postId") Long postId,
             @Validated @RequestBody TagList tagList,
-            @RequestHeader("userId") Long userId
+            Authentication authentication
     ) {
-        service.addTagsToPost(postId, userId, tagList);
+        service.addTagsToPost(postId, (Long) authentication.getPrincipal(), tagList);
     }
 
     @GetMapping("/{tagId}/posts")
@@ -107,8 +108,8 @@ public class TagController {
     @GetMapping("/{tagId}/history")
     public TagHistoryDto getTagHistory(
             @PathVariable("tagId") Integer tagId,
-            @RequestHeader("userId") Long userId
+            Authentication authentication
     ) {
-        return service.getTagHistory(tagId, userId);
+        return service.getTagHistory(tagId, (Long) authentication.getPrincipal());
     }
 }

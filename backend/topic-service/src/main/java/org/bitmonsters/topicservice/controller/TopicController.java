@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,21 +25,21 @@ public class TopicController {
 
     @PostMapping
     public ResponseEntity<IDResponse> addNewTopic(
-            @RequestHeader("userId") Long userId,
+            Authentication authentication,
             @Validated @RequestBody NewTopicDto newTopicDto
     ) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(service.addNewTopic(userId, newTopicDto));
+                .body(service.addNewTopic((Long) authentication.getPrincipal(), newTopicDto));
     }
 
     @PutMapping("/{topicId}")
     public ResponseEntity<?> updateTopic(
             @PathVariable("topicId") Integer topicId,
-            @RequestHeader("userId") Long userId,
+            Authentication authentication,
             @Validated @RequestBody NewTopicDto newTopicDto
     ) {
-        service.updateTopic(topicId, userId, newTopicDto);
+        service.updateTopic(topicId, (Long) authentication.getPrincipal(), newTopicDto);
         return ResponseEntity.ok(null);
     }
 
@@ -72,8 +73,7 @@ public class TopicController {
 
     @GetMapping("/{topicId}/history")
     public TopicHistoryDto getTopicHistory(
-            @PathVariable("topicId") Integer topicId,
-            @RequestHeader("userId") Long userId
+            @PathVariable("topicId") Integer topicId
     ) {
         return service.getTopicHistory(topicId);
     }

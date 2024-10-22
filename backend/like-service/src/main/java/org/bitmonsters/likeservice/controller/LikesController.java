@@ -8,35 +8,36 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/likes")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class LikesController {
 
     private final LikeService service;
 
-    @PostMapping("/{postId}")
+    @PostMapping("/posts/{postId}/likes")
     public ResponseEntity<?> likePost(
             @PathVariable("postId") Long postId,
-            @RequestHeader("userId") Long userId,
+            Authentication authentication,
             @RequestBody LikeStatus likeStatus
     ) {
-        service.likePost(postId, userId, likeStatus);
+        service.likePost(postId, (Long) authentication.getPrincipal(), likeStatus);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
-    @DeleteMapping("/{postId}")
+    @DeleteMapping("/posts/{postId}/likes")
     public ResponseEntity<?> removeLike(
             @PathVariable("postId") Long postId,
-            @RequestHeader("userId") Long userId
+            Authentication authentication
     ) {
-        service.removeLike(postId, userId);
+        service.removeLike(postId, (Long) authentication.getPrincipal());
         return ResponseEntity.ok(null);
     }
 
-    @GetMapping("/{postId}")
+    @GetMapping("/posts/{postId}/likes")
     public CassandraPage<PostLikeWithUserDto> getLikeOfPost(
             @PathVariable("postId") Long postId,
             @Nullable @RequestParam("status") LikeStatus likeType,
@@ -45,21 +46,21 @@ public class LikesController {
         return service.getPostLikes(postId, page, likeType);
     }
 
-    @GetMapping("/me")
+    @GetMapping("/likes/me")
     public CassandraPage<UserLikeDto> getLikesOFAuthenticatedUser(
-            @RequestHeader("userId") Long userId,
+            Authentication authentication,
             @Nullable @RequestParam("status") LikeStatus likeType,
             Pageable page
     ) {
-        return service.likesOfUser(userId, likeType, page);
+        return service.likesOfUser((Long) authentication.getPrincipal(), likeType, page);
     }
 
-    @GetMapping("/me/{postId}")
+    @GetMapping("/posts/{postId}/likes/me")
     public ResponseEntity<?> checkLikeOfUserOnPost(
             @PathVariable("postId") Long postId,
-            @RequestHeader("userId") Long userId
+            Authentication authentication
     ) {
-        var like = service.findLikeByPostAndUser(postId, userId);
+        var like = service.findLikeByPostAndUser(postId, (Long) authentication.getPrincipal());
         if (like.isPresent()) {
             return ResponseEntity.ok(like.get().getLikeStatus());
         } else {
@@ -67,21 +68,21 @@ public class LikesController {
         }
     }
 
-    @GetMapping("/me/count")
+    @GetMapping("/likes/me/count")
     public LikeCountDto getLikeCountOfAuthenticatedUser(
-            @RequestHeader("userId") Long userId
+            Authentication authentication
     ) {
-        return service.findLikeCountOfUser(userId);
+        return service.findLikeCountOfUser((Long) authentication.getPrincipal());
     }
 
-    @GetMapping("/count/{postId}")
+    @GetMapping("/posts/{postId}/likes/count")
     public LikeCountDto getLikeCountOfPost(
             @PathVariable("postId") Long postId
     ) {
         return service.findLikeCountOfPost(postId);
     }
 
-    @GetMapping("/global/count")
+    @GetMapping("/likes/global/count")
     public LikeCountDto countAll() {
         return service.countAll();
     }
