@@ -7,17 +7,19 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="auth-server" />
+        <module name="user-service" />
+        <module name="notification-service" />
         <module name="config-server" />
         <module name="poll-service" />
         <module name="comment-service" />
         <module name="discovery-server" />
         <module name="tag-service" />
         <module name="topic-service" />
+        <module name="content-service" />
         <module name="like-service" />
         <module name="media-service" />
-        <module name="auth-server" />
         <module name="api-gateway" />
-        <module name="user-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -27,9 +29,11 @@
       <module name="auth-server" options="-parameters" />
       <module name="comment-service" options="-parameters" />
       <module name="config-server" options="-parameters" />
+      <module name="content-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="like-service" options="-parameters" />
       <module name="media-service" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
       <module name="poll-service" options="-parameters" />
       <module name="tag-service" options="-parameters" />
       <module name="topic-service" options="-parameters" />
