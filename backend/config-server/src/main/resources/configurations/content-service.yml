@@ -1,9 +1,8 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost
-      port: 27017
-      database: bitblogger
+      uri: mongodb://localhost:27017/bitblogger_content
+      database: bitblogger_content
 
 
 server:
