@@ -3,10 +3,7 @@ package org.bitmonsters.tagservice.service;
 import lombok.RequiredArgsConstructor;
 import org.bitmonsters.tagservice.client.feign.UserClient;
 import org.bitmonsters.tagservice.client.feign.UserResponse;
-import org.bitmonsters.tagservice.dto.NewTagDto;
-import org.bitmonsters.tagservice.dto.TagDto;
-import org.bitmonsters.tagservice.dto.TagHistoryDto;
-import org.bitmonsters.tagservice.dto.TagHistoryRecord;
+import org.bitmonsters.tagservice.dto.*;
 import org.bitmonsters.tagservice.model.PostTag;
 import org.bitmonsters.tagservice.model.Tag;
 import org.bitmonsters.tagservice.model.TagAction;
@@ -90,6 +87,13 @@ public class TagMapper {
                 .changedBy(user)
                 .changedAt(tagHistory.getChangedAt())
                 .action(tagHistory.getAction())
+                .build();
+    }
+
+    public ShortTagDto toShortTagDto(Tag tag) {
+        return ShortTagDto.builder()
+                .id(tag.getId())
+                .name(tag.getName())
                 .build();
     }
 }

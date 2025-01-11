@@ -1,7 +1,6 @@
 package org.bitmonsters.tagservice.service;
 
 import lombok.RequiredArgsConstructor;
-import org.bitmonsters.tagservice.model.Tag;
 import org.bitmonsters.tagservice.repository.TagRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,7 @@ public class TagBatchService {
         } else {
             // return the tag name's based on tag id provided
             return tagRepository.findAllByIdIn(tagIds).stream()
-                    .map(Tag::getName)
+                    .map(mapper::toShortTagDto)
                     .collect(Collectors.toList());
         }
     }
