@@ -16,7 +16,17 @@ This odcument provides an overview of the available API of the eahc microservice
 
 ### Overview
 
+The **Authentication Service API** handles the authentication and authorization functionalities like user registration, user login, user logout, password reset, and token refresh.
+
 ### Endpoints
+
+| Method   | Endpoint                         | Description                       |
+| -------- | -------------------------------- | --------------------------------- |
+| **POST** | `/auth/register`                 | Register a new user in the system |
+| **GET**  | `/auth/register/email/confirm`   | Verify the email of the user      |
+| **POST** | `/auth/login`                    | Login a user in the system        |
+| **POST** | `/auth/password/reset`           | Reset the password                |
+| **POST** | `/auth/password/reset/confirmed` | Confirm the password reset        |
 
 ## User Service API
 
@@ -181,3 +191,28 @@ The **Media Service API** handles the media functionalities like uploading a med
 | **POST**   | `/media`       | Upload a new file                       |
 | **POST**   | `/media/image` | Upload a new image with a thumbnail     |
 | **DELETE** | `/media`       | Delete the media with the specified url |
+
+## Content Service API
+
+### Overview
+
+The **Content Service API** handles the content functionalities like creating a new post, updating a post, deleting a post, getting the posts, getting the posts of a user, getting the posts of a topic, getting the posts of a tag, report posts, magaing drafts, tracking posts version informations, efficietly store and managing contenst related to tech etc.
+
+### Endpoints
+
+| Method     | Endpoint                  | Description                               |
+| ---------- | ------------------------- | ----------------------------------------- |
+| **POST**   | `/posts`                  | Add new post                              |
+| **PUT**    | `/posts/:id`              | update a post by ID                       |
+| **DELETE** | `/posts/:id`              | delete a post by ID                       |
+| **POST**   | `/posts/draft`            | save the draft of a post                  |
+| **GET**    | `/posts/:id`              | get a post with specified ID              |
+| **GET**    | `/posts`                  | get latest posts                          |
+| **GET**    | `/posts/users/:user-id`   | get the posts of a specific user          |
+| **GET**    | `/users/me/posts`         | get the posts of the authenticated user   |
+| **GET**    | `/topics/posts`           | get posts related to specified topic      |
+| **GET**    | `/tags/posts`             | get posts related to a specific tag       |
+| **GET**    | `/posts/random`           | get posts by random order                 |
+| **POST**   | `/posts/:post-id/reports` | report a post with the specified ID       |
+| **GET**    | `/posts/:post-id/reports` | get the report on a specific ID           |
+| **GET**    | `/posts/reports`          | get the overall details about the reports |
