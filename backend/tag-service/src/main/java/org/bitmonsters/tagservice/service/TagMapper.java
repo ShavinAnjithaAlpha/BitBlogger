@@ -59,7 +59,7 @@ public class TagMapper {
                 .build();
     }
 
-    public PostTag toPostTag(Long postId, Tag tag) {
+    public PostTag toPostTag(String postId, Tag tag) {
         return PostTag.builder()
                 .postId(postId)
                 .tag(tag)

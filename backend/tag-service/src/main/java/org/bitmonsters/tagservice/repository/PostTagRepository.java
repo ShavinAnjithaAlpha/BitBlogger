@@ -11,15 +11,15 @@ import java.util.Optional;
 @Repository
 public interface PostTagRepository extends JpaRepository<PostTag, Long> {
 
-    void deleteByPostIdAndTagId(Long postId, Integer tagId);
+    void deleteByPostIdAndTagId(String postId, Integer tagId);
 
-    List<PostTag> findAllByPostId(Long postId);
+    List<PostTag> findAllByPostId(String postId);
 
-    Integer countAllByPostId(Long postId);
+    Integer countAllByPostId(String postId);
 
     Slice<PostTag> findAllByTagId(Integer tagId);
 
-    Optional<PostTag> findByTagIdAndPostId(Integer tagId, Long postId);
+    Optional<PostTag> findByTagIdAndPostId(Integer tagId, String postId);
 
     Long countAllByTagId(Integer tagId);
 }

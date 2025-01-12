@@ -1,0 +1,1 @@
+ALTER TABLE post_tags MODIFY COLUMN post_id VARCHAR(255);

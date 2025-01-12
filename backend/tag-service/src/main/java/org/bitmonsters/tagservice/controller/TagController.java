@@ -65,7 +65,7 @@ public class TagController {
     @PostMapping("posts/{postId}/{tagId}")
     @ResponseStatus(HttpStatus.CREATED)
     public void addTagToPost(
-            @PathVariable("postId") Long postId,
+            @PathVariable("postId") String postId,
             @PathVariable("tagId") Integer tagId,
             Authentication authentication
     ) {
@@ -74,7 +74,7 @@ public class TagController {
 
     @DeleteMapping("posts/{postId}/{tagId}")
     public void removeTagFromPost(
-            @PathVariable("postId") Long postId,
+            @PathVariable("postId") String postId,
             @PathVariable("tagId") Integer tagId,
             Authentication authentication
     ) {
@@ -83,7 +83,7 @@ public class TagController {
 
     @GetMapping("posts/{postId}")
     public List<TagDto> getTagOfPost(
-            @PathVariable("postId") Long postId
+            @PathVariable("postId") String postId
     ) {
         return service.getTagsOfPost(postId);
     }
@@ -91,7 +91,7 @@ public class TagController {
     @PostMapping("posts/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
     public void addTagsToPost(
-            @PathVariable("postId") Long postId,
+            @PathVariable("postId") String postId,
             @Validated @RequestBody TagList tagList,
             Authentication authentication
     ) {
@@ -99,7 +99,7 @@ public class TagController {
     }
 
     @GetMapping("/{tagId}/posts")
-    public Slice<Long> getPostOfTag(
+    public Slice<String> getPostOfTag(
             @PathVariable("tagId") Integer tagId
     ) {
         return service.getPostsOfTag(tagId);

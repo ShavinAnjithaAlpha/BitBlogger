@@ -23,7 +23,7 @@ public class PostTag {
     private Long id;
 
     @Column(name = "post_id", nullable = false)
-    private Long postId;
+    private String postId;
 
     @ManyToOne
     @JoinColumn(name = "tag_id", nullable = false)

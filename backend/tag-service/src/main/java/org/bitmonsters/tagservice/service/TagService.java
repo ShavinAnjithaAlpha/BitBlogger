@@ -85,8 +85,8 @@ public class TagService {
     }
 
     @Transactional(value = Transactional.TxType.REQUIRED)
-    public void addTagToPost(Long postId, Integer tagId, Long userId) {
-        // check whether if the post exists before add the tag
+    public void addTagToPost(String postId, Integer tagId, Long userId) {
+        // TODO: check whether if the post exists before add the tag
 
         // get the number of tags of the post
         Integer tagCount = getTagCount(postId);
@@ -105,8 +105,8 @@ public class TagService {
     }
 
     @Transactional
-    public void removeTagFromPost(Long postId, Integer tagId, Long userId) {
-        // check whether user owns the post
+    public void removeTagFromPost(String postId, Integer tagId, Long userId) {
+        // TODO: check whether user owns the post
 
         // remove the post tag from the system
         postTagRepository.deleteByPostIdAndTagId(postId, tagId);
@@ -119,15 +119,15 @@ public class TagService {
         }
     }
 
-    public List<TagDto> getTagsOfPost(Long postId) {
+    public List<TagDto> getTagsOfPost(String postId) {
         return postTagRepository.findAllByPostId(postId).stream()
                 .map(mapper::toTagDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional(value = Transactional.TxType.REQUIRED)
-    public void addTagsToPost(Long postId, Long userId, TagList tagList) {
-        // check whether if the post exists and owns by the authenticated user
+    public void addTagsToPost(String postId, Long userId, TagList tagList) {
+        // TODO: check whether if the post exists and owns by the authenticated user
 
         // get the number of stored tag with post
         Integer tagCount = getTagCount(postId);
@@ -153,11 +153,11 @@ public class TagService {
         }
     }
 
-    private Integer getTagCount(Long postId) {
+    private Integer getTagCount(String postId) {
         return postTagRepository.countAllByPostId(postId);
     }
 
-    public Slice<Long> getPostsOfTag(Integer tagId) {
+    public Slice<String> getPostsOfTag(Integer tagId) {
         return postTagRepository.findAllByTagId(tagId).map(PostTag::getPostId);
     }
 
