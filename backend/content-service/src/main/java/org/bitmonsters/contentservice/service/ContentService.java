@@ -2,13 +2,20 @@ package org.bitmonsters.contentservice.service;
 
 import jakarta.ws.rs.NotAuthorizedException;
 import lombok.RequiredArgsConstructor;
+import org.bitmonsters.contentservice.client.exception.TopicNotFoundException;
+import org.bitmonsters.contentservice.client.feign.*;
 import org.bitmonsters.contentservice.dto.*;
+import org.bitmonsters.contentservice.exception.InvalidPostException;
 import org.bitmonsters.contentservice.exception.PostNotFountException;
 import org.bitmonsters.contentservice.model.Post;
+import org.bitmonsters.contentservice.model.PostDraft;
+import org.bitmonsters.contentservice.repository.PostDraftRepository;
 import org.bitmonsters.contentservice.repository.PostRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -18,12 +25,22 @@ public class ContentService {
     private final PostRepository postRepository;
     private final PostMapper mapper;
     private final PostMapper postMapper;
+    private final TagClient tagClient;
+    private final PostDraftRepository postDraftRepository;
+    private final TopicClient topicClient;
 
     public IDResponse createNewPost(NewPostDto newPostDto, Long userId) {
+        // check whether the topic exists in the TOPIC-SERVICE
+        TopicDto topic = topicClient.getTopic(newPostDto.topicId());
+
         String postId = postRepository.save(mapper.toPost(newPostDto, userId)).getId();
 
         // TODO: update post count at relevant tags via message broker
 
+        // TODO: submit tag info to the TAG SERVICE via HTTP client
+        tagClient.addTagsToPost(postId, TagList.builder().tags(newPostDto.tagIds()).build());
+
+        // TODO: add the post to the search index via message broker
         return IDResponse.builder()
                 .id(postId)
                 .build();
@@ -50,14 +67,42 @@ public class ContentService {
 
 
     public IDResponse createDraftPost(PostDraftDto postDraftDto, Long userId) {
-        return null;
+        PostDraft draft = postDraftRepository.save(mapper.toPostDraft(postDraftDto, userId));
+
+        return IDResponse.builder()
+                .id(draft.getId())
+                .build();
+    }
+
+    public void updateDraftPost(String postId, PostDraftDto postDraftDto, Long userId) {
+        // fetch the post from the database and if not exists throw an exception
+        PostDraft draft = postDraftRepository.findById(postId).orElseThrow(
+                () -> new PostNotFountException(postId)
+        );
+
+        // check the ownership of the post
+        if (!draft.getUserId().equals(userId)) {
+            throw new NotAuthorizedException("cannot edit draft: " + postId);
+        }
+
+        // otherwise edit the content of the draft
+        draft.setTitle(postDraftDto.title());
+        draft.setContent(postDraftDto.content());
+        draft.setCoverImage(postDraftDto.coverImage());
+        draft.setModifiedAt(LocalDateTime.now());
+
+        // save the changes in the database
+        postDraftRepository.save(draft);
     }
 
     public FullPostDto getPostById(String postId) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new PostNotFountException(postId)
         );
-        return mapper.toFullPostDto(post);
+
+        // fetch tags related to post from the TAG-SERVICE via feign client
+        List<FullTagDto> tags = tagClient.getTagOfPost(postId);
+        return mapper.toFullPostDto(post, tags);
     }
 
     public List<PostDto> getLatestPosts(Pageable page) {
@@ -77,5 +122,29 @@ public class ContentService {
         return postRepository.findAllByTopicId(topicId, page)
                 .map(postMapper::toPostDto)
                 .stream().toList();
+    }
+
+    @Transactional
+    public IDResponse createPostFromDraft(String draftId, PostFromDraftDto postFromDraftDto, Long userId) {
+        // fetch the draft from the database
+        PostDraft draft = postDraftRepository.findById(draftId).orElseThrow(
+                () -> new PostNotFountException(draftId)
+        );
+
+        // check the ownership of the draft with the user try to publish as a post
+        if (!draft.getUserId().equals(userId))
+            throw new NotAuthorizedException("cannot published draft: " + draftId);
+
+        // check whether title and content is not blank from the draft
+        if (draft.getTitle().isBlank() || draft.getContent().isBlank())
+            throw new InvalidPostException("title and content must be not empty");
+
+        // create a new post and published it
+        IDResponse response =  createNewPost(mapper.toNewPostDto(draft, postFromDraftDto), userId);
+
+        // delete the draft from the database
+        postDraftRepository.deleteById(draftId);
+
+        return response;
     }
 }

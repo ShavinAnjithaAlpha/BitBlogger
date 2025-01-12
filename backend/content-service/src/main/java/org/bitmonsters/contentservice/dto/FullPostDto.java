@@ -1,7 +1,7 @@
 package org.bitmonsters.contentservice.dto;
 
 import lombok.Builder;
-import org.bitmonsters.contentservice.client.feign.TagDto;
+import org.bitmonsters.contentservice.client.feign.FullTagDto;
 import org.bitmonsters.contentservice.client.feign.TopicDto;
 import org.bitmonsters.contentservice.client.feign.UserResponse;
 
@@ -10,6 +10,7 @@ import java.util.List;
 
 @Builder
 public record FullPostDto(
+        String id,
         UserResponse author,
         String title,
         String content,
@@ -20,6 +21,6 @@ public record FullPostDto(
         Boolean isPinned,
         Boolean isFeatured,
         Integer readingTime,
-        List<TagDto> tags
+        List<FullTagDto> tags
 ) {
 }

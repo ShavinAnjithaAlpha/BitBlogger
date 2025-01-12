@@ -3,8 +3,12 @@ package org.bitmonsters.contentservice.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import org.hibernate.validator.constraints.URL;
 
+import java.util.List;
+
+@Builder
 public record NewPostDto(
         @NotNull(message = "title is required")
         @NotBlank(message = "title cannot be blank")
@@ -20,7 +24,7 @@ public record NewPostDto(
         String language,
         @NotNull(message = "topic id is required")
         Integer topicId,
-        Integer[] tagIds,
+        List<Integer> tagIds,
         Boolean isPinned
 ) {
 }

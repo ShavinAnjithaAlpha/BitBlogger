@@ -19,9 +19,18 @@ public class ContentController {
     private final ContentService contentService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public IDResponse createPost(@Validated @RequestBody NewPostDto newPostDto) {
         Long userId = 2L;
         return contentService.createNewPost(newPostDto, userId);
+    }
+
+    @PostMapping("/{draftId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public IDResponse createPostFromDraft(@PathVariable("draftId") String draftId,
+                                          @RequestBody PostFromDraftDto postFromDraftDto) {
+        Long userId = 2L;
+        return contentService.createPostFromDraft(draftId, postFromDraftDto, userId);
     }
 
     @DeleteMapping("/{postId}")
@@ -31,10 +40,19 @@ public class ContentController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
-    @PostMapping("/draft")
+    @PostMapping("/drafts")
+    @ResponseStatus(HttpStatus.CREATED)
     public IDResponse createDraft(@Validated @RequestBody PostDraftDto postDraftDto) {
         Long userId = 2L;
         return contentService.createDraftPost(postDraftDto, userId);
+    }
+
+    @PutMapping("/drafts/{draftId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateDraft(@PathVariable("draftId") String draftId,
+                                         @Validated @RequestBody PostDraftDto postDraftDto) {
+        Long userId = 2L;
+        contentService.updateDraftPost(draftId, postDraftDto, userId);
     }
 
     @GetMapping("/{postId}")

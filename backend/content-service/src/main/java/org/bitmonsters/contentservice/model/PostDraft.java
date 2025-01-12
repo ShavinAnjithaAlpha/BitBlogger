@@ -21,6 +21,8 @@ public class PostDraft {
     @Id
     private String id;
 
+    private Long userId;
+
     private String title;
 
     private String content;

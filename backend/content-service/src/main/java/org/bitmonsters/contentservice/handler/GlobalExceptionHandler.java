@@ -1,6 +1,7 @@
 package org.bitmonsters.contentservice.handler;
 
 import jakarta.ws.rs.NotAuthorizedException;
+import org.bitmonsters.contentservice.client.exception.TopicNotFoundException;
 import org.bitmonsters.contentservice.exception.PostNotFountException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -39,6 +40,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotAuthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ExceptionResponse handleNotAuthorizedException(NotAuthorizedException exception) {
+        return ExceptionResponse.builder()
+                .error(exception.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(TopicNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ExceptionResponse handleTopicNotFoundException(TopicNotFoundException exception) {
         return ExceptionResponse.builder()
                 .error(exception.getMessage())
                 .build();
