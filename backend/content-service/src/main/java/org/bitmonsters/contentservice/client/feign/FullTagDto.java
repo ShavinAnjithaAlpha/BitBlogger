@@ -1,13 +1,10 @@
 package org.bitmonsters.contentservice.client.feign;
 
-import lombok.Builder;
-
-@Builder
-public record TopicDto(
+public record FullTagDto(
         Integer id,
         String name,
         String description,
-        Boolean isParent,
-        Boolean isChild
+        String icon,
+        Long postCount
 ) {
 }

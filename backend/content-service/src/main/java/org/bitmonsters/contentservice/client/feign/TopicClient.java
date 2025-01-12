@@ -1,5 +1,6 @@
 package org.bitmonsters.contentservice.client.feign;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,7 +8,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(value = "TOPIC-SERVICE")
 public interface TopicClient {
 
+    @CircuitBreaker(name = "TOPIC-SERVICE", fallbackMethod = "fallbackGetTopic")
     @GetMapping("api/v1/topics/{topicId}")
-    public TopicDto getTopic(@PathVariable("topicId") Integer topicId);
+    TopicDto getTopic(@PathVariable("topicId") Integer topicId);
+
+    default TopicDto fallbackGetTopic(@PathVariable("topicId") Integer topicId) {
+        return TopicDto.builder().build();
+    }
 
 }
