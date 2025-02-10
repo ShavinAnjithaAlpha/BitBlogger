@@ -1,0 +1,13 @@
+spring:
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+
+  elasticsearch:
+    username: elastic
+    password: uS3bdEgEMmEJPy=fgSpO
+    uris: https://localhost:9200
+
+server:
+  port: 9010
