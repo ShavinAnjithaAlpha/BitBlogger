@@ -1,5 +1,6 @@
 package org.bitmonsters.searchservice.model;
 
+import co.elastic.clients.util.DateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,17 +23,20 @@ public class Post {
     @Id
     private String id;
 
+    @Field(type = FieldType.Text)
     private String title;
 
+    @Field(type = FieldType.Text)
     private String content;
 
+    @Field(type = FieldType.Text)
     private String preview;
 
     @Field(type = FieldType.Nested, includeInParent = true)
     private User author;
 
     @Field(type = FieldType.Date)
-    private LocalDateTime createdAt;
+    private DateTime createdAt;
 
     @Field(type = FieldType.Nested, includeInParent = true)
     private Topic topic;

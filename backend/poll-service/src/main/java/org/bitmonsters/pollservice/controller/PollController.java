@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.bitmonsters.pollservice.dto.*;
 import org.bitmonsters.pollservice.service.PollService;
 import org.bitmonsters.pollservice.service.PollStatService;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -15,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/polls")
