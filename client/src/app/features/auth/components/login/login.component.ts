@@ -1,4 +1,5 @@
 import { Component, inject, Inject, Input } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import {
   FormsModule,
   FormControl,
@@ -16,7 +17,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, MatInputModule, MatButtonModule, MatFormFieldModule, ReactiveFormsModule, RouterOutlet, RouterLink],
+  imports: [FormsModule, MatInputModule, MatButtonModule, MatFormFieldModule, ReactiveFormsModule, RouterOutlet, RouterLink, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

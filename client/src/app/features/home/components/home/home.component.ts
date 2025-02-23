@@ -3,11 +3,12 @@ import { ArticleCardComponent } from "../../../article/components/article-card/a
 import { Article } from '../../../article/models/article.model';
 import { ProfileCardComponent } from '../../../article/components/profile-card/profile-card.component';
 import { ProfileBlockComponent } from '../../../article/components/profile-block/profile-block.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ArticleCardComponent, ProfileCardComponent, ProfileBlockComponent],
+  imports: [ArticleCardComponent, ProfileCardComponent, ProfileBlockComponent, CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

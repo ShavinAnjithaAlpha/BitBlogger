@@ -24,9 +24,34 @@
       font-weight: 500;
       margin-bottom: 1rem;
 
+      a {
+        cursor: pointer;
+        text-decoration: none;
+
+        &:hover {
+          color: white;
+        }
+      }
+
       @media (max-width: 768px) {
         font-size: 1.5rem;
         text-align: center;
+      }
+    }
+
+    .login-graphic {
+      position: absolute;
+      bottom: -500%;
+      left: 0%;
+      width: 100%;
+      height: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        max-width: 100%;
+        height: auto;
       }
     }
   }

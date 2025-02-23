@@ -6,12 +6,13 @@
   </header>
   <main class="home-content">
     <app-profile-card></app-profile-card>
+    <app-profile-block></app-profile-block>
+
     <section class="blog-posts">
       <app-article-card
-        *ngFor="let article of articles"
-        [article]="article"
+        *ngFor="let _article of articles"
+        [article]="_article"
       ></app-article-card>
-      <app-profile-block></app-profile-block>
     </section>
   </main>
   <footer class="home-footer">
