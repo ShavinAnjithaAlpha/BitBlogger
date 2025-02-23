@@ -1,6 +1,9 @@
 <div class="login-container">
   <div class="login-hero-card">
     <h1>BitBlogger</h1>
+    <div class="login-graphic">
+      <img src="assets/img/smart-light.png" alt="Login Graphic" />
+    </div>
   </div>
   <div class="login-box">
     <header class="login-header">
@@ -11,22 +14,32 @@
         <div class="login-field">
           <label for="email">Email</label>
           <input
+            [formControl]="emailFormControl"
             type="email"
             id="email"
             name="email"
             placeholder="Email"
             required
           />
+          @if ((emailFormControl.hasError('required') ||
+          emailFormControl.hasError('email')) && emailFormControl.touched ) {
+          <div class="error-message">Please enter a valid email address</div>
+          }
         </div>
         <div class="login-field">
           <label for="password">Password</label>
           <input
+            [formControl]="passwordFormControl"
             type="password"
             id="password"
             name="password"
             placeholder="Password"
             required
           />
+          @if (passwordFormControl.hasError('required') &&
+          passwordFormControl.touched) {
+          <div class="error-message">Please enter your password</div>
+          }
         </div>
         <div class="login-remember">
           <div>
@@ -35,28 +48,38 @@
           </div>
           <a href="#">Forgot password?</a>
         </div>
-        <button type="submit">Sign in</button>
+        <button
+          type="submit"
+          [disabled]="
+            emailFormControl.hasError('email') ||
+            emailFormControl.hasError('required') ||
+            passwordFormControl.hasError('required')
+          "
+          (click)="onSubmit()"
+        >
+          @if (isSignin == true) {
+          <span>Signing in...</span>
+          } @if (isSignin == false) {
+          <span>Sign in</span>
+          }
+        </button>
       </form>
 
-      <div class="login-or">
-        <hr />
-        <span>or</span>
-        <hr />
-      </div>
+      <div class="login-or"></div>
 
       <div class="login-social">
         <button class="login-social-google">
-          <!-- <img src="assets/icons/google.svg" alt="Google" /> -->
+          <i class="fab fa-google"></i>
           <span>Sign in with Google</span>
         </button>
         <button class="login-social-facebook">
-          <!-- <img src="assets/icons/github.svg" alt="GitHub" /> -->
+          <i class="fab fa-github"></i>
           <span>Sign in with GitHub</span>
         </button>
       </div>
     </main>
     <footer class="signup-footer">
-      <p><a href="#">Don't have an account?</a></p>
+      <p><a [routerLink]="['/register']">Don't have an account?</a></p>
     </footer>
   </div>
 </div>
