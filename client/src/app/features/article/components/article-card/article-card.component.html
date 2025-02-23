@@ -1,0 +1,40 @@
+<div class="article-card">
+  <div class="article-header">
+    <div class="article-author">
+      <div class="article-avatar">
+        <img
+          src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg"
+          alt="Author"
+        />
+      </div>
+      <span>{{ article.author.firstname }}{{ article.author.lastname }}</span>
+    </div>
+  </div>
+  <div class="article-content">
+    <div class="article-preview">
+      <h3>{{ article.title }}</h3>
+      <p>
+        {{ article.preview }}
+      </p>
+    </div>
+    <div class="article-cover-img">
+      <img
+        src="https://wallpapers.com/images/featured/vector-art-6ttd2h971c0ivqyh.jpg"
+        alt="Trusted Computing"
+      />
+    </div>
+  </div>
+  <div class="article-footer">
+    <span class="created-at">{{ article.publishedAt }}</span>
+    <div class="stat-bar">
+      <i class="fa-regular fa-comment" style="color: limegreen"></i>
+      <span class="comment">{{ article.comments }}</span>
+      <i class="fa-regular fa-heart" style="color: red"></i>
+      <span class="like">{{ article.likes }}</span>
+    </div>
+    <div class="more-bar">
+      <i class="fa-regular fa-bookmark" style="color: gray"></i>
+      <i class="fas fa-ellipsis-h" style="color: gray"></i>
+    </div>
+  </div>
+</div>

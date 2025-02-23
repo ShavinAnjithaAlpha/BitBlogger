@@ -1,0 +1,20 @@
+<!-- filepath: /D:/Dev/WebApps/BitBlogger/client/src/app/home/home.component.html -->
+<div class="home-container">
+  <header class="home-header">
+    <h1>Welcome to BitBlogger</h1>
+    <p>Your go-to place for technical blogs</p>
+  </header>
+  <main class="home-content">
+    <app-profile-card></app-profile-card>
+    <section class="blog-posts">
+      <app-article-card
+        *ngFor="let article of articles"
+        [article]="article"
+      ></app-article-card>
+      <app-profile-block></app-profile-block>
+    </section>
+  </main>
+  <footer class="home-footer">
+    <p>&copy; 2025 BitBlogger. All rights reserved.</p>
+  </footer>
+</div>
