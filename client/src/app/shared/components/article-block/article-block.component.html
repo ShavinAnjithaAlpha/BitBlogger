@@ -1,0 +1,30 @@
+<div class="article-block">
+  <div class="article-image">
+    <img
+      src="https://wallpapers.com/images/featured/vector-art-6ttd2h971c0ivqyh.jpg"
+      alt="article.title"
+    />
+  </div>
+  <div class="article-author">
+    <div class="author-image">
+      <img
+        src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg"
+        alt="article.author.name"
+      />
+    </div>
+    <span>{{ article.author.firstname }} {{ article.author.lastname }}</span>
+  </div>
+  <div class="article-content">
+    <h3>{{ article.title }}</h3>
+    <p>{{ article.preview }}</p>
+  </div>
+  <div class="article-footer">
+    <span>{{ article.publishedAt }}</span>
+    <div class="stat-bar" style="color: red">
+      <i class="fa-regular fa-heart"></i>
+      <span>{{ article.likes }} likes</span>
+      <i class="fa-regular fa-comment" style="color: limegreen"></i>
+      <span>{{ article.comments }} comments</span>
+    </div>
+  </div>
+</div>
