@@ -4,6 +4,7 @@ import { SigninComponent } from './features/auth/components/signin/signin.compon
 import { HomeComponent } from './features/home/components/home/home.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { TagPageComponent } from './features/tag-page/tag-page.component';
 
 export const routes: Routes = [
   {
@@ -20,6 +21,11 @@ export const routes: Routes = [
     path: "register",
     component: SigninComponent,
     title: "Signin Page"
+  },
+  {
+    path: "tags",
+    component: TagPageComponent,
+    title: "Tags"
   }
 ];
 

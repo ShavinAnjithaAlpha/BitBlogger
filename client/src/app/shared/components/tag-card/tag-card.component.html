@@ -1,0 +1,17 @@
+<div class="tag-card">
+  <div class="tag-header">
+    <div class="tag-title">
+      <app-tag [title]="tag.title"></app-tag>
+      <span>{{ tag.posts }} articles</span>
+    </div>
+    <div class="tag-image">
+      <img [src]="tag.image" alt="tag.name" />
+    </div>
+  </div>
+  <div class="tag-content">
+    <p>{{ tag.description }}</p>
+  </div>
+  <div class="tag-footer">
+    <button class="follow-btn">Follow</button>
+  </div>
+</div>

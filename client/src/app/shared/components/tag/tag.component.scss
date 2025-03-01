@@ -1,0 +1,17 @@
+.tag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.3rem 0.5rem;
+  border-radius: 5px;
+  border-width: 2px;
+  border-style: solid;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  span {
+    margin-right: 0.5rem;
+  }
+}

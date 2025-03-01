@@ -1,0 +1,9 @@
+<div class="tag-page-container">
+  <header class="tag-page-header">
+    <h1>Tags</h1>
+    <input type="text" placeholder="Search tags..." (input)="filterTags()" />
+  </header>
+  <main class="tag-page-content">
+    <app-tag-card *ngFor="let tag of filteredTags" [tag]="tag"> </app-tag-card>
+  </main>
+</div>

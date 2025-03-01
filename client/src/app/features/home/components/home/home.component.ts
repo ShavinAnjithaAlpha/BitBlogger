@@ -4,15 +4,20 @@ import { Article } from '../../../article/models/article.model';
 import { ProfileCardComponent } from '../../../article/components/profile-card/profile-card.component';
 import { ProfileBlockComponent } from '../../../article/components/profile-block/profile-block.component';
 import { CommonModule } from '@angular/common';
+import { TagComponent } from '../../../../shared/components/tag/tag.component';
+import { Tag } from '../../../../shared/models/tag.model';
+import { TagCardComponent } from '../../../../shared/components/tag-card/tag-card.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ArticleCardComponent, ProfileCardComponent, ProfileBlockComponent, CommonModule],
+  imports: [ArticleCardComponent, ProfileCardComponent, ProfileBlockComponent, CommonModule, TagComponent, TagCardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+
+  tags: string[] = ['Technology', 'Quantum Computing', 'Privacy', 'Security', 'Future'];
 
   articles: Article[] = [
     {
