@@ -11,6 +11,8 @@
           *ngFor="let _article of articles"
           [article]="_article"
         ></app-article-card>
+
+        <app-article-block [article]="articles[0]"></app-article-block>
       </section>
     </div>
     <div class="side-bar"></div>

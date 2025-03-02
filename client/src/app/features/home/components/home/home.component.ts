@@ -7,11 +7,12 @@ import { CommonModule } from '@angular/common';
 import { TagComponent } from '../../../../shared/components/tag/tag.component';
 import { Tag } from '../../../../shared/models/tag.model';
 import { TagCardComponent } from '../../../../shared/components/tag-card/tag-card.component';
+import { ArticleBlockComponent } from '../../../../shared/components/article-block/article-block.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ArticleCardComponent, ProfileCardComponent, ProfileBlockComponent, CommonModule, TagComponent, TagCardComponent],
+  imports: [ArticleCardComponent, CommonModule, TagComponent, ArticleBlockComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

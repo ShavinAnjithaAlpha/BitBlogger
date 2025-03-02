@@ -1,0 +1,61 @@
+<div class="article-page">
+  <div class="article">
+    <div class="article-cover">
+      <img
+        src="https://wallpapers.com/images/featured/vector-art-6ttd2h971c0ivqyh.jpg"
+        alt="article.title"
+      />
+    </div>
+
+    <!-- article header -->
+    <div class="article-header">
+      <h1>{{ article.title }}</h1>
+      <div class="article-author">
+        <div class="article-author-avatar">
+          <img
+            src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg"
+            alt="article.title"
+          />
+        </div>
+        <div class="article-author-info">
+          <div class="article-author-name">{{ article.author.firstname }}</div>
+          <div class="article-author-date">{{ article.publishedAt }}</div>
+        </div>
+      </div>
+
+      <div class="article-meta">
+        <div class="article-tags">
+          <app-tag *ngFor="let tag of article.tags" [title]="tag"></app-tag>
+        </div>
+        <div class="article-stat">
+          <i class="fa fa-heart fa-large" style="color: red"></i>
+          <span>{{ article.likes }}</span>
+          <i class="fa fa-comment fa-large" style="color: limegreen"></i>
+          <span>{{ article.comments }}</span>
+          <i class="fa fa-eye fa-large" style="color: skyblue"></i>
+          <span>{{ article.views }}</span>
+          <i class="fa fa-share fa-large" style="color: gray"></i>
+          <i class="fa fa-bookmark fa-large" style="color: gray"></i>
+          <i class="fa fa-ellipsis-h fa-large" style="color: gray"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- article header -->
+    <div class="article-content" [innerHTML]="article.content"></div>
+
+    <!-- article footer -->
+    <div class="article-footer">
+      <app-profile-block></app-profile-block>
+
+      <div class="comment-section">
+        <div class="comment-header">
+          <h3>Comments</h3>
+          <span>125</span>
+        </div>
+        <!-- <app-comment-form></app-comment-form> -->
+        <!-- <app-comment-list></app-comment-list> -->
+      </div>
+    </div>
+  </div>
+</div>

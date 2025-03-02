@@ -5,6 +5,8 @@ import { HomeComponent } from './features/home/components/home/home.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { TagPageComponent } from './features/tag-page/tag-page.component';
+import { ArticlePageComponent } from './features/article/components/article-page/article-page.component';
+import { ArticleEditorComponent } from './features/article/components/article-editor/article-editor.component';
 
 export const routes: Routes = [
   {
@@ -26,6 +28,16 @@ export const routes: Routes = [
     path: "tags",
     component: TagPageComponent,
     title: "Tags"
+  },
+  {
+    path: "article/:id",
+    component: ArticlePageComponent,
+    title: "Article"
+  },
+  {
+    path: 'editor',
+    component: ArticleEditorComponent,
+    title: "Editor"
   }
 ];
 
