@@ -7,7 +7,7 @@ spring:
   elasticsearch:
     username: elastic
     password: uS3bdEgEMmEJPy=fgSpO
-    uris: https://localhost:9200
+    uris: http://localhost:9200
 
 server:
   port: 9010

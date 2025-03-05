@@ -2,11 +2,13 @@ package org.bitmonsters.contentservice.service;
 
 import jakarta.ws.rs.NotAuthorizedException;
 import lombok.RequiredArgsConstructor;
-import org.bitmonsters.contentservice.client.exception.TopicNotFoundException;
 import org.bitmonsters.contentservice.client.feign.*;
 import org.bitmonsters.contentservice.dto.*;
 import org.bitmonsters.contentservice.exception.InvalidPostException;
 import org.bitmonsters.contentservice.exception.PostNotFountException;
+import org.bitmonsters.contentservice.kafka.dto.NewPostBrokerDto;
+import org.bitmonsters.contentservice.kafka.dto.PostTagBrokerDto;
+import org.bitmonsters.contentservice.kafka.producer.MessageProducer;
 import org.bitmonsters.contentservice.model.Post;
 import org.bitmonsters.contentservice.model.PostDraft;
 import org.bitmonsters.contentservice.repository.PostDraftRepository;
@@ -28,21 +30,42 @@ public class ContentService {
     private final TagClient tagClient;
     private final PostDraftRepository postDraftRepository;
     private final TopicClient topicClient;
+    private final MessageProducer messageProducer;
+    private final UserClient userClient;
 
     public IDResponse createNewPost(NewPostDto newPostDto, Long userId) {
         // check whether the topic exists in the TOPIC-SERVICE
         TopicDto topic = topicClient.getTopic(newPostDto.topicId());
 
-        String postId = postRepository.save(mapper.toPost(newPostDto, userId)).getId();
+        Post post = postRepository.save(mapper.toPost(newPostDto, userId));
 
         // TODO: update post count at relevant tags via message broker
+        messageProducer.sendMessage("POST-COUNT-INCREMENT", PostTagBrokerDto.builder()
+                .postId(post.getId())
+                .tags(newPostDto.tagIds())
+                .build());
 
         // TODO: submit tag info to the TAG SERVICE via HTTP client
-        tagClient.addTagsToPost(postId, TagList.builder().tags(newPostDto.tagIds()).build());
+        tagClient.addTagsToPost(post.getId(), TagList.builder().tags(newPostDto.tagIds()).build());
 
         // TODO: add the post to the search index via message broker
+        // fetch user info from the user client to send to search index along side with the post data
+        UserResponse user = userClient.getUserById(userId, true);
+        NewPostBrokerDto newPostMessage = NewPostBrokerDto.builder()
+                .id(post.getId())
+                .author(user)
+                .title(post.getTitle())
+                .content(post.getContent())
+                .preview(post.getPreview())
+                .publishedAt(post.getPublishedAt())
+                .language(post.getLanguage().name())
+                .topic(topic)
+                .tags(List.of())
+                .build();
+        messageProducer.sendMessage("NEW-POST", newPostMessage);
+
         return IDResponse.builder()
-                .id(postId)
+                .id(post.getId())
                 .build();
     }
 

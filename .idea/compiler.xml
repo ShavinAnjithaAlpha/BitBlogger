@@ -21,6 +21,15 @@
         <module name="media-service" />
         <module name="api-gateway" />
       </profile>
+      <profile name="Annotation profile for search-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+        </processorPath>
+        <module name="search-service" />
+      </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
@@ -35,6 +44,7 @@
       <module name="media-service" options="-parameters" />
       <module name="notification-service" options="-parameters" />
       <module name="poll-service" options="-parameters" />
+      <module name="search-service" options="-parameters" />
       <module name="tag-service" options="-parameters" />
       <module name="topic-service" options="-parameters" />
       <module name="user-service" options="-parameters" />

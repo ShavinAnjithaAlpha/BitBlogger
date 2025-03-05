@@ -3,7 +3,10 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017/bitblogger_content
       database: bitblogger_content
-
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: content_group
 
 server:
   port: 9007
