@@ -54,7 +54,12 @@
           <span>125</span>
         </div>
         <!-- <app-comment-form></app-comment-form> -->
-        <!-- <app-comment-list></app-comment-list> -->
+        <div class="comment-list">
+          <app-comment
+            *ngFor="let comment of comments"
+            [comment]="comment"
+          ></app-comment>
+        </div>
       </div>
     </div>
   </div>
