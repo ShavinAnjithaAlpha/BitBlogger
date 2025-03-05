@@ -1,0 +1,31 @@
+<div class="comment">
+  <div class="comment-header">
+    <div class="comment-user-avatar">
+      <img
+        src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg"
+        alt="avatar"
+      />
+    </div>
+    <div class="comment-user-name">{{ comment.author.username }}</div>
+    <div class="comment-date">{{ comment.createdAt }}</div>
+  </div>
+  <div class="comment-content" [innerHTML]="comment.content"></div>
+  <div class="comment-footer">
+    <div class="comment-like">
+      <i class="fa-regular fa-heart" style="color: red"></i>
+      <span class="like-count">{{ comment.likes }}</span>
+    </div>
+    <div class="comment-reply">
+      <i class="fa-regular fa-comment" style="color: limegreen"></i>
+      <span class="reply-count"> {{ comment.replies.length }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="replies">
+  <app-comment
+    class="comment-reply"
+    *ngFor="let reply of comment.replies"
+    [comment]="reply"
+  ></app-comment>
+</div>
