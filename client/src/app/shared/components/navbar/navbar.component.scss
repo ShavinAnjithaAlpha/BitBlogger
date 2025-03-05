@@ -1,6 +1,9 @@
 // filepath: /D:/Dev/WebApps/BitBlogger/client/src/app/shared/components/navbar/navbar.component.scss
 .navbar {
   // width: 100vw;
+  position: sticky;
+  top: 0;
+  left: 0;
   background-color: #183d36;
   color: whitesmoke;
   display: flex;

@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { ArticleCardComponent } from "../../../article/components/article-card/article-card.component";
 import { Article } from '../../../article/models/article.model';
-import { ProfileCardComponent } from '../../../article/components/profile-card/profile-card.component';
-import { ProfileBlockComponent } from '../../../article/components/profile-block/profile-block.component';
 import { CommonModule } from '@angular/common';
 import { TagComponent } from '../../../../shared/components/tag/tag.component';
 import { Tag } from '../../../../shared/models/tag.model';
