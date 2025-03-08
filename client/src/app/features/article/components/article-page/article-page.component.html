@@ -51,9 +51,12 @@
       <div class="comment-section">
         <div class="comment-header">
           <h3>Comments</h3>
-          <span>125</span>
+          <span>{{ comments.length }}</span>
         </div>
-        <!-- <app-comment-form></app-comment-form> -->
+        <app-comment-form
+          [user]="article.author"
+          [articleId]="article.id"
+        ></app-comment-form>
         <div class="comment-list">
           <app-comment
             *ngFor="let comment of comments"
@@ -62,5 +65,10 @@
         </div>
       </div>
     </div>
+
+    <!-- recommended articles -->
+    <app-next-articles-section
+      [articles]="recommededArticles"
+    ></app-next-articles-section>
   </div>
 </div>

@@ -1,0 +1,11 @@
+<div class="next-articles">
+  <div class="next-articles-header">
+    <h2>Next Articles</h2>
+  </div>
+  <div class="next-articles-grid">
+    <app-article-block
+      *ngFor="let article of articles"
+      [article]="article"
+    ></app-article-block>
+  </div>
+</div>

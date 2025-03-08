@@ -42,6 +42,24 @@ export class CommentService {
           updatedAt: new Date(),
           likes: 12,
           replies: []
+        },
+        {
+          id: 23,
+          postId: "4fd45fd",
+          author: {
+            id: 1,
+            username: 'johnd',
+            firstname: 'John',
+            lastname: 'Doe',
+            email: 'johndoe@gmail.com',
+            avatar: 'https://img.freepik.com/free-photo/portrait',
+
+          },
+          content: 'Great article! I really enjoyed reading it.',
+          createdAt: 'Aug 24, 2025',
+          updatedAt: new Date(),
+          likes: 12,
+          replies: []
         }
       ]
     },
