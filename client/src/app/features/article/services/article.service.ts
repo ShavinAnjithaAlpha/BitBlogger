@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { FullArticle } from '../models/fullarticle.model';
+import { Article } from '../models/article.model';
 
 @Injectable({
   providedIn: 'root'
@@ -76,16 +77,24 @@ export class ArticleService {
 
     <h2>1. The Birth of the World Wide Web</h2>
     <p>In 1989, Tim Berners-Lee proposed the concept of the World Wide Web. The first-ever website was launched in 1991, consisting of simple HTML pages.</p>
-    <img src="https://www.w3.org/History/1989/proposal-1.gif" alt="First web page screenshot">
+    <img src="https://images.unsplash.com/photo-1741377772075-5f0f0d21d6b4?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="First web page screenshot">
 
     <h2>2. The Rise of JavaScript and Interactivity</h2>
-    <p>JavaScript was introduced in 1995 by Netscape, enabling developers to add interactive elements to web pages. This era saw the rise of DHTML, making websites more dynamic.</p>
+    <p>JavaScript was introduced in 1995 by Netscape, enabling developers to add interactive elements to web pages. This era saw the rise of DHTML, making websites more dynamic.
+    <h3>JavaScript Frameworks and Libraries:</h3>
+    <p>The introduction of frameworks and libraries like jQuery, AngularJS, and React.js has further enhanced the capabilities of JavaScript, making it easier to build complex web applications.</p>
+    <ul>
+      <li><strong>jQuery:</strong> Simplified DOM manipulation and event handling.</li>
+      <li><strong>AngularJS:</strong> Introduced two-way data binding and dependency injection.</li>
+      <li><strong>React.js:</strong> Brought the concept of a virtual DOM and component-based architecture.</li>
+    </ul>
+    </p>
 
     <blockquote>"JavaScript is the duct tape of the internet." - Unknown Developer</blockquote>
 
     <h2>3. The Advent of CSS and Responsive Design</h2>
     <p>CSS became a fundamental part of web development, allowing developers to separate content from design. Responsive web design emerged as a necessity with the proliferation of mobile devices.</p>
-    <img src="https://www.example.com/responsive-design.png" alt="Responsive Design Example">
+    <img src="https://images.unsplash.com/photo-1741335661631-439871f2b3b6?q=80&w=1963&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Responsive Design Example">
 
     <h2>4. The Era of Web Frameworks</h2>
     <p>Frameworks like Angular, React, and Vue revolutionized front-end development. Backend technologies also advanced with Node.js, Django, and Ruby on Rails.</p>
@@ -214,8 +223,51 @@ export class ArticleService {
     }
   ];
 
+  nextArticles: Article[] = [
+    {
+      id: '1',
+      author: {
+        id: 1,
+        username: 'johndoe',
+        firstname: 'John',
+        lastname: 'Doe',
+        email: 'john.doe@example.com',
+        avatar: 'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg'
+      },
+      title: 'Trusted Computing and Digital Privacy',
+      preview: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. In ex recusandae voluptate reiciendis numquam excepturi eaque obcaecati non mollitia a...',
+      coverImage: 'https://wallpapers.com/images/featured/vector-art-6ttd2h971c0ivqyh.jpg',
+      publishedAt: 'Aug 24, 2025',
+      tags: ['Computing', 'Privacy', 'Security'],
+      likes: 47,
+      comments: 455
+    },
+    {
+      id: '2',
+      author: {
+        id: 2,
+        username: 'janesmith',
+        firstname: 'Jane',
+        lastname: 'Smith',
+        email: 'jane.smith@example.com',
+        avatar: 'https://img.freepik.com/free-photo/portrait-white-woman-isolated_53876-40306.jpg'
+      },
+      title: 'The Future of Quantum Computing',
+      preview: 'Quantum computing is poised to revolutionize the tech industry. In this article, we explore the potential applications and challenges of this emerging technology...',
+      coverImage: 'https://wallpapers.com/images/featured/quantum-computing-6ttd2h971c0ivqyh.jpg',
+      publishedAt: 'Sep 10, 2025',
+      tags: ['Quantum Computing', 'Technology', 'Future'],
+      likes: 89,
+      comments: 123
+    }
+  ];
+
   getArticleById(id: string): Observable<FullArticle> {
     const article = this.articles.find((article) => article.id === id);
     return of(article!);
+  }
+
+  getRecommendedArticles(articleId: string): Observable<Article[]> {
+    return of(this.nextArticles);
   }
 }
