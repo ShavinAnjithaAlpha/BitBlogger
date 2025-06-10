@@ -60,7 +60,7 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
         </div>
 
         <Link to={`/article/${article.id}`}>
-          <h3 className="text-xl font-playfair font-semibold mb-3 group-hover:text-primary transition-colors line-clamp-2">
+          <h3 className="text-xl font-montserrat font-semibold mb-3 group-hover:text-primary transition-colors line-clamp-2">
             {article.title}
           </h3>
           <p className="text-muted-foreground mb-4 line-clamp-3">

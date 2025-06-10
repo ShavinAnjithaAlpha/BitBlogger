@@ -11,7 +11,7 @@ const Index = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate('/home');
-    }, 3000);
+    }, 50000);
 
     return () => clearTimeout(timer);
   }, [navigate]);
@@ -27,7 +27,7 @@ const Index = () => {
         </div>
 
         <div className="space-y-4">
-          <h1 className="text-5xl font-playfair font-bold text-gradient">
+          <h1 className="text-5xl font-montserrat font-bold text-gradient">
             BlogSphere
           </h1>
           <p className="text-xl text-muted-foreground max-w-md mx-auto">

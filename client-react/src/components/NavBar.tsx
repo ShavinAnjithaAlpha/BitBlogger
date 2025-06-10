@@ -27,7 +27,7 @@ const Navbar = ({ isAuthenticated = false }: NavbarProps) => {
             <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
               <BookOpen className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-playfair font-bold text-gradient">BlogSphere</span>
+            <span className="text-xl font-montserrat font-bold text-gradient">BlogSphere</span>
           </Link>
 
           {/* Search Bar */}
@@ -57,7 +57,7 @@ const Navbar = ({ isAuthenticated = false }: NavbarProps) => {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Avatar className="cursor-pointer">
-                      <AvatarImage src="/placeholder.svg" />
+                      <AvatarImage src="https://img.freepik.com/premium-vector/young-man-avatar-character-due-avatar-man-vector-icon-cartoon-illustration_1186924-4438.jpg" />
                       <AvatarFallback>JD</AvatarFallback>
                     </Avatar>
                   </DropdownMenuTrigger>

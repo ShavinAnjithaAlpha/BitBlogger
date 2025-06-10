@@ -34,7 +34,7 @@ const CommentSection = ({ articleId }: CommentSectionProps) => {
       author: {
         name: 'Sarah Johnson',
         username: 'sarahj',
-        avatar: '/placeholder.svg'
+        avatar: 'https://img.freepik.com/premium-vector/young-man-avatar-character-due-avatar-man-vector-icon-cartoon-illustration_1186924-4438.jpg'
       },
       content: 'Great article! The TypeScript examples are really helpful. I especially liked the section about component patterns.',
       publishedAt: '2 hours ago',
@@ -59,7 +59,7 @@ const CommentSection = ({ articleId }: CommentSectionProps) => {
       author: {
         name: 'Alex Rivera',
         username: 'alexr',
-        avatar: '/placeholder.svg'
+        avatar: 'https://www.shutterstock.com/image-vector/vector-bright-portrait-beautiful-brunette-600nw-2452267975.jpg'
       },
       content: 'Thanks for sharing this! Do you have any recommendations for testing TypeScript React components?',
       publishedAt: '4 hours ago',
@@ -152,7 +152,7 @@ const CommentSection = ({ articleId }: CommentSectionProps) => {
 
   return (
     <div className="mt-12">
-      <h2 className="text-2xl font-playfair font-semibold mb-6">
+      <h2 className="text-2xl font-montserrat font-semibold mb-6">
         Comments ({comments.length + comments.reduce((acc, c) => acc + c.replies.length, 0)})
       </h2>
       
@@ -160,7 +160,7 @@ const CommentSection = ({ articleId }: CommentSectionProps) => {
       <div className="mb-8 p-6 bg-card/50 rounded-lg border border-border/50">
         <div className="flex items-start space-x-4">
           <Avatar className="w-10 h-10">
-            <AvatarImage src="/placeholder.svg" />
+            <AvatarImage src="https://www.shutterstock.com/image-vector/vector-bright-portrait-beautiful-brunette-600nw-2452267975.jpg" />
             <AvatarFallback>YU</AvatarFallback>
           </Avatar>
           <div className="flex-1 space-y-4">

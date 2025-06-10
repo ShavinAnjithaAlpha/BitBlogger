@@ -13,6 +13,7 @@ import Tags from "./pages/Tags";
 import Library from "./pages/Library";
 import Stats from "./pages/Stats";
 import NotFound from "./pages/NotFound";
+import EditorPage from "./pages/EditorPage";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/tags" element={<Tags />} />
           <Route path="/library" element={<Library />} />
           <Route path="/stats" element={<Stats />} />
+          <Route path="/editor" element={<EditorPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

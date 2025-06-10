@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Heart, Share2, Bookmark, Eye, Calendar, Clock } from 'lucide-react';
+import "./Article.css"
 
 const Article = () => {
   const { id } = useParams();
@@ -35,7 +36,7 @@ const Article = () => {
     author: {
       name: 'John Doe',
       username: 'johndoe',
-      avatar: '/placeholder.svg',
+      avatar: 'https://img.freepik.com/premium-vector/young-man-avatar-character-due-avatar-man-vector-icon-cartoon-illustration_1186924-4438.jpg',
       bio: 'Senior Frontend Developer passionate about React and TypeScript'
     },
     publishedAt: '2 hours ago',
@@ -44,7 +45,7 @@ const Article = () => {
     likes: 142,
     views: 1250,
     comments: 23,
-    imageUrl: '/placeholder.svg'
+    imageUrl: 'https://images7.alphacoders.com/136/1365835.png'
   };
 
   // Mock poll data
@@ -87,7 +88,7 @@ const Article = () => {
             ))}
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-playfair font-bold mb-6 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-montserrat font-bold mb-6 leading-tight">
             {article.title}
           </h1>
           
@@ -145,13 +146,13 @@ const Article = () => {
         <Separator className="mb-8" />
 
         {/* Article Content */}
-        <div className="prose prose-lg max-w-none mb-12 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+        <div className="prose prose-lg max-w-none mb-12 animate-fade-in article-content" style={{ animationDelay: '0.2s' }}>
           <div dangerouslySetInnerHTML={{ __html: article.content }} />
         </div>
 
         {/* Poll Section */}
         <div className="mb-12 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-          <h3 className="text-2xl font-playfair font-semibold mb-4">Community Poll</h3>
+          <h3 className="text-2xl font-montserrat font-semibold mb-4">Community Poll</h3>
           <Poll {...pollData} />
         </div>
 
@@ -165,7 +166,7 @@ const Article = () => {
               <AvatarFallback className="text-lg">{article.author.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="flex-1">
-              <h3 className="text-xl font-playfair font-semibold mb-2">{article.author.name}</h3>
+              <h3 className="text-xl font-montserrat font-semibold mb-2">{article.author.name}</h3>
               <p className="text-muted-foreground mb-4">{article.author.bio}</p>
               <div className="flex space-x-3">
                 <Button>Follow</Button>

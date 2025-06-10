@@ -135,7 +135,7 @@ const Tags = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-4xl font-playfair font-bold mb-4">Explore Tags</h1>
+          <h1 className="text-4xl font-montserrat font-bold mb-4">Explore Tags</h1>
           <p className="text-muted-foreground text-lg mb-6">
             Discover topics you're interested in and follow them to see related articles in your feed.
           </p>

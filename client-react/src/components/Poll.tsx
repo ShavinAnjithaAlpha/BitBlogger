@@ -42,7 +42,7 @@ const Poll = ({ id, question, options, totalVotes, timeLeft, hasVoted, userVote 
     <Card className="bg-card/50 border-border/50 backdrop-blur-sm">
       <CardHeader>
         <div className="flex items-start justify-between">
-          <CardTitle className="text-lg font-playfair">{question}</CardTitle>
+          <CardTitle className="text-lg font-montserrat">{question}</CardTitle>
           <Badge variant="secondary" className="flex items-center gap-1">
             <Clock className="w-3 h-3" />
             {timeLeft}

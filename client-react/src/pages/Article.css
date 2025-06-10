@@ -1,0 +1,77 @@
+.article-content p {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    color: hsl(var(--foreground));
+}
+
+.article-content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 2rem 0 1.5rem;
+    font-family: var(--font-montserrat);
+    color: hsl(var(--foreground));
+}
+
+.article-content h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 2rem 0 1.5rem;
+    font-family: var(--font-montserrat);
+    color: hsl(var(--foreground));
+}
+
+.article-content h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 1.5rem 0 1rem;
+    font-family: var(--font-montserrat);
+    color: hsl(var(--foreground));
+}
+
+.article-content pre {
+    background: hsl(var(--secondary));
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+
+.article-content code {
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.article-content ul, .article-content ol {
+    margin: 1.5rem 0;
+    padding-left: 2rem;
+}
+
+.article-content li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.article-content blockquote {
+    border-left: 4px solid hsl(var(--primary));
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: hsl(var(--muted-foreground));
+}
+
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    margin: 1.5rem 0;
+}
+
+.article-content a {
+    color: hsl(var(--primary));
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.article-content a:hover {
+    color: hsl(var(--primary)/0.8);
+}

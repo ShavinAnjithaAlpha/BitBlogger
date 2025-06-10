@@ -82,7 +82,7 @@ const Library = () => {
       
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-playfair font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <h1 className="text-4xl font-montserrat font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             My Library
           </h1>
           <p className="text-muted-foreground text-lg">
@@ -134,7 +134,7 @@ const Library = () => {
 
           <TabsContent value="lists" className="space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-playfair font-semibold">Reading Lists</h2>
+              <h2 className="text-2xl font-montserrat font-semibold">Reading Lists</h2>
               <Button className="flex items-center gap-2">
                 <Plus className="w-4 h-4" />
                 Create List
@@ -150,7 +150,7 @@ const Library = () => {
                 >
                   <CardHeader>
                     <div className="flex justify-between items-start">
-                      <CardTitle className="text-lg font-playfair">{list.name}</CardTitle>
+                      <CardTitle className="text-lg font-montserrat">{list.name}</CardTitle>
                       <Badge variant={list.isPublic ? 'default' : 'secondary'}>
                         {list.isPublic ? 'Public' : 'Private'}
                       </Badge>

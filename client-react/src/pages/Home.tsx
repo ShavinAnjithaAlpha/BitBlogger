@@ -26,7 +26,7 @@ const Home = () => {
       tags: ['React', 'TypeScript', 'Web Development'],
       likes: 142,
       comments: 23,
-      imageUrl: '/placeholder.svg'
+      imageUrl: 'https://images7.alphacoders.com/136/1365835.png'
     },
     {
       id: '2',
@@ -59,7 +59,7 @@ const Home = () => {
       tags: ['CSS', 'Frontend', 'Layout'],
       likes: 234,
       comments: 41,
-      imageUrl: '/placeholder.svg'
+      imageUrl: 'https://lede-admin.aftermath.site/wp-content/uploads/sites/55/2023/12/image-3.png'
     }
   ];
 
@@ -74,7 +74,7 @@ const Home = () => {
             {/* Header */}
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-3xl font-playfair font-bold text-gradient mb-2">
+                <h1 className="text-3xl font-montserrat font-bold text-gradient mb-2">
                   Latest Articles
                 </h1>
                 <p className="text-muted-foreground">

@@ -11,7 +11,7 @@ const Profile = () => {
   const user = {
     name: 'John Doe',
     username: 'johndoe',
-    avatar: '/placeholder.svg',
+    avatar: 'https://img.freepik.com/premium-vector/young-man-avatar-character-due-avatar-man-vector-icon-cartoon-illustration_1186924-4438.jpg',
     bio: 'Senior Frontend Developer passionate about React, TypeScript, and modern web technologies. Sharing knowledge through code and stories.',
     location: 'San Francisco, CA',
     website: 'johndoe.dev',
@@ -34,7 +34,7 @@ const Profile = () => {
       tags: ['React', 'TypeScript', 'Web Development'],
       likes: 142,
       comments: 23,
-      imageUrl: '/placeholder.svg'
+      imageUrl: 'https://images7.alphacoders.com/136/1365835.png'
     },
     {
       id: '2',
@@ -64,7 +64,7 @@ const Profile = () => {
             </Avatar>
             
             <div className="flex-1">
-              <h1 className="text-3xl font-playfair font-bold mb-2">{user.name}</h1>
+              <h1 className="text-3xl font-montserrat font-bold mb-2">{user.name}</h1>
               <p className="text-xl text-muted-foreground mb-4">@{user.username}</p>
               <p className="text-muted-foreground mb-4 max-w-2xl">{user.bio}</p>
               

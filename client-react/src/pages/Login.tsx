@@ -26,13 +26,13 @@ const Login = () => {
             <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
               <BookOpen className="w-7 h-7 text-primary-foreground" />
             </div>
-            <span className="text-2xl font-playfair font-bold text-gradient">BlogSphere</span>
+            <span className="text-2xl font-montserrat font-bold text-gradient">BlogSphere</span>
           </Link>
         </div>
 
         <Card className="glass border-border/50 animate-scale-in">
           <CardHeader className="space-y-1 text-center">
-            <CardTitle className="text-2xl font-playfair">Welcome back</CardTitle>
+            <CardTitle className="text-2xl font-montserrat">Welcome back</CardTitle>
             <p className="text-muted-foreground">
               Sign in to your account to continue
             </p>
