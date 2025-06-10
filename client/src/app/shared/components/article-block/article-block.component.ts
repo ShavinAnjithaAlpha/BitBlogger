@@ -6,7 +6,6 @@ import { Article } from '../../../features/article/models/article.model';
   standalone: true,
   imports: [],
   templateUrl: './article-block.component.html',
-  styleUrl: './article-block.component.scss'
 })
 export class ArticleBlockComponent {
   @Input() article!: Article;

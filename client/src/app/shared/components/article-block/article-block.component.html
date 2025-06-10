@@ -1,30 +1,36 @@
-<div class="article-block">
-  <div class="article-image">
+<div class="bg-gray-900 rounded-xl shadow-lg flex flex-col w-[450px] h-[450px] transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl overflow-hidden cursor-pointer">
+  <div class="w-full h-48 overflow-hidden rounded-t-xl">
     <img
       src="https://wallpapers.com/images/featured/vector-art-6ttd2h971c0ivqyh.jpg"
       alt="article.title"
+      class="w-full h-full object-cover transform transition-transform duration-300 hover:scale-105"
     />
   </div>
-  <div class="article-author">
-    <div class="author-image">
+  <div class="flex items-center p-4">
+    <div class="w-10 h-10 rounded-full overflow-hidden mr-3 ring-2 ring-primary-green flex-shrink-0">
       <img
         src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg"
         alt="article.author.name"
+        class="w-full h-full object-cover"
       />
     </div>
-    <span>{{ article.author.firstname }} {{ article.author.lastname }}</span>
+    <span class="text-gray-400 text-sm font-medium">{{ article.author.firstname }} {{ article.author.lastname }}</span>
   </div>
-  <div class="article-content">
-    <h3>{{ article.title }}</h3>
-    <p>{{ article.preview }}</p>
+  <div class="p-4 pt-0 flex-grow">
+    <h3 class="text-xl font-semibold text-white mb-2 leading-tight line-clamp-2">{{ article.title }}</h3>
+    <p class="text-gray-300 text-sm leading-relaxed line-clamp-3">{{ article.preview }}</p>
   </div>
-  <div class="article-footer">
-    <span>{{ article.publishedAt }}</span>
-    <div class="stat-bar" style="color: red">
-      <i class="fa-regular fa-heart"></i>
-      <span>{{ article.likes }} likes</span>
-      <i class="fa-regular fa-comment" style="color: limegreen"></i>
-      <span>{{ article.comments }} comments</span>
+  <div class="flex justify-between items-center p-4 border-t border-gray-700 mt-auto">
+    <span class="text-gray-500 text-xs">{{ article.publishedAt }}</span>
+    <div class="flex items-center space-x-4 text-sm">
+      <div class="flex items-center">
+        <i class="fa-regular fa-heart text-red-500 text-lg cursor-pointer hover:text-red-400 transition-colors duration-200"></i>
+        <span class="text-red-500 ml-1">{{ article.likes }}</span>
+      </div>
+      <div class="flex items-center">
+        <i class="fa-regular fa-comment text-primary-green text-lg cursor-pointer hover:text-green-400 transition-colors duration-200"></i>
+        <span class="text-primary-green ml-1">{{ article.comments }}</span>
+      </div>
     </div>
   </div>
 </div>

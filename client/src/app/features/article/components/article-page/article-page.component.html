@@ -1,63 +1,73 @@
-<div class="article-page">
-  <div class="article">
-    <div class="article-cover">
+<div class="min-h-screen bg-gray-800 text-gray-100 font-roboto py-8">
+  <div class="article max-w-4xl mx-auto bg-gray-900 shadow-xl rounded-lg overflow-hidden">
+    <div class="article-cover w-full h-96 overflow-hidden">
       <img
         src="https://wallpapers.com/images/featured/vector-art-6ttd2h971c0ivqyh.jpg"
         alt="article.title"
+        class="w-full h-full object-cover"
       />
     </div>
 
     <!-- article header -->
-    <div class="article-header">
-      <h1>{{ article.title }}</h1>
-      <div class="article-author">
-        <div class="article-author-avatar">
+    <div class="article-header p-8 pb-16">
+      <h1 class="text-5xl font-bold text-white mb-6 leading-tight">{{ article.title }}</h1>
+      <div class="flex items-center mb-10">
+        <div class="w-14 h-14 rounded-full overflow-hidden mr-4 ring-2 ring-primary-green flex-shrink-0">
           <img
             src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg"
-            alt="article.title"
+            alt="article.author.name"
+            class="w-full h-full object-cover"
           />
         </div>
-        <div class="article-author-info">
-          <div class="article-author-name">{{ article.author.firstname }}</div>
-          <div class="article-author-date">{{ article.publishedAt }}</div>
+        <div class="flex flex-col">
+          <div class="text-lg font-semibold text-gray-200">{{ article.author.firstname }} {{ article.author.lastname }}</div>
+          <div class="text-sm text-gray-400">{{ article.publishedAt }}</div>
         </div>
       </div>
 
-      <div class="article-meta">
-        <div class="article-tags">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full">
+        <div class="flex flex-wrap gap-2 mb-4 sm:mb-0">
           <app-tag *ngFor="let tag of article.tags" [title]="tag"></app-tag>
         </div>
-        <div class="article-stat">
-          <i class="fa fa-heart fa-large" style="color: red"></i>
-          <span>{{ article.likes }}</span>
-          <i class="fa fa-comment fa-large" style="color: limegreen"></i>
-          <span>{{ article.comments }}</span>
-          <i class="fa fa-eye fa-large" style="color: skyblue"></i>
-          <span>{{ article.views }}</span>
-          <i class="fa fa-share fa-large" style="color: gray"></i>
-          <i class="fa fa-bookmark fa-large" style="color: gray"></i>
-          <i class="fa fa-ellipsis-h fa-large" style="color: gray"></i>
+        <div class="flex items-center space-x-6 text-lg">
+          <div class="flex items-center group">
+            <i class="fa fa-heart fa-large text-red-500 group-hover:text-red-400 transition-colors duration-200 cursor-pointer"></i>
+            <span class="ml-1 text-gray-300">{{ article.likes }}</span>
+          </div>
+          <div class="flex items-center group">
+            <i class="fa fa-comment fa-large text-primary-green group-hover:text-green-400 transition-colors duration-200 cursor-pointer"></i>
+            <span class="ml-1 text-gray-300">{{ article.comments }}</span>
+          </div>
+          <div class="flex items-center group">
+            <i class="fa fa-eye fa-large text-blue-400 group-hover:text-blue-300 transition-colors duration-200 cursor-pointer"></i>
+            <span class="ml-1 text-gray-300">{{ article.views }}</span>
+          </div>
+          <i class="fa fa-share fa-large text-gray-400 hover:text-white transition-colors duration-200 cursor-pointer"></i>
+          <i class="fa fa-bookmark fa-large text-gray-400 hover:text-white transition-colors duration-200 cursor-pointer"></i>
+          <i class="fa fa-ellipsis-h fa-large text-gray-400 hover:text-white transition-colors duration-200 cursor-pointer"></i>
         </div>
       </div>
     </div>
 
-    <!-- article header -->
-    <div class="article-content" [innerHTML]="article.content"></div>
+    <!-- article content -->
+    <div class="article-content px-8 py-8 text-gray-300 leading-relaxed text-lg" [innerHTML]="article.content">
+      <!-- Dynamic content will be rendered here -->
+    </div>
 
     <!-- article footer -->
-    <div class="article-footer">
+    <div class="article-footer p-8 border-t border-gray-700 mt-8">
       <app-profile-block></app-profile-block>
 
-      <div class="comment-section">
-        <div class="comment-header">
-          <h3>Comments</h3>
-          <span>{{ comments.length }}</span>
+      <div class="comment-section mt-12">
+        <div class="flex items-center mb-6">
+          <h3 class="text-2xl font-bold text-white mr-3">Comments</h3>
+          <span class="text-gray-400 text-lg">{{ comments.length }}</span>
         </div>
         <app-comment-form
           [user]="article.author"
           [articleId]="article.id"
         ></app-comment-form>
-        <div class="comment-list">
+        <div class="comment-list mt-8">
           <app-comment
             *ngFor="let comment of comments"
             [comment]="comment"
@@ -69,6 +79,7 @@
     <!-- recommended articles -->
     <app-next-articles-section
       [articles]="recommededArticles"
+      class="mt-12 p-8 bg-gray-800"
     ></app-next-articles-section>
   </div>
 </div>

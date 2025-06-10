@@ -6,7 +6,6 @@ import { Article } from '../../models/article.model';
   standalone: true,
   imports: [],
   templateUrl: './article-card.component.html',
-  styleUrl: './article-card.component.scss'
 })
 export class ArticleCardComponent {
   @Input() article!: Article;

@@ -19,7 +19,6 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [FormsModule, MatInputModule, MatButtonModule, MatFormFieldModule, ReactiveFormsModule, RouterOutlet, RouterLink, RouterLink],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   @Input() isSignin: boolean = false;

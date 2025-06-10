@@ -12,7 +12,6 @@ import { ArticleBlockComponent } from '../../../../shared/components/article-blo
   standalone: true,
   imports: [ArticleCardComponent, CommonModule, TagComponent, ArticleBlockComponent],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
 })
 export class HomeComponent {
 

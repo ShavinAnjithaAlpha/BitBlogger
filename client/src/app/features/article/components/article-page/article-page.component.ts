@@ -17,7 +17,6 @@ import { NextArticlesSectionComponent } from '../next-articles-section/next-arti
   standalone: true,
   imports: [ProfileBlockComponent, TagComponent, CommonModule, CommentComponent, CommentFormComponent, NextArticlesSectionComponent],
   templateUrl: './article-page.component.html',
-  styleUrl: './article-page.component.scss',
   encapsulation: ViewEncapsulation.None
 })
 export class ArticlePageComponent implements OnInit {
