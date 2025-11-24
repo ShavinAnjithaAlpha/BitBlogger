@@ -1,7 +1,9 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/bitblogger_content
+      uri: ${MONGO_URI}
+      username: ${MONGO_USERNAME}
+      password: ${MONGO_PASSWORD}
       database: bitblogger_content
   kafka:
     bootstrap-servers: localhost:9092

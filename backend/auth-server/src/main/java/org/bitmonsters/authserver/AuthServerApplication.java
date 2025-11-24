@@ -4,6 +4,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.core.env.AbstractEnvironment;
 
 import java.util.Objects;
 
@@ -12,9 +13,23 @@ import java.util.Objects;
 public class AuthServerApplication {
 
 	public static void main(String[] args) {
-		Dotenv dotenv = Dotenv.load();
-		System.setProperty("MAILTRAP_DEV_EMAIL_ID", Objects.requireNonNull(dotenv.get("MAILTRAP_DEV_EMAIL_ID")));
-		System.setProperty("MAILTRAP_DEV_EMAIL_PASSWORD", Objects.requireNonNull(dotenv.get("MAILTRAP_DEV_EMAIL_PASSWORD")));
+		String profile = System.getProperty(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME);
+		if (profile == null) {
+			profile = System.getenv("SPRING_PROFILES_ACTIVE");
+		}
+
+		if ("dev".equalsIgnoreCase(profile)) {
+			Dotenv dotenv = Dotenv.configure()
+					.ignoreIfMissing()
+					.load();
+
+			dotenv.entries().forEach(entry -> {
+				// Avoid overriding existing environment variables
+				if (System.getenv(entry.getKey()) == null && System.getProperty(entry.getKey()) == null) {
+					System.setProperty(entry.getKey(), entry.getValue());
+				}
+			});
+		}
 
 		SpringApplication.run(AuthServerApplication.class, args);
 	}

@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/bitblog_polls
-    username: bitblogger
-    password: bitmonsters
+    url: jdbc:postgresql://${POSTGRESQL_HOST}:${POSTGRESQL_PORT}/bitblog_polls
+    username: ${POSTGRESQL_USERNAME}
+    password: ${POSTGRESQL_PASSWORD}
 
   jpa:
     hibernate:
@@ -13,9 +13,9 @@ spring:
 
   flyway:
     enabled: true
-    url: jdbc:postgresql://localhost:5432/bitblog_polls
-    user: bitblogger
-    password: bitmonsters
+    url: jdbc:postgresql://${POSTGRESQL_HOST}:${POSTGRESQL_PORT}/bitblog_polls
+    user: ${POSTGRESQL_USERNAME}
+    password: ${POSTGRESQL_PASSWORD}
     baseline-version: 1
     baseline-description: "init"
     baseline-on-migrate: true
